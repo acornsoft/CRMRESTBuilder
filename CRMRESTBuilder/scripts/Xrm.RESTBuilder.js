@@ -467,6 +467,20 @@ Xrm.RESTBuilder.IsUnsearchable = function (schemaName) {
 	return ((entities.indexOf(schemaName) !== -1) ? true : false);
 }
 
+Xrm.RESTBuilder.IsInternalAction = function (name) {
+	//Not sure if there is a better way to determine this, but these actions are returned in the CSDL but marked as internal only according to MSDN
+	var entities = ["AddChannelAccessProfilePrivileges"];
+
+	return ((entities.indexOf(name) !== -1) ? true : false);
+}
+
+Xrm.RESTBuilder.IsInternalFunction = function (name) {
+	//Not sure if there is a better way to determine this, but these functions are returned in the CSDL but marked as internal only according to MSDN
+	var entities = ["RetrieveChannelAccessProfilePrivileges"];
+
+	return ((entities.indexOf(name) !== -1) ? true : false);
+}
+
 //Get the Attribute Metadata for the Entity
 Xrm.RESTBuilder.GetAssociateRelationshipMetadata = function (name) {
 	var mdq = Sdk.Mdq;
@@ -690,9 +704,7 @@ Xrm.RESTBuilder.GetCsdl = function () {
 				var actions = $(csdl).find("Action").toArray();
 				var functions = $(csdl).find("Function").toArray();
 				var functionImports = $(csdl).find("FunctionImport").toArray();
-				var complexTypes = $(csdl).find("ComplexType").toArray();
 				actions.forEach(Xrm.RESTBuilder.ProcessActions);
-				//functions.forEach(Xrm.RESTBuilder.ProcessFunctions);
 				Xrm.RESTBuilder.ProcessFunctions(functions, functionImports);
 
 				Xrm.RESTBuilder.CsdlLoaded = true;
@@ -706,6 +718,10 @@ Xrm.RESTBuilder.GetCsdl = function () {
 }
 
 Xrm.RESTBuilder.ProcessActions = function (e, index, array) {
+	if (Xrm.RESTBuilder.IsInternalAction($(e).attr("Name"))) {
+		return;
+	}
+
 	var action = {};
 	action.Name = $(e).attr("Name");
 	action.IsBound = ($(e).attr("IsBound") === undefined) ? false : true;
@@ -738,6 +754,10 @@ Xrm.RESTBuilder.ProcessActions = function (e, index, array) {
 
 Xrm.RESTBuilder.ProcessFunctions = function (functions, functionImports) {
 	for (var i = 0; i < functions.length; i++) {
+		if (Xrm.RESTBuilder.IsInternalFunction($(functions[i]).attr("Name"))) {
+			continue;
+		}
+
 		var func = {};
 		func.Name = $(functions[i]).attr("Name");
 		func.IsBound = ($(functions[i]).attr("IsBound") === undefined) ? false : true;
@@ -753,6 +773,9 @@ Xrm.RESTBuilder.ProcessFunctions = function (functions, functionImports) {
 			parameter.Optional = ($(p).attr("Nullable") === undefined) ? true : false;
 			if (parameter.Name === "entity") {
 				func.Entity = parameter.Type.replace("mscrm.", "");
+			}
+			if (parameter.Name === "entityset") {
+				func.Entity = parameter.Type.replace("Collection(mscrm.", "").replace(")", "");
 			}
 			func.Parameters.push(parameter);
 		});
@@ -779,37 +802,6 @@ Xrm.RESTBuilder.ProcessFunctions = function (functions, functionImports) {
 	}
 }
 
-//Xrm.RESTBuilder.ProcessFunctions = function (e, index, array) {
-//	var func = {};
-//	func.Name = $(e).attr("Name");
-//	func.IsBound = ($(e).attr("IsBound") === undefined) ? false : true;
-//	func.Entity = "none";
-//	var parameters = $(e).find("Parameter").toArray();
-//	var returnTypes = $(e).find("ReturnType").toArray();
-
-//	func.Parameters = [];
-//	parameters.forEach(function (p) {
-//		var parameter = {};
-//		parameter.Name = $(p).attr("Name");
-//		parameter.Type = $(p).attr("Type");
-//		parameter.Optional = ($(p).attr("Nullable") === undefined) ? true : false;
-//		if (parameter.Name === "entity") {
-//			func.Entity = parameter.Type.replace("mscrm.", "");
-//		}
-//		func.Parameters.push(parameter);
-//	});
-
-//	func.ReturnTypes = [];
-//	returnTypes.forEach(function (r) {
-//		var returnType = {};
-//		returnType.Type = $(r).attr("Type");
-//		returnType.Optional = ($(r).attr("Nullable") === undefined) ? true : false;
-//		func.ReturnTypes.push(returnType);
-//	});
-
-//	Xrm.RESTBuilder.Functions.push(func);
-//}
-
 Xrm.RESTBuilder.BuildActionList = function () {
 	Xrm.RESTBuilder.SelectedAction = null;
 	$("#Actions").find("option").remove();
@@ -830,6 +822,7 @@ Xrm.RESTBuilder.BuildActionList = function () {
 	$("#CreateRequest").button("option", "disabled", false);
 	$("#Actions").html(options.join(""));
 	Xrm.RESTBuilder.SortSelect($("#Actions"));
+	$("#Actions").prop("selectedIndex", 0);
 
 	Xrm.RESTBuilder.Actions_Change();
 }
@@ -854,6 +847,7 @@ Xrm.RESTBuilder.BuildFunctionList = function () {
 	$("#CreateRequest").button("option", "disabled", false);
 	$("#Functions").html(options.join(""));
 	Xrm.RESTBuilder.SortSelect($("#Functions"));
+	$("#Functions").prop("selectedIndex", 0);
 
 	Xrm.RESTBuilder.Functions_Change();
 }
@@ -867,7 +861,7 @@ Xrm.RESTBuilder.IsParameterCollection = function (type) {
 }
 
 Xrm.RESTBuilder.ConvertCollectionName = function (type) {
-	type = type.replace("mscrm.crmbaseentity", "Entity");
+	type = type.replace("mscrm.crmbaseentity", "(Variable Types)");
 	type = type.replace("Edm.", "");
 	type = type.replace("mscrm.", "");
 
@@ -2507,15 +2501,11 @@ Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + action.Name);
 	}
-
 	js.push("\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
-	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -2549,6 +2539,48 @@ Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
 };
 
+Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
+	var js = [];
+	js.push(parameters);
+	js.push("$.ajax({\n");
+	js.push("    type: \"POST\",\n");
+	js.push("    contentType: \"application/json; charset=utf-8\",\n");
+	js.push("    datatype: \"json\",\n");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/");
+	if (action.Entity === "none") { // Unbound
+		js.push(action.Name);
+	} else { //Bound
+		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + action.Name);
+	}
+	js.push("\",\n");
+	if (parameters) {
+		js.push("    data: JSON.stringify(parameters),\n");
+	}
+	js.push("    beforeSend: function (XMLHttpRequest) {\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	if (Xrm.RESTBuilder.AuthToken) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
+	}
+	if (Xrm.RESTBuilder.Impersonate) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+	}
+	js.push("    },\n");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
+	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("        var results = data;\n");
+	js.push("    },\n");
+	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
+	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("    }\n");
+	js.push("});");
+
+	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
+	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
+	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+};
+
 Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 	var js = [];
 	js.push(parameters);
@@ -2559,15 +2591,11 @@ Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + func.Name);
 	}
-
 	js.push("\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
-	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -2598,6 +2626,48 @@ Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 
 	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
 	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
+	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+};
+
+Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
+	var js = [];
+	js.push(parameters);
+	js.push("$.ajax({\n");
+	js.push("    type: \"GET\",\n");
+	js.push("    contentType: \"application/json; charset=utf-8\",\n");
+	js.push("    datatype: \"json\",\n");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/");
+	if (func.Entity === "none") { //Unbound
+		js.push(func.Name + "()");
+	} else { //Bound
+		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + func.Name);
+	}
+	js.push("\",\n");
+	if (parameters) {
+		js.push("    data: JSON.stringify(parameters),\n");
+	}
+	js.push("    beforeSend: function (XMLHttpRequest) {\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	if (Xrm.RESTBuilder.AuthToken) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
+	}
+	if (Xrm.RESTBuilder.Impersonate) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+	}
+	js.push("    },\n");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
+	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("        var results = data;\n");
+	js.push("    },\n");
+	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
+	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("    }\n");
+	js.push("});");
+
+	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
+	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
 	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
 };
 
@@ -4323,7 +4393,6 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#LibrarySDKJQ").button("option", "disabled", false);
 		$("#LibraryXSVC").button("option", "disabled", false);
 		$("#TypePredefinedQuery").button("option", "disabled", true);
-		$("#TypeAction").button("option", "disabled", true);
 		$("#FormattedValues").hide();
 		$("#DetectChanges").hide();
 		$("#AuthToken").hide();
@@ -4356,6 +4425,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#TypePredefinedQuery").button("option", "disabled", false);
 		if (Xrm.RESTBuilder.CsdlLoaded) {
 			$("#TypeAction").button("option", "disabled", false);
+			$("#TypeFunction").button("option", "disabled", false);
 		}
 		$("#FormattedValues").show();
 		$("#DetectChanges").show();
@@ -4543,8 +4613,8 @@ Xrm.RESTBuilder.Type_Change = function () {
 		case "Action":
 			$("#FormattedValues").hide();
 			$("#DetectChanges").hide();
-			$("#AuthToken").hide();
-			$("#Impersonate").hide();
+			$("#AuthToken").show();
+			$("#Impersonate").show();
 			$("#Message").show();
 			$("#ActionDefinition").show();
 			$("#EntityList").prepend("<option value='' logicalname='none' selected='selected'></option>");
@@ -4556,8 +4626,8 @@ Xrm.RESTBuilder.Type_Change = function () {
 		case "Function":
 			$("#FormattedValues").hide();
 			$("#DetectChanges").hide();
-			$("#AuthToken").hide();
-			$("#Impersonate").hide();
+			$("#AuthToken").show();
+			$("#Impersonate").show();
 			$("#Message").show();
 			$("#FunctionDefinition").show();
 			$("#EntityList").prepend("<option value='' logicalname='none' selected='selected'></option>");
@@ -4723,6 +4793,18 @@ Xrm.RESTBuilder.Back_Click = function () {
 
 //EntityList Change
 Xrm.RESTBuilder.EntityList_Change = function () {
+	Xrm.RESTBuilder.EntityLogical = $("#EntityList option:selected").attr("LogicalName");
+	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
+		Xrm.RESTBuilder.EntitySetName = $("#EntityList option:selected").attr("EntitySetName");
+	}
+	Xrm.RESTBuilder.EntitySchema = $("#EntityList").val();
+
+	if (Xrm.RESTBuilder.Type === "Action" || Xrm.RESTBuilder.Type === "Function") {
+		$("#TargetId").attr("disabled", "disabled");
+		$("#TargetId").val(null);
+		Xrm.RESTBuilder.EntitySetName = $("#EntityList option:selected").attr("EntitySetName");
+	}
+
 	if (Xrm.RESTBuilder.Type === "Action") {
 		Xrm.RESTBuilder.BuildActionList();
 		return;
@@ -4738,11 +4820,6 @@ Xrm.RESTBuilder.EntityList_Change = function () {
 		$("#Accordion").accordion({ active: false });
 		Xrm.RESTBuilder.Block();
 	}
-	Xrm.RESTBuilder.EntityLogical = $("#EntityList option:selected").attr("LogicalName");
-	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
-		Xrm.RESTBuilder.EntitySetName = $("#EntityList option:selected").attr("EntitySetName");
-	}
-	Xrm.RESTBuilder.EntitySchema = $("#EntityList").val();
 	$("#Expand").prop("selectedIndex", 0);
 	Xrm.RESTBuilder.CurrentEntityExpandedAttributes = [];
 	$("#" + Xrm.RESTBuilder.FindTypeTable()).find("tbody tr").remove();
@@ -4804,8 +4881,9 @@ Xrm.RESTBuilder.PredefinedQueryType_Change = function () {
 //Actions Change
 Xrm.RESTBuilder.Actions_Change = function () {
 	var selectedAction = $("#Actions option:selected").val();
-	var action = $.grep(Xrm.RESTBuilder.Actions, function (e) { return e.Name === selectedAction; });
+	var action = $.grep(Xrm.RESTBuilder.Actions, function (e) { return e.Name === selectedAction && e.Entity === $("#EntityList option:selected").attr("LogicalName"); });
 	if (action.length !== 1) {
+		$("#TargetId").attr("disabled", "disabled");
 		return;
 	}
 	Xrm.RESTBuilder.SelectedAction = action[0];
@@ -4815,8 +4893,9 @@ Xrm.RESTBuilder.Actions_Change = function () {
 //Functions Change
 Xrm.RESTBuilder.Functions_Change = function () {
 	var selectedFunction = $("#Functions option:selected").val();
-	var func = $.grep(Xrm.RESTBuilder.Functions, function (e) { return e.Name === selectedFunction; });
+	var func = $.grep(Xrm.RESTBuilder.Functions, function (e) { return e.Name === selectedFunction && e.Entity === $("#EntityList option:selected").attr("LogicalName"); });
 	if (func.length !== 1) {
+		$("#TargetId").attr("disabled", "disabled");
 		return;
 	}
 

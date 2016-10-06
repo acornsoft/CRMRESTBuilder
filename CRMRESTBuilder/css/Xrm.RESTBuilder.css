@@ -112,7 +112,7 @@ table {
 	border-collapse: collapse;
 }
 
-th {
+th {	
 	padding-left: 10px;
 	text-align: left;
 }
@@ -151,7 +151,7 @@ td {
 	margin-bottom: 10px;
 }
 
-#RESTType, #RESTLibrary, #Header, #FormattedValues, #DetectChanges, #AuthToken, #Count {
+#RESTType, #RESTLibrary, #Header, #FormattedValues, #DetectChanges, #AuthToken, #Count, #ActionDefinition, #FunctionDefinition, #TargetDefinition {
 	margin-bottom: 5px;
 }
 
@@ -259,4 +259,8 @@ body {
 	height: 30px;
 	margin-right: 5px;
 	width: 30px;
+}
+
+#InputParameters td:nth-child(3n+3) {
+	text-align: center;
 }

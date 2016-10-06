@@ -300,25 +300,24 @@
 				</div>
 			</div>
 		</div>
-		<div id="Message" class="Method" style="display: none; margin-left: 3px;">
+		<div id="Message" class="Method" style="display: none;">
 			<div id="ActionDefinition" style="display: none;">
-				<label for="Actions" class="CrudLabel" style="float: left;">Action</label>
+				<label for="Actions" class="CrudLabel">Action</label>
 				<select id="Actions" class="ui-corner-all"></select>
 			</div>
 			<div id="FunctionDefinition" style="display: none;">
-				<label for="Functions" class="CrudLabel" style="float: left;">Function</label>
+				<label for="Functions" class="CrudLabel">Function</label>
 				<select id="Functions" class="ui-corner-all"></select>
 			</div>
-			<div>
+			<div id="TargetDefinition">
 				<label for="TargetId" class="CrudLabel">Id To Target</label>
 				<input id="TargetId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
 			</div>
 			<div style="width: 600px !important; clear: both;">
-				<b>Input Parameters</b>
 				<table id="InputParameters">
 					<thead>
 						<tr>
-							<th>Name</th>
+							<th>Parameter</th>
 							<th>Value</th>
 							<th>Optional</th>
 						</tr>
