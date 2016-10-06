@@ -345,7 +345,7 @@ Xrm.RESTBuilder.GetAllEntityMetadata = function () {
 	Sdk.Async.execute(request,
         Xrm.RESTBuilder.GetAllEntityMetadata_Response,
         function (error) {
-        	alert(error.message);
+        	Xrm.RESTBuilder.DisplayAlert(error.message);
         });
 };
 
@@ -423,7 +423,7 @@ Xrm.RESTBuilder.GetAttributeMetadata = function (name, callBack, ctrl) {
 	Sdk.Async.execute(request,
         (ctrl === null) ? callBack : callBack(ctrl),
         function (error) {
-        	alert(error.message);
+        	Xrm.RESTBuilder.DisplayAlert(error.message);
         });
 };
 
@@ -507,7 +507,7 @@ Xrm.RESTBuilder.GetAssociateRelationshipMetadata = function (name) {
 	Sdk.Async.execute(request,
         Xrm.RESTBuilder.GetAssociateRelationshipMetadata_Response,
         function (error) {
-        	alert(error.message);
+        	Xrm.RESTBuilder.DisplayAlert(error.message);
         });
 };
 
@@ -602,7 +602,7 @@ Xrm.RESTBuilder.GetExpandedAttributeMetadata = function (names) {
 	Sdk.Async.execute(request,
         Xrm.RESTBuilder.GetExpandedAttributeMetadata_Response,
         function (error) {
-        	alert(error.message);
+        	Xrm.RESTBuilder.DisplayAlert(error.message);
         });
 };
 
@@ -955,7 +955,7 @@ Xrm.RESTBuilder.Associate_XST = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -977,7 +977,7 @@ Xrm.RESTBuilder.Associate_SDK = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("        alert(error.message);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1004,7 +1004,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1041,7 +1041,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1081,7 +1081,7 @@ Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1110,7 +1110,7 @@ Xrm.RESTBuilder.Associate_jQuery = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1132,7 +1132,7 @@ Xrm.RESTBuilder.Associate_XSVC = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " +Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1152,7 +1152,7 @@ Xrm.RESTBuilder.Disassociate_XST = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -1173,7 +1173,7 @@ Xrm.RESTBuilder.Disassociate_SDK = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("        alert(error.message);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1198,7 +1198,7 @@ Xrm.RESTBuilder.Disassociate_XMLHTTP = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1232,7 +1232,7 @@ Xrm.RESTBuilder.Disassociate_XMLHTTP_WebApi = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1268,7 +1268,7 @@ Xrm.RESTBuilder.Disassociate_jQuery_WebApi = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1295,7 +1295,7 @@ Xrm.RESTBuilder.Disassociate_jQuery = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " +Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1317,7 +1317,7 @@ Xrm.RESTBuilder.Disassociate_XSVC = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1335,7 +1335,7 @@ Xrm.RESTBuilder.Delete_XST = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -1354,7 +1354,7 @@ Xrm.RESTBuilder.Delete_SDK = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("        alert(error.message);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1378,7 +1378,7 @@ Xrm.RESTBuilder.Delete_XMLHTTP = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1411,7 +1411,7 @@ Xrm.RESTBuilder.Delete_XMLHTTP_WebApi = function () {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1445,7 +1445,7 @@ Xrm.RESTBuilder.Delete_jQuery_WebApi = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1470,7 +1470,7 @@ Xrm.RESTBuilder.Delete_jQuery = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1488,7 +1488,7 @@ Xrm.RESTBuilder.Delete_SDKJQ = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("        alert(error.message);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1507,7 +1507,7 @@ Xrm.RESTBuilder.Delete_XSVC = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1524,7 +1524,7 @@ Xrm.RESTBuilder.Create_XST = function (js) {
 	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -1542,7 +1542,7 @@ Xrm.RESTBuilder.Create_SDK = function (js) {
 	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1567,7 +1567,7 @@ Xrm.RESTBuilder.Create_jQuery = function (js) {
 	js.push("        var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1584,7 +1584,7 @@ Xrm.RESTBuilder.Create_SDKJQ = function (js) {
 	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1607,7 +1607,7 @@ Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
 	js.push("            var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " +Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1641,7 +1641,7 @@ Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
 	js.push("            var newEntityId = matches[1];\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1678,7 +1678,7 @@ Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
 	js.push("        var newEntityId = matches[1];\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1696,7 +1696,7 @@ Xrm.RESTBuilder.Create_XSVC = function (js) {
 	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1714,7 +1714,7 @@ Xrm.RESTBuilder.Update_XST = function (js) {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -1733,7 +1733,7 @@ Xrm.RESTBuilder.Update_SDK = function (js) {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1759,7 +1759,7 @@ Xrm.RESTBuilder.Update_jQuery = function (js) {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1777,7 +1777,7 @@ Xrm.RESTBuilder.Update_SDKJQ = function (js) {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1800,7 +1800,7 @@ Xrm.RESTBuilder.Update_XMLHTTP = function (js) {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1832,13 +1832,13 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	js.push("            //Success - No Return Data - Do Something\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "            alert(\"Updated\"); //Success - No Return Data - Do Something\n";
+	Xrm.RESTBuilder.ReplaceLine = "            //Success - No Return Data - Do Something\n";
 	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
 	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
 };
@@ -1867,7 +1867,7 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1886,7 +1886,7 @@ Xrm.RESTBuilder.Update_XSVC = function (js) {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("});");
 
@@ -1914,7 +1914,7 @@ Xrm.RESTBuilder.Retrieve_XST = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 9));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    " + Xrm.RESTBuilder.Async + "\n");
 	js.push(");");
@@ -1943,7 +1943,7 @@ Xrm.RESTBuilder.Retrieve_SDK = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " +Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -1970,7 +1970,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 12));
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2018,7 +2018,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 		js.push("        }\n");
 	}
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2073,7 +2073,7 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	}
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2106,7 +2106,7 @@ Xrm.RESTBuilder.Retrieve_jQuery = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " +Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2134,7 +2134,7 @@ Xrm.RESTBuilder.Retrieve_SDKJQ = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -2173,7 +2173,7 @@ Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 9));
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2192,7 +2192,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XST = function (selects, expand, filter, top, o
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    function () {\n");
 	js.push("         //On Complete - Do Something\n");
@@ -2215,7 +2215,7 @@ Xrm.RESTBuilder.RetrieveMultiple_SDK = function (selects, expand, filter, top, o
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    function () {\n");
 	js.push("         //On Complete - Do Something\n");
@@ -2245,7 +2245,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP = function (selects, expand, filter, to
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 12));
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2287,7 +2287,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, fil
 	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 12));
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2330,7 +2330,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 3));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2357,7 +2357,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery = function (selects, expand, filter, top
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 3));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2376,7 +2376,7 @@ Xrm.RESTBuilder.RetrieveMultiple_SDKJQ = function (selects, expand, filter, top,
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    },\n");
 	js.push("    function () {\n");
 	js.push("         //On Complete - Do Something\n");
@@ -2399,7 +2399,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XSVC = function (selects, expand, filter, top, 
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         alert(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2438,7 +2438,7 @@ Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 	js.push("            var results = JSON.parse(this.response);\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2482,7 +2482,7 @@ Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 	js.push("        var results = data.value;\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2524,7 +2524,7 @@ Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 	}
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2572,7 +2572,7 @@ Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
 	js.push("        var results = data;\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -2614,7 +2614,7 @@ Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 	}
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            alert(this.statusText);\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -2662,7 +2662,7 @@ Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
 	js.push("        var results = data;\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        alert(textStatus + \" \" + errorThrown);\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -4262,11 +4262,11 @@ Xrm.RESTBuilder.ValidateCode = function (script) {
 			for (var j = 0; j < errors.length; j++) {
 				errorString += "Line " + errors[j].lineNumber + ": " + errors[j].description + "\n";
 			}
-			alert("Code Errors Detected:\n" + errorString);
+			Xrm.RESTBuilder.DisplayAlert("Code Errors Detected:\n" + errorString);
 			return false;
 		}
 	} catch (e) {
-		alert("Code Errors Detected:\n" + e.message);
+		Xrm.RESTBuilder.DisplayAlert("Code Errors Detected:\n" + e.message);
 		return false;
 	}
 
@@ -4278,7 +4278,7 @@ Xrm.RESTBuilder.ValidateFetchXml = function (xml) {
 		$.parseXML(xml);
 		return true;
 	} catch (e) {
-		alert("Invalid FetchXML");
+		Xrm.RESTBuilder.DisplayAlert("Invalid FetchXML");
 		return false;
 	}
 }
@@ -5535,6 +5535,20 @@ Xrm.RESTBuilder.ResultFormat_Change = function () {
 //
 //Utility
 //
+
+Xrm.RESTBuilder.Alert = function () {
+	if (Xrm.RESTBuilder.CrmVersion[0] < 6) {
+		return "alert";
+	}
+	return "Xrm.Utility.alertDialog";
+}
+
+Xrm.RESTBuilder.DisplayAlert = function (message) {
+	if (Xrm.RESTBuilder.CrmVersion[0] < 6) {
+		alert(message);
+	}
+	Xrm.Utility.alertDialog(message);
+}
 
 Xrm.RESTBuilder.Block = function () {
 	$.blockUI({
