@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>CRM REST Builder</title>
+	<link rel="stylesheet" href="css/smoothness/jqueryui1.10.3.custom.min.css" />
+	<link rel="stylesheet" href="css/jsontree.css" />
+	<link rel="stylesheet" href="css/codemirror.css" />
+	<link rel="stylesheet" href="css/Xrm.RESTBuilder.css" />
+	<script src="../../ClientGlobalContext.js.aspx" type="text/javascript"></script>
+	<script type="text/javascript" src="scripts/json2.js"></script>
+	<script type="text/javascript" src="scripts/jquery1.9.1.min.js"></script>
+	<script type="text/javascript" src="scripts/jqueryui1.10.3.min.js"></script>
+	<script type="text/javascript" src="scripts/Sdk.Soap.min.js"></script>
+	<script type="text/javascript" src="scripts/Sdk.RetrieveMetadataChanges.js"></script>
+	<script type="text/javascript" src="scripts/XrmServiceToolkit.js"></script>
+	<script type="text/javascript" src="scripts/SDK.REST.js"></script>
+	<script type="text/javascript" src="scripts/SDK.JQuery.js"></script>
+	<script type="text/javascript" src="scripts/XrmSvcToolkit.js"></script>
+	<script type="text/javascript" src="scripts/jsontree.js"></script>
+	<script type="text/javascript" src="scripts/codemirror.js"></script>
+	<script type="text/javascript" src="scripts/javascript.js"></script>
+	<script type="text/javascript" src="scripts/xml.js"></script>
+	<script type="text/javascript" src="scripts/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="scripts/esprima.js"></script>
+	<script type="text/javascript" src="scripts/clipboard.min.js"></script>
+	<script type="text/javascript" src="scripts/Xrm.RESTBuilder.js"></script>
+</head>
+<body>
+	<div id="Generate">
+		<div id="Header">
+			<label class="CrudLabel"></label>
+			<a id="CreateRequest" href="#">Create Request</a>
+			<a id="Reset" href="#">Reset</a>
+			<span class="Version">CRM Version: </span><span id="CrmVersion" class="Version"></span>
+			<a href="https://www.paypal.me/JLattimer" target="_blank" style="float: right;">
+				<img class="HeaderImage" title="Feel free to donate if this saved you some time" alt="PayPal"
+					 src="data:image/png;base64,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" />
+			</a>
+			<a href="https://crmrestbuilder.codeplex.com" target="_blank" style="float: right;">
+				<img class="HeaderImage" title="Check out the project on CodePlex" alt="CodePlex"
+					 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3AoZFikrPtjPKQAAAmVJREFUWMPtVzFv00AU/t7FIoZChYQCCmuUpE4oafkJMFCUH8BCkWBgYWMtVFBg6cBUdUFigHZgYWCIyAAzYmiapHaSRl1BJGIBIRLku8eSVJFrO05TK0LqJ91i3d337t1333sGjvG/49KcgZcr7w69ntw+pjNJNKwmUkYiHo1G74GQJ1AOhBOD85gZ1ZJFALC5WlybPn32PoMDkysl3QNIZRKxaDT6mogWiMhzA2ZGZcvcn/D2xadnZ6aml5gZfuv6kFJCOD9mczO3dF1vCSGuB9lkEDcfXH346/fP50QE5mCZEA7yR5qmvQHAXtdz1EGIwZNrmrYCADTq0ccIgtKZJBgqput6CwCPQu7UgBPDNCGlhGhYTfQEx+Oe/DCZECkjESeiBb87595qZj4wRgnC9Qpm5zLLIiKe+Gea21LKO2a5XnAzop3t2tBA3q9/Zi2iuTxDwjU/ZmZuVbbMC0QouM0JQu77CgiU8VQoEUlb3p2dN7CzXQ/FyjUQzvmp3KzUC2HWEjHpYibA+OFzBcjmZvKz80Z4ATDY8hNhJBJ5VS3VEFYQAoyPfiIkotjlK9nvSnHeqx8YB5QyEnH9pP51SNllIiKn8Qz2A37oW7KrFe/W9r4x84deBfTMRF8TzhGU3NOK05kkut3ubWYmDlrEAyJIgyIaVhO71l5bSrl4lMUoaHe07wNmub5h2/byYPEJm/yAEZnl+lPbthd7lZHDJnd1QrNc3+h0OueVUsVREzEquacVE0S7WrJudP50LiqpHiulvrDiv379wOZqce2UPrVkSxtSSdjSHjqksif/Y3KMieMfgjR9jqaKMJIAAAAASUVORK5CYII=" />
+			</a>
+		</div>
+		<div id="Endpoint" style="float: left;">
+			<label class="CrudLabel" title="Web API is only availble for CRM 2016+ ">Endpoint</label>
+			<input id="Endpoint2011" checked="checked" type="radio" value="2011" name="Endpoint" />
+			<label for="Endpoint2011" class="radio">2011</label>
+			<input id="EndpointWebApi" type="radio" value="WebApi" name="Endpoint" />
+			<label for="EndpointWebApi" class="radio">Web API</label>
+		</div>
+		<div style="clear: both;"></div>
+		<div id="TopOuter">
+			<div id="TopInnerLeft">
+				<div id="RESTType">
+					<label class="CrudLabel">Action</label>
+					<input id="TypeRetrieve" checked="checked" type="radio" value="Retrieve" name="Type" />
+					<label for="TypeRetrieve" class="radio">Retrieve Single</label>
+					<input id="TypeRetrieveMultiple" type="radio" value="RetrieveMultiple" name="Type" />
+					<label for="TypeRetrieveMultiple" class="radio">Retrieve Multiple</label>
+					<input id="TypeCreate" type="radio" value="Create" name="Type" />
+					<label for="TypeCreate" class="radio">Create</label>
+					<input id="TypeUpdate" type="radio" value="Update" name="Type" />
+					<label for="TypeUpdate" class="radio">Update</label>
+					<input id="TypeDelete" type="radio" value="Delete" name="Type" />
+					<label for="TypeDelete" class="radio">Delete</label>
+					<input id="TypeAssociate" type="radio" value="Associate" name="Type" />
+					<label for="TypeAssociate" class="radio">Associate</label>
+					<input id="TypeDisassociate" type="radio" value="Disassociate" name="Type" />
+					<label for="TypeDisassociate" class="radio">Disassociate</label>
+					<input id="TypePredefinedQuery" type="radio" value="PredefinedQuery" name="Type" />
+					<label for="TypePredefinedQuery" class="radio">Predefined Query</label>
+				</div>
+				<div id="RESTLibrary">
+					<label class="CrudLabel">Output Format</label>
+					<input id="LibraryXMLHTTP" checked="checked" type="radio" value="XMLHTTP" name="Library" />
+					<label for="LibraryXMLHTTP" class="radio" title="Requires no external libraries">XMLHTTP</label>
+					<input id="LibraryJQ" type="radio" value="jQuery" name="Library" />
+					<label for="LibraryJQ" class="radio" title="Requires jQuery - http://jquery.com/download/">jQuery</label>
+					<input id="LibraryXRMST" type="radio" value="XST" name="Library" />
+					<label for="LibraryXRMST" class="radio" title="Requires the XrmServiceToolkit library - http://xrmservicetoolkit.codeplex.com">XrmServiceToolkit</label>
+					<input id="LibrarySDK" type="radio" value="SDK" name="Library" />
+					<label for="LibrarySDK" class="radio" title="Requires the SDK.REST.js library from the CRM SDK">SDK.REST</label>
+					<input id="LibrarySDKJQ" type="radio" value="SDKJQ" name="Library" />
+					<label for="LibrarySDKJQ" class="radio" title="Requires the SDK.JQUERY.js library from the CRM SDK">SDK.JQUERY</label>
+					<input id="LibraryXSVC" type="radio" value="XSVC" name="Library" />
+					<label for="LibraryXSVC" class="radio" title="Requires the XrmSvcToolkit library - https://xrmsvctoolkit.codeplex.com">XrmSvcToolkit</label>
+				</div>
+				<div>
+					<div id="FormattedValues" style="display: none; float: left; margin-right: 12px;">
+						<label class="CrudLabel" title="Retrieve formatted values for properties with the result(s), text values for option sets, properly formatted currency, etc.">Formatted Values</label>
+						<input id="FormattedValuesTrue" checked="checked" type="radio" value="true" name="FormattedValues" />
+						<label for="FormattedValuesTrue" class="radio">Yes</label>
+						<input id="FormattedValuesFalse" type="radio" value="false" name="FormattedValues" />
+						<label for="FormattedValuesFalse" class="radio">No</label>
+					</div>
+					<div id="DetectChanges" style="display: none; float: left; margin-right: 12px;">
+						<label class="CrudLabel" title="Include ETag header value used to detect data changes since the last request">Detect Changes</label>
+						<input id="DetectChangesTrue" type="radio" value="true" name="DetectChanges" />
+						<label for="DetectChangesTrue" class="radio">Yes</label>
+						<input id="DetectChangesFalse" checked="checked" type="radio" value="false" name="DetectChanges" />
+						<label for="DetectChangesFalse" class="radio">No</label>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div>
+					<div id="AuthToken" style="display: none; float: left; margin-right: 12px;">
+						<label class="CrudLabel" title="Include header placeholder value for authentication token, only required when using from outside CRM">Token Header</label>
+						<input id="AuthTokenTrue" type="radio" value="true" name="AuthToken" />
+						<label for="AuthTokenTrue" class="radio">Yes</label>
+						<input id="AuthTokenFalse" checked="checked" type="radio" value="false" name="AuthToken" />
+						<label for="AuthTokenFalse" class="radio">No</label>
+					</div>
+					<div id="Impersonate" style="display: none; float: left; margin-right: 12px;">
+						<label class="CrudLabel" title="Include header to impersonate a different user">Impersonate</label>
+						<input id="ImpersonateTrue" type="radio" value="true" name="Impersonate" />
+						<label for="ImpersonateTrue" class="radio">Yes</label>
+						<input id="ImpersonateFalse" checked="checked" type="radio" value="false" name="Impersonate" />
+						<label for="ImpersonateFalse" class="radio">No</label>
+					</div>
+					<input id="ImpersonateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" style="display: none;" />
+				</div>
+				<div style="clear: both;"></div>
+				<div id="Async">
+					<label class="CrudLabel">Process</label>
+					<input id="AsyncTrue" checked="checked" type="radio" value="true" name="Async" />
+					<label for="AsyncTrue" class="radio">Asynchronous</label>
+					<input id="AsyncFalse" type="radio" value="false" name="Async" />
+					<label for="AsyncFalse" class="radio">Synchronous</label>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div id="Entity">
+			<label for="EntityList" class="CrudLabel">Primary Entity</label>
+			<select id="EntityList" class="ui-corner-all"></select>
+		</div>
+		<!--Object Section-->
+		<div id="Retrieve" class="Method">
+			<div id="RetrieveGUID">
+				<label for="RetrieveId" class="CrudLabel">Id To Retrieve</label>
+				<input id="RetrieveId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div id="RetrieveExtras" style="display: none;">
+				<div id="RetrieveTop" style="float: left; margin-right: 12px;">
+					<label for="TopAmount" class="CrudLabel" title="Will retrieve only the first X records of the result">Top</label>
+					<input type="text" id="TopAmount" placeholder="50 Max" class="Top" />
+				</div>
+				<div id="Count" style="display: none;">
+					<label class="CrudLabel" title="Returns the total record count for the query along with the results">Retrieve Count</label>
+					<input id="CountTrue" type="radio" value="true" name="Count" />
+					<label for="CountTrue" class="radio">Yes</label>
+					<input id="CountFalse" checked="checked" type="radio" value="false" name="Count" />
+					<label for="CountFalse" class="radio">No</label>
+				</div>
+				<div id="RetrieveSkip" style="float: left;">
+					<label for="SkipAmount" class="CrudLabel" title="The first X records will be skipped from the query result">Skip</label>
+					<input type="text" id="SkipAmount" class="Skip" />
+				</div>
+			</div>
+			<div style="width: 600px !important; clear: both;">
+				<b>Fields To Select</b>
+				<div id="Accordion">
+					<h3>Entity</h3>
+					<div id="RetrieveSelects">
+						<ul id="SelectList1" class="selectlist"></ul>
+					</div>
+					<h3>One To Many Relationships</h3>
+					<div id="RetrieveSelects2">
+						<ul id="SelectList2" class="selectlist"></ul>
+					</div>
+					<h3>Many To One Relationships</h3>
+					<div id="RetrieveSelects3">
+						<ul id="SelectList3" class="selectlist"></ul>
+					</div>
+					<h3>Many To Many Relationships</h3>
+					<div id="RetrieveSelects4">
+						<ul id="SelectList4" class="selectlist"></ul>
+					</div>
+				</div>
+			</div>
+			<div id="RetrieveFilters" style="display: none;">
+				<div>
+					<label for="Expand" class="CrudLabel" style="width: 72px;" title="Only possible to filter on 1 entity at a time">Filter</label>
+					<select id="Expand" class="Expand ui-corner-all"></select>
+				</div>
+				<table id="TableRetrieve">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Attribute</th>
+							<th style="width: 162px;">Operator</th>
+							<th style="width: 260px;">Value</th>
+							<th style="width: 56px;"></th>
+							<th style="width: 56px;"></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<br />
+				<a href="#" id="AddRetrieve" class="AddAttribute">Add Attribute</a>
+				<a href="#" id="GroupAdd" class="Group">Group AND</a>
+				<a href="#" id="GroupOr" class="Group">Group OR</a>
+			</div>
+			<div id="OrderBy" style="display: none;">
+				<table id="TableOrderBy">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Order By (12 Max)</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<br />
+				<a href="#" id="AddOrder" class="AddAttribute">Add Order By</a>
+			</div>
+		</div>
+		<div id="CreateUpdate" class="Method" style="display: none;">
+			<div id="UpdateGUID" style="display: none;">
+				<label for="UpdateId" class="CrudLabel">Id To Update</label>
+				<input id="UpdateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<table id="TableCreateUpdate">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Attribute</th>
+						<th>Value</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<br />
+			<a href="#" id="AddCreateUpdate" class="AddAttribute">Add Attribute</a>
+		</div>
+		<div id="Delete" class="Method" style="display: none;">
+			<label for="DeleteId" class="CrudLabel">Id To Delete</label>
+			<input id="DeleteId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+		</div>
+		<div id="AssociateDisassociate" class="Method" style="display: none;">
+			<div style="height: 40px;">
+				<div style="width: 275px; float: left;">
+					<b>Parent Type to Associate/Disassociate</b>
+				</div>
+				<select id="AssociateEntity1" class="ui-corner-all"></select>
+			</div>
+			<div style="height: 40px;">
+				<div style="width: 275px; float: left;">
+					<b>Parent Id To Associate/Disassociate</b>
+				</div>
+				<input id="AssociateId1" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div style="height: 40px;">
+				<div style="width: 275px; float: left;">
+					<b>Child Type to Associate/Disassociate</b>
+				</div>
+				<select id="AssociateEntity2" class="ui-corner-all"></select>
+			</div>
+			<div style="height: 40px;">
+				<div style="width: 275px; float: left;">
+					<b>Child Id To Associate/Disassociate</b>
+				</div>
+				<input id="AssociateId2" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div style="height: 40px;">
+				<div style="width: 275px; float: left;">
+					<b>Relationship Name</b>
+				</div>
+				<select id="AssociateRelationship" class="ui-corner-all"></select>
+			</div>
+		</div>
+		<div id="PredefinedQuery" class="Method" style="display: none;">
+			<div style="height: 40px;">
+				<label for="PredefinedQueryType" class="CrudLabel">Query Type</label>
+				<select id="PredefinedQueryType" class="ui-corner-all">
+					<option type="fetchXml">FetchXML</option>
+					<option type="savedQuery">Saved Query</option>
+					<option type="userQuery">User Query</option>
+				</select>
+			</div>
+			<div id="SavedUserQuery" style="display: none;">
+				<label for="QueryId" class="CrudLabel">Id To Retrieve</label>
+				<input id="QueryId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div id="FetchXmlWrapper">
+				<div id="FetchXml">
+					<label for="Fetch" class="CrudLabel" style="float: left;">FetchXML Query</label>
+					<textarea id="Fetch" style="float: left;"></textarea>
+					<span style="margin-left: 125px;"><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Output Section-->
+	<div id="Output" style="display: none;">
+		<a id="Back" href="#">Back</a>
+		<a id="Execute" href="#">Execute Code (Read-Only)</a>
+		<b>Beware - this will attempt to execute any code in this area!!!</b>
+		<br />
+		<div id="tabs">
+			<ul>
+				<li><a href="#Code">Code (Read-Only)</a></li>
+				<li><a href="#ResultsTab">Results</a></li>
+				<li><a href="#CodeEditor">Code (Editor)</a></li>
+				<li><a href="#Url">Url</a></li>
+			</ul>
+			<div id="Code">
+				<a id="CopyCode1" href="#" class="clipcode1">Copy Code</a>
+				<br /><br />
+				<textarea id="ScriptOutput" readonly></textarea>
+			</div>
+			<div id="ResultsTab">
+				<div>
+					<div id="ResultType">
+						<input id="ResultTypeTree" checked="checked" type="radio" value="tree" name="ResultType" />
+						<label for="ResultTypeTree" class="radio">Tree</label>
+						<input id="ResultTypePlain" type="radio" value="plain" name="ResultType" />
+						<label for="ResultTypePlain" class="radio">Plain Text</label>
+					</div>
+					<a id="CopyResults" href="#" class="resultsclipboard">Copy Results</a>
+					<input type="checkbox" id="CleanResults" />
+					<label for="CleanResults">Clean Results</label>
+				</div>
+				<div id="Results">
+					<pre id="ResponseObject" style="display: none;"></pre>
+				</div>
+			</div>
+			<div id="CodeEditor">
+				<a id="CopyCode2" href="#" class="clipcode2">Copy Code</a>
+				<br /><br />
+				<textarea id="ScriptOutput2"></textarea>
+			</div>
+			<div id="Url" style="height: 600px;">
+				<div>
+					<a id="DisplayRetrieveUrl" href="#">Show Browser Output</a>
+					<a id="CopyUrl" href="#" class="urlclipboard">Copy Url</a>
+					<a id="CopyUrlResults" href="#" class="clipurlresult">Copy Results</a><span id="RetrieveUrlCount"></span>
+					<span id="RetrieveUrlWarning">Warning Internet Explorer Maximum URL Length of 2,048 Exceeded</span>
+				</div>
+				<br />
+				<div id="RetrieveUrlContainer">
+					<textarea id="RetrieveUrl"></textarea>
+				</div><br />
+				<textarea id="RetrieveUrlResult"></textarea>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+﻿.DeleteAttribute, .SelectAttribute, .DeleteOrderBy {
+	height: 28px !important;
+	width: 30px !important;
+}
+
+#ScriptOutput, #ScriptOutput2, #Fetch {
+	height: 500px;
+	margin-top: 5px;
+	width: 100%;
+}
+
+.CodeMirror {
+	border: 1px solid #9a9a9a;
+	height: auto;
+}
+
+select {
+	font-size: 95%;
+	height: 30px;
+}
+
+#Reset, #CreateRequest, #Back, #Execute {
+	font-size: 95%;
+	height: 28px;
+}
+
+input[type=text] {
+	font-size: 95%;
+	height: 24px;
+	line-height: 24px;
+	width: 250px;
+}
+
+.AddAttribute, .AddOrderBy {
+	height: 28px !important;
+	margin-left: 3px !important;
+	width: 30px !important;
+}
+
+.recommended {
+	color: #0000ff;
+}
+
+.required {
+	color: #ff0000;
+}
+
+.recommended-border {
+	border-color: #0000ff;
+}
+
+.required-border {
+	border-color: #ff0000;
+}
+
+.radio {
+	font-size: 95%;
+	height: 28px;
+}
+
+.ascdesc {
+	height: 28px;
+}
+
+.Uniqueidentifier {
+	text-align: center;
+	width: 285px !important;
+}
+
+.clear {
+	clear: both;
+}
+
+.Group {
+	font-size: .8em !important;
+	height: 28px !important;
+	width: 110px !important;
+}
+
+.Guid {
+	height: 24px;
+}
+
+#RetrieveSelects {
+	height: 150px;
+	overflow-x: hidden;
+}
+
+#RetrieveId, #DeleteId, #UpdateId, #AssociateId1, #AssociateId2, #QueryId, #ImpersonateId {
+	text-align: center;
+	width: 285px;
+}
+
+.selectlist {
+	margin: 0;
+	padding: 0;
+}
+
+	.selectlist li {
+		list-style: none;
+	}
+
+.selected {
+	background-color: burlywood;
+}
+
+.grouped {
+	background-color: royalblue;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th {
+	padding-left: 10px;
+	text-align: left;
+}
+
+td {
+	padding: 3px;
+}
+
+#Accordion {
+	font-size: 95%;
+	margin-bottom: 10px;
+}
+
+	#Accordion h3 {
+		padding-bottom: 1px;
+		padding-top: 1px;
+	}
+
+#EntityList {
+	vertical-align: top;
+}
+
+#TopInnerLeft {
+	float: left;
+}
+
+#TopOuter {
+	margin: 5px 0 10px 0;
+}
+
+#Entity {
+	margin: 5px 0 5px auto;
+}
+
+#RetrieveTop, #RetrieveGUID, #RetrieveFilters {
+	margin-bottom: 10px;
+}
+
+#RESTType, #RESTLibrary, #Header, #FormattedValues, #DetectChanges, #AuthToken, #Count {
+	margin-bottom: 5px;
+}
+
+.ui-tooltip {
+	font-size: 95%;
+}
+
+div.ui-datepicker {
+	font-size: 95%;
+}
+
+#tabs {
+	font-size: 95%;
+	width: 98%;
+}
+
+body {
+	font-family: Segoe\000020UI,Tahoma,Arial;
+	font-size: 14px;
+	margin: 3px;
+}
+
+.ui-widget {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 1em;
+}
+
+#RetrieveUrlWarning {
+	color: red;
+	display: none;
+	margin-left: 5px;
+}
+
+#RetrieveUrlContainer {
+	height: 100px;
+	margin-bottom: 5px;
+}
+
+#RetrieveUrl {
+	font-weight: bold;
+	height: 100px;
+	width: 100%;
+}
+
+#RetrieveUrlResult {
+	height: 425px;
+	margin-top: 5px;
+	width: 100%;
+}
+
+#ResultType {
+	float: left;
+	margin-bottom: 5px;
+}
+
+#Results {
+	border: 1px solid #9a9a9a;
+	clear: both;
+	height: 490px;
+	overflow-y: auto;
+	padding: 5px;
+}
+
+#SelectResults {
+	margin-left: 10px;
+}
+
+#IEMessage {
+	display: none;
+	font-style: italic;
+	margin-left: 5px;
+}
+
+::-webkit-input-placeholder {
+	font-size: 15px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+	font-size: 15px;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+	font-size: 15px;
+}
+
+:-ms-input-placeholder {
+	font-size: 15px;
+}
+
+.CrudLabel {
+	display: inline-block;
+	font-weight: bold;
+	width: 125px;
+}
+
+.Version {
+	font-style: italic;
+}
+
+#TopAmount, #SkipAmount {
+	width: 100px;
+}
+
+.HeaderImage {
+	height: 30px;
+	margin-right: 5px;
+	width: 30px;
+}
