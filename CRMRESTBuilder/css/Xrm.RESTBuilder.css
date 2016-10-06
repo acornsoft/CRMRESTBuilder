@@ -28,7 +28,7 @@ input[type=text] {
 	font-size: 95%;
 	height: 24px;
 	line-height: 24px;
-	width: 250px;
+	width: 285px;
 }
 
 .AddAttribute, .AddOrderBy {
@@ -86,7 +86,7 @@ input[type=text] {
 	overflow-x: hidden;
 }
 
-#RetrieveId, #DeleteId, #UpdateId, #AssociateId1, #AssociateId2, #QueryId, #ImpersonateId {
+#RetrieveId, #DeleteId, #UpdateId, #AssociateId1, #AssociateId2, #QueryId, #ImpersonateId, #TargetId {
 	text-align: center;
 	width: 285px;
 }

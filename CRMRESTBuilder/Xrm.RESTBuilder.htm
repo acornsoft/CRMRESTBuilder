@@ -32,6 +32,10 @@
 			<a id="CreateRequest" href="#">Create Request</a>
 			<a id="Reset" href="#">Reset</a>
 			<span class="Version">CRM Version: </span><span id="CrmVersion" class="Version"></span>
+			<span id="LoadingCsdl" style="margin-left: 15px; display: none;">
+				<img width="16" height="16" title="Loading" alt="Loading" src="data:image/gif;base64,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" />
+				<span id="LoadingMessage">Loading CSDL...</span>
+			</span>
 			<a href="https://www.paypal.me/JLattimer" target="_blank" style="float: right;">
 				<img class="HeaderImage" title="Feel free to donate if this saved you some time" alt="PayPal"
 					 src="data:image/png;base64,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" />
@@ -69,6 +73,10 @@
 					<label for="TypeDisassociate" class="radio">Disassociate</label>
 					<input id="TypePredefinedQuery" type="radio" value="PredefinedQuery" name="Type" />
 					<label for="TypePredefinedQuery" class="radio">Predefined Query</label>
+					<input id="TypeAction" type="radio" value="Action" name="Type" />
+					<label for="TypeAction" class="radio">Action</label>
+					<input id="TypeFunction" type="radio" value="Function" name="Type" />
+					<label for="TypeFunction" class="radio">Function</label>
 				</div>
 				<div id="RESTLibrary">
 					<label class="CrudLabel">Output Format</label>
@@ -290,6 +298,33 @@
 					<textarea id="Fetch" style="float: left;"></textarea>
 					<span style="margin-left: 125px;"><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
 				</div>
+			</div>
+		</div>
+		<div id="Message" class="Method" style="display: none; margin-left: 3px;">
+			<div id="ActionDefinition" style="display: none;">
+				<label for="Actions" class="CrudLabel" style="float: left;">Action</label>
+				<select id="Actions" class="ui-corner-all"></select>
+			</div>
+			<div id="FunctionDefinition" style="display: none;">
+				<label for="Functions" class="CrudLabel" style="float: left;">Function</label>
+				<select id="Functions" class="ui-corner-all"></select>
+			</div>
+			<div>
+				<label for="TargetId" class="CrudLabel">Id To Target</label>
+				<input id="TargetId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div style="width: 600px !important; clear: both;">
+				<b>Input Parameters</b>
+				<table id="InputParameters">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Value</th>
+							<th>Optional</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
 			</div>
 		</div>
 	</div>
