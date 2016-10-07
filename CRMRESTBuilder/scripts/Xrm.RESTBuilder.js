@@ -1132,7 +1132,7 @@ Xrm.RESTBuilder.Associate_XSVC = function () {
 	js.push("         //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    errorCallback: function (error) {\n");
-	js.push("         " +Xrm.RESTBuilder.Alert() + "(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1295,7 +1295,7 @@ Xrm.RESTBuilder.Disassociate_jQuery = function () {
 	js.push("        //Success - No Return Data - Do Something\n");
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " +Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -1607,7 +1607,7 @@ Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
 	js.push("            var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
 	js.push("        }\n");
 	js.push("        else {\n");
-	js.push("            " +Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
 	js.push("        }\n");
 	js.push("    }\n");
 	js.push("};\n");
@@ -1943,7 +1943,7 @@ Xrm.RESTBuilder.Retrieve_SDK = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    function (error) {\n");
-	js.push("         " +Xrm.RESTBuilder.Alert() + "(error.message);\n");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
 	js.push("    }\n");
 	js.push(");");
 
@@ -2106,7 +2106,7 @@ Xrm.RESTBuilder.Retrieve_jQuery = function (selects, expand) {
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " +Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
 	js.push("    }\n");
 	js.push("});");
 
@@ -3423,7 +3423,12 @@ Xrm.RESTBuilder.BuildObjectString_WebApi = function () {
 				break;
 			case "Customer":
 			case "Lookup":
-				js.push(Xrm.RESTBuilder.REST_Lookup(logical, val1, sel1));
+				var entitySetName = Xrm.RESTBuilder.GetEntitySetName(sel1);
+				var relatedLogical = null;
+				if ($(tr).find("select:eq(1) option").size() > 1) {
+					relatedLogical = $(tr).find("select:eq(1) option:selected").attr("logicalname");
+				}
+				js.push(Xrm.RESTBuilder.REST_Lookup_WebApi(logical, val1, entitySetName, relatedLogical));
 				break;
 			case "DateTime":
 				js.push(Xrm.RESTBuilder.REST_DateTime_WebApi(logical, val1, sel1));
@@ -5717,6 +5722,14 @@ Xrm.RESTBuilder.SortSelectItems = function (ctrl) {
 	$(ctrl).empty().html(selects);
 };
 
+Xrm.RESTBuilder.GetEntitySetName = function (name) {
+	var names = $.grep($("#EntityList option"), function (e) { return $(e).val() === name; });
+	if (names.length === 1) {
+		return $(names[0]).attr("entitysetname");
+	}
+	return "";
+}
+
 Xrm.RESTBuilder.CreateFilterSelect = function (type) {
 	var ctrl = $("<select class='Filter ui-corner-all' />");
 	var options = [];
@@ -5784,16 +5797,27 @@ Xrm.RESTBuilder.REST_String = function (schemaOrLogicalName, value) {
 
 //Create REST Lookup and Customer
 Xrm.RESTBuilder.REST_Lookup = function (schemaOrLogicalName, id, entityName) {
-	if (id === "" || id === null)
-		return "entity." + schemaOrLogicalName + " = {\n" +
-        "            Id: null,\n" +
-        "            LogicalName: null\n" +
-        "        };\n";
-	else
-		return "entity." + schemaOrLogicalName + " = {\n" +
-            "            Id: \"" + id + "\",\n" +
-            "            LogicalName: \"" + entityName.toLowerCase() + "\"\n" +
-            "        };\n";
+	var name = (id === "" || id === null) ? "null" : entityName.toLowerCase();
+	return "entity." + schemaOrLogicalName + " = {\n" +
+		"            Id: \"" + id + "\",\n" +
+		"            LogicalName: \"" + name + "\"\n" +
+		"        };\n";
+	//if (id === "" || id === null)
+	//	return "entity." + schemaOrLogicalName + " = {\n" +
+	//    "            Id: null,\n" +
+	//    "            LogicalName: null\n" +
+	//    "        };\n";
+	//else
+	//	return "entity." + schemaOrLogicalName + " = {\n" +
+	//        "            Id: \"" + id + "\",\n" +
+	//        "            LogicalName: \"" + entityName.toLowerCase() + "\"\n" +
+	//        "        };\n";
+};
+
+//Create REST Lookup and Customer - Web API
+Xrm.RESTBuilder.REST_Lookup_WebApi = function (schemaOrLogicalName, id, entitySetName, entityName) {
+	var name = (entityName === "" || entityName === null) ? "" : "_" + entityName;
+	return "entity[\"" + schemaOrLogicalName + name + "@odata.bind\"] = \"/" + entitySetName + "(" + id + ")\";\n";
 };
 
 //Create REST Picklist
