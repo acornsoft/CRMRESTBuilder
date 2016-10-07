@@ -109,7 +109,7 @@ $(function () {
 	$("#Execute").click(Xrm.RESTBuilder.Execute_Click);
 	$("#CleanResults").click(Xrm.RESTBuilder.CleanResults_Click);
 	$("#DisplayRetrieveUrl").click(Xrm.RESTBuilder.DisplayRetrieveUrl_Click);
-	$("#Expand").change(Xrm.RESTBuilder.Expand_Change);
+	$("#ExpandEntity").change(Xrm.RESTBuilder.Expand_Change);
 	$("#TopAmount").change(Xrm.RESTBuilder.TopAmount_Change);
 	$("#AddRetrieve").click(Xrm.RESTBuilder.AddAttribute_Click);
 	$("#AddCreateUpdate").click(Xrm.RESTBuilder.AddAttribute_Click);
@@ -3612,7 +3612,8 @@ Xrm.RESTBuilder.CreateSelectItems = function () {
 };
 
 Xrm.RESTBuilder.CreateFilterEntities = function (oneToMany, manyToOne, manyToMany) {
-	$("#Expand option").remove();
+	$("#ExpandEntity option").remove();
+	Xrm.RESTBuilder.RelatedEntities = [];
 	for (var i = 0; i < oneToMany.length; i++) {
 		Xrm.RESTBuilder.RelatedEntities.push(oneToMany[i].ReferencingEntity);
 	}
@@ -3624,7 +3625,7 @@ Xrm.RESTBuilder.CreateFilterEntities = function (oneToMany, manyToOne, manyToMan
 			options.push("<option EntityLogicalName='" + manyToOne[j].ReferencedEntity + "' value='" + selfReferencing + manyToOne[j].SchemaName + "'>(N:1) (" +
                 manyToOne[j].SchemaName + ") " + $(mtoEntity[0]).attr("value") + "</option>");
 		}
-		$("#Expand").html(options.join(""));
+		$("#ExpandEntity").html(options.join(""));
 		Xrm.RESTBuilder.RelatedEntities.push(manyToOne[j].ReferencedEntity);
 	}
 	for (var k = 0; k < manyToMany.length; k++) {
@@ -3635,13 +3636,13 @@ Xrm.RESTBuilder.CreateFilterEntities = function (oneToMany, manyToOne, manyToMan
 			Xrm.RESTBuilder.RelatedEntities.push(manyToMany[k].Entity2LogicalName);
 		}
 	}
-	Xrm.RESTBuilder.SortSelect($("#Expand"));
-	$("#Expand").prepend("<option EntityLogicalName='' value=''>(Entity) " + Xrm.RESTBuilder.EntitySchema + "</option>");
+	Xrm.RESTBuilder.SortSelect($("#ExpandEntity"));
+	$("#ExpandEntity").prepend("<option EntityLogicalName='' value=''>(Entity) " + Xrm.RESTBuilder.EntitySchema + "</option>");
 	if (Xrm.RESTBuilder.CurrentEntityExpandedAttributes.length === 0) {
 		Xrm.RESTBuilder.RelatedEntities = Xrm.RESTBuilder.RemoveArrayDuplicates(Xrm.RESTBuilder.RelatedEntities);
 		Xrm.RESTBuilder.GetExpandedAttributeMetadata(Xrm.RESTBuilder.RelatedEntities);
 	}
-	$("#Expand").prop("selectedIndex", 0);
+	$("#ExpandEntity").prop("selectedIndex", 0);
 };
 
 Xrm.RESTBuilder.BuildTopString = function () {
@@ -3665,8 +3666,8 @@ Xrm.RESTBuilder.BuildSkipString = function () {
 
 Xrm.RESTBuilder.BuildExpandString = function () {
 	var expand = [];
-	if ($("#Expand").val() !== "" && Xrm.RESTBuilder.Type === "RetrieveMultiple") {
-		expand.push($("#Expand").val());
+	if ($("#ExpandEntity").val() !== "" && Xrm.RESTBuilder.Type === "RetrieveMultiple") {
+		expand.push($("#ExpandEntity").val());
 	}
 
 	for (var i = 2; i < 5; i++) {
@@ -3682,8 +3683,8 @@ Xrm.RESTBuilder.BuildExpandString = function () {
 
 Xrm.RESTBuilder.BuildExpandString_WebApi = function () {
 	var expand = [];
-	if ($("#Expand").val() !== "") {
-		expand.push($("#Expand").val());
+	if ($("#ExpandEntity").val() !== "") {
+		expand.push($("#ExpandEntity").val());
 	}
 
 	var expands = [];
@@ -3743,7 +3744,7 @@ Xrm.RESTBuilder.BuildFilterString = function () {
 	var filters = [];
 	var groups = [];
 	var rowGroups = [];
-	var ex = $("#Expand").val();
+	var ex = $("#ExpandEntity").val();
 
 	//Remove any empty filter rows
 	var rows = $("#TableRetrieve tbody tr");
@@ -3781,10 +3782,10 @@ Xrm.RESTBuilder.BuildFilterString = function () {
 		}
 
 		var type = null;
-		if ($("#Expand").prop("selectedIndex") === 0) {
+		if ($("#ExpandEntity").prop("selectedIndex") === 0) {
 			type = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); });
 		} else {
-			var expandEntity = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#Expand option:selected").attr("EntityLogicalName"); });
+			var expandEntity = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#ExpandEntity option:selected").attr("EntityLogicalName"); });
 			type = $.grep(expandEntity[0].Attributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); });
 		}
 		type = type[0].AttributeType;
@@ -3884,10 +3885,10 @@ Xrm.RESTBuilder.BuildFilterString_WebApi = function () {
 		var tr = $("#TableRetrieve tbody tr")[a];
 		var filter = [];
 		var field = null;
-		if ($("#Expand").prop("selectedIndex") === 0) {
+		if ($("#ExpandEntity").prop("selectedIndex") === 0) {
 			field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); })[0].LogicalName;
 		} else {
-			field = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#Expand option:selected").attr("EntityLogicalName"); })[0].SchemaName;
+			field = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#ExpandEntity option:selected").attr("EntityLogicalName"); })[0].SchemaName;
 		}
 		var cop = $(tr).find(".Filter:first").val();
 		if (cop.indexOf("substringof([value],[field])") !== -1) {
@@ -3919,10 +3920,10 @@ Xrm.RESTBuilder.BuildFilterString_WebApi = function () {
 
 		var attribute = null;
 		var type = null;
-		if ($("#Expand").prop("selectedIndex") === 0) {
+		if ($("#ExpandEntity").prop("selectedIndex") === 0) {
 			attribute = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); });
 		} else {
-			attribute = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#Expand option:selected").attr("EntityLogicalName"); })[0].SchemaName;
+			attribute = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#ExpandEntity option:selected").attr("EntityLogicalName"); })[0].SchemaName;
 		}
 		type = attribute[0].AttributeType;
 
@@ -4435,7 +4436,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#ui-accordion-Accordion-header-1").show();
 		$("#ui-accordion-Accordion-header-2").show();
 		$("#ui-accordion-Accordion-header-3").show();
-		$("#Expand").prop("disabled", false);
+		$("#ExpandEntity").prop("disabled", false);
 
 		$("#PredefinedQuery").hide();
 		if (Xrm.RESTBuilder.Type === "PredefinedQuery" || Xrm.RESTBuilder.Type === "Action") {
@@ -4470,7 +4471,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 			$("#ui-accordion-Accordion-header-1").hide();
 			$("#ui-accordion-Accordion-header-2").hide();
 			$("#ui-accordion-Accordion-header-3").hide();
-			$("#Expand").prop("disabled", true);
+			$("#ExpandEntity").prop("disabled", true);
 		}
 
 		//Clear checked items in related entities until Web API supports this
@@ -4533,7 +4534,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 
 	switch (Xrm.RESTBuilder.Type) {
 		case "RetrieveMultiple":
-			$("#Expand").prop("selectedIndex", 0);
+			$("#ExpandEntity").prop("selectedIndex", 0);
 			$("#OrderBy").show();
 			$("#Retrieve").show();
 			Xrm.RESTBuilder.AddAttribute_Click();
@@ -4543,7 +4544,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 				$("#ui-accordion-Accordion-header-1").hide();
 				$("#ui-accordion-Accordion-header-2").hide();
 				$("#ui-accordion-Accordion-header-3").hide();
-				$("#Expand").prop("disabled", true);
+				$("#ExpandEntity").prop("disabled", true);
 
 				$("#DetectChanges").hide();
 				$("#FormattedValues").show();
@@ -4801,7 +4802,7 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple") {
 		$("#RetrieveId").val("");
 		Xrm.RESTBuilder.ClearSelectLists();
-		$("#Expand").prop("selectedIndex", 0);
+		$("#ExpandEntity").prop("selectedIndex", 0);
 		Xrm.RESTBuilder.EnableGroupButtons();
 		$("#TopAmount").val("");
 		$("#SkipAmount").val("");
@@ -4853,7 +4854,7 @@ Xrm.RESTBuilder.EntityList_Change = function () {
 		$("#Accordion").accordion({ active: false });
 		Xrm.RESTBuilder.Block();
 	}
-	$("#Expand").prop("selectedIndex", 0);
+	$("#ExpandEntity").prop("selectedIndex", 0);
 	Xrm.RESTBuilder.CurrentEntityExpandedAttributes = [];
 	$("#" + Xrm.RESTBuilder.FindTypeTable()).find("tbody tr").remove();
 	Xrm.RESTBuilder.GetAttributeMetadata(Xrm.RESTBuilder.EntityLogical, Xrm.RESTBuilder.GetAttributeMetadata_Response, null);
@@ -5291,11 +5292,11 @@ Xrm.RESTBuilder.Attribute_Change = function () {
 	}
 	var tr = $(this).parent().parent();
 	var attribute;
-	if (($("#Expand").prop("selectedIndex") === 0 && Xrm.RESTBuilder.Type === "RetrieveMultiple") ||
+	if (($("#ExpandEntity").prop("selectedIndex") === 0 && Xrm.RESTBuilder.Type === "RetrieveMultiple") ||
         (Xrm.RESTBuilder.Type !== "RetrieveMultiple")) {
 		attribute = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); });
 	} else {
-		var relatedEntity = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#Expand option:selected").attr("EntityLogicalName"); });
+		var relatedEntity = $.grep(Xrm.RESTBuilder.CurrentEntityExpandedAttributes, function (e) { return e.LogicalName === $("#ExpandEntity option:selected").attr("EntityLogicalName"); });
 		attribute = $.grep(relatedEntity[0].Attributes, function (e) { return e.SchemaName === $(tr).find(".Attribute:first").val(); });
 	}
 	if (attribute.length > 0) {
@@ -5479,7 +5480,7 @@ Xrm.RESTBuilder.TopAmount_Change = function () {
 }
 
 Xrm.RESTBuilder.GetSelectedAttributes = function () {
-	var name = $("#Expand").find("option:selected").attr("EntityLogicalName");
+	var name = $("#ExpandEntity").find("option:selected").attr("EntityLogicalName");
 	if (name === "" || name === undefined) {
 		return Xrm.RESTBuilder.CurrentEntityAttributes;
 	}
