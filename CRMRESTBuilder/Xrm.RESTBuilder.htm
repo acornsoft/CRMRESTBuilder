@@ -46,11 +46,19 @@
 			</a>
 		</div>
 		<div id="Endpoint" style="float: left;">
-			<label class="CrudLabel" title="Web API is only availble for CRM 2016+ ">Endpoint</label>
-			<input id="Endpoint2011" checked="checked" type="radio" value="2011" name="Endpoint" />
-			<label for="Endpoint2011" class="radio">2011</label>
-			<input id="EndpointWebApi" type="radio" value="WebApi" name="Endpoint" />
-			<label for="EndpointWebApi" class="radio">Web API</label>
+			<div style="float: left;">
+				<label class="CrudLabel" title="Web API is only availble for CRM 2016+ ">Endpoint</label>
+				<input id="Endpoint2011" checked="checked" type="radio" value="2011" name="Endpoint" />
+				<label for="Endpoint2011" class="radio">2011</label>
+				<input id="EndpointWebApi" type="radio" value="WebApi" name="Endpoint" />
+				<label for="EndpointWebApi" class="radio">Web API</label>
+			</div>
+			<div style="float: left; margin-left: 4px;">
+				<select id="WebApiVersion" class="ui-corner-all" disabled="disabled">
+					<option value="8.0">8.0</option>
+					<option value="8.1">8.1</option>
+				</select>
+			</div>
 		</div>
 		<div style="clear: both;"></div>
 		<div id="TopOuter">

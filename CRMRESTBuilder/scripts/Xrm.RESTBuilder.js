@@ -50,6 +50,7 @@ Xrm.RESTBuilder.FetchEditor = null;
 
 $(function () {
 	Xrm.RESTBuilder.GetCrmVersion();
+	Xrm.RESTBuilder.SetWebApiVersion();
 	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
 		$("#LoadingCsdl").show();
 		Xrm.RESTBuilder.GetCsdl();
@@ -696,7 +697,7 @@ Xrm.RESTBuilder.GetExpandedAttributeMetadata_Response = function (entityMetadata
 
 Xrm.RESTBuilder.GetCsdl = function () {
 	var req = new XMLHttpRequest();
-	req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v8.0/$metadata", true);
+	req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v" + $("#WebApiVersion option:selected").val() + "/$metadata", true);
 	req.onreadystatechange = function () {
 		if (req.readyState === 4) {
 			if (req.status === 200) {
@@ -715,6 +716,25 @@ Xrm.RESTBuilder.GetCsdl = function () {
 		}
 	};
 	req.send();
+}
+
+Xrm.RESTBuilder.SetWebApiVersion = function() {
+	if (Xrm.RESTBuilder.CrmVersion[0] < 8) {
+		return;
+	}
+
+	$("#WebApiVersion").prop("disabled", false);
+
+	var version = Xrm.RESTBuilder.CrmVersion[0] + "." + Xrm.RESTBuilder.CrmVersion[1];
+	switch (version) {
+		case "8.0":
+			$("#WebApiVersion").val("8.0");
+			$("#WebApiVersion option[value='8.1']").remove();
+			break;
+		case "8.1":
+			$("#WebApiVersion").val("8.1");
+			break;
+	}
 }
 
 Xrm.RESTBuilder.ProcessActions = function (e, index, array) {
@@ -1018,11 +1038,11 @@ Xrm.RESTBuilder.Associate_XMLHTTP = function () {
 Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var association = {");
-	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
+	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId2").val() + ")\"");
 	js.push("};\n");
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
+	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
@@ -1055,14 +1075,14 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
 	var js = [];
 	js.push("var association = {");
-	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
+	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId2").val() + ")\"");
 	js.push("};\n");
 	js.push("$.ajax({\n");
 	js.push("    type: \"POST\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
                     "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\",\n");
 	js.push("    data: JSON.stringify(association),\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
@@ -1212,7 +1232,7 @@ Xrm.RESTBuilder.Disassociate_XMLHTTP = function () {
 Xrm.RESTBuilder.Disassociate_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
+	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "(" +
         $("#AssociateId2").val() + ")/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
@@ -1249,7 +1269,7 @@ Xrm.RESTBuilder.Disassociate_jQuery_WebApi = function () {
 	js.push("    type: \"DELETE\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
                     "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "(" +
                     $("#AssociateId2").val() + ")/$ref\",\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
@@ -1392,7 +1412,7 @@ Xrm.RESTBuilder.Delete_XMLHTTP = function () {
 Xrm.RESTBuilder.Delete_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName + "(" +
+	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" +
         $("#DeleteId").val() + ")\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
@@ -1428,7 +1448,7 @@ Xrm.RESTBuilder.Delete_jQuery_WebApi = function () {
 	js.push("    type: \"DELETE\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName + "(" + $("#DeleteId").val() + ")\",\n");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" + $("#DeleteId").val() + ")\",\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
@@ -1620,7 +1640,7 @@ Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
 
 Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName + "\", " + Xrm.RESTBuilder.Async + ");\n");
+	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
@@ -1657,7 +1677,7 @@ Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
 	js.push("    type: \"POST\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName + "\",\n");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\",\n");
 	js.push("    data: JSON.stringify(entity),\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
@@ -1813,7 +1833,7 @@ Xrm.RESTBuilder.Update_XMLHTTP = function (js) {
 
 Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"PATCH\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName + "(" +
+	js.push("req.open(\"PATCH\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" +
         $("#UpdateId").val() + ")\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
@@ -1848,7 +1868,7 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 	js.push("    type: \"PATCH\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" +
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
         Xrm.RESTBuilder.EntitySetName + "(" + $("#UpdateId").val() + ")\",\n");
 	js.push("    data: JSON.stringify(entity),\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
@@ -1984,7 +2004,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
 Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" +
+	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
         Xrm.RESTBuilder.EntitySetName + "(" + $("#RetrieveId").val() + ")");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
 	js.push(((seft === null) ? "" : seft) + "\", ");
@@ -2036,7 +2056,7 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	js.push("    type: \"GET\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" +
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
         Xrm.RESTBuilder.EntitySetName + "(" + $("#RetrieveId").val() + ")");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
 	js.push(((seft === null) ? "" : seft) + "\",\n");
@@ -2259,7 +2279,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP = function (selects, expand, filter, to
 Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, filter, top, orderby, count) {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName);
+	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	var seft = Xrm.RESTBuilder.BuildRESTString_WebApi(selects, expand, filter, orderby, count);
 	js.push(((seft === null) ? "" : seft) + "\", ");
 	js.push(Xrm.RESTBuilder.Async + ");\n");
@@ -2306,7 +2326,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push("    type: \"GET\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName);
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	var seft = Xrm.RESTBuilder.BuildRESTString_WebApi(selects, expand, filter, orderby, count);
 	js.push(((seft === null) ? "" : seft) + "\",\n");
 	js.push("    beforeSend: function (XMLHttpRequest) {\n");
@@ -2415,7 +2435,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XSVC = function (selects, expand, filter, top, 
 Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName);
+	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	js.push("?" + $("#PredefinedQueryType option:selected").attr("type") + "=");
 	if ($("#PredefinedQueryType").val() === "FetchXML") {
 		js.push(Xrm.RESTBuilder.CleanFetchXml(Xrm.RESTBuilder.FetchEditor.getValue()));
@@ -2459,7 +2479,7 @@ Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 	js.push("    type: \"GET\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/" + Xrm.RESTBuilder.EntitySetName);
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	js.push("?" + $("#PredefinedQueryType option:selected").attr("type") + "=");
 	if ($("#PredefinedQueryType").val() === "FetchXML") {
 		js.push(Xrm.RESTBuilder.CleanFetchXml(Xrm.RESTBuilder.FetchEditor.getValue()));
@@ -2499,7 +2519,7 @@ Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 	var js = [];
 	js.push(parameters);
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/");
+	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (action.Entity === "none") { //Unbound
 		js.push(action.Name);
 	} else { //Bound
@@ -2550,7 +2570,7 @@ Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
 	js.push("    type: \"POST\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (action.Entity === "none") { // Unbound
 		js.push(action.Name);
 	} else { //Bound
@@ -2589,7 +2609,7 @@ Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 	var js = [];
 	js.push(parameters);
 	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v8.0/");
+	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (func.Entity === "none") { //Unbound
 		js.push(func.Name + "()");
 	} else { //Bound
@@ -2640,7 +2660,7 @@ Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
 	js.push("    type: \"GET\",\n");
 	js.push("    contentType: \"application/json; charset=utf-8\",\n");
 	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v8.0/");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (func.Entity === "none") { //Unbound
 		js.push(func.Name + "()");
 	} else { //Bound
@@ -4461,7 +4481,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 
 		Xrm.RESTBuilder.DisplaySelfReferencingNtoN();
 
-		Xrm.RESTBuilder.ODataPath = Xrm.Page.context.getClientUrl() + "/api/data/v8.0/";
+		Xrm.RESTBuilder.ODataPath = Xrm.Page.context.getClientUrl() + "/api/data/v" + $("#WebApiVersion option:selected").val() + "/";
 	}
 };
 
