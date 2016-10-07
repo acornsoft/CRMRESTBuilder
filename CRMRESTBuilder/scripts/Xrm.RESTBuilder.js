@@ -2326,8 +2326,8 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push("    },\n");
 	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
 	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data.value;\n");
-	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 3));
+	js.push("        var results = data;\n");
+	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 8));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
 	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
@@ -2354,7 +2354,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery = function (selects, expand, filter, top
 	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
 	js.push("    success: function (data, textStatus, xhr) {\n");
 	js.push("        var results = data.d.results;\n");
-	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 3));
+	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
 	js.push("    },\n");
 	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
 	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
