@@ -1994,7 +1994,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("req.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2045,7 +2045,7 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2267,10 +2267,12 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, fil
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");\n");
+	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
 	}
-	if (top !== null) {
+	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
 		js.push("req.setRequestHeader(\"Prefer\", \"" + top + "\");\n");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
@@ -2311,10 +2313,12 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");\n");
+	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
 	}
-	if (top !== null) {
+	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"" + top + "\");\n");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
@@ -2334,7 +2338,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push("    }\n");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data.value;\n";
+	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
 	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
 	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
 };
@@ -3224,6 +3228,9 @@ Xrm.RESTBuilder.GenerateResultVars_WebApi = function (selects, expand, spaces) {
 					if (selectType === "Picklist" || selectType === "Money" || selectType === "Boolean" || selectType === "Integer" || selectType === "Double" || selectType === "Decimal" ||
 						selectType === "State" || selectType === "Owner" || selectType === "Customer" || selectType === "Lookup") {
 						output.push(pre + "var " + Xrm.RESTBuilder.GenerateResultVarName(selectFields[i] + "_formatted = result") + index + "[\"" + selectFields[i] + "@OData.Community.Display.V1.FormattedValue\"];\n");
+						if (selectType === "Owner" || selectType === "Customer" || selectType === "Lookup") {
+							output.push(pre + "var " + Xrm.RESTBuilder.GenerateResultVarName(selectFields[i] + "_lookuplogicalname = result") + index + "[\"" + selectFields[i] + "@Microsoft.Dynamics.CRM.lookuplogicalname\"];\n");
+						}
 					}
 				}
 			}
