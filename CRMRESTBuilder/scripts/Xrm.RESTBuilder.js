@@ -718,7 +718,7 @@ Xrm.RESTBuilder.GetCsdl = function () {
 	req.send();
 }
 
-Xrm.RESTBuilder.SetWebApiVersion = function() {
+Xrm.RESTBuilder.SetWebApiVersion = function () {
 	if (Xrm.RESTBuilder.CrmVersion[0] < 8) {
 		return;
 	}
@@ -5360,6 +5360,10 @@ Xrm.RESTBuilder.Attribute_Change = function () {
 					}
 					$(tr).find("td:eq(2)").html("<select class='Picklist ui-corner-all'>" + options + "</select>");
 					Xrm.RESTBuilder.SortSelect($(tr).find("td:eq(2)").find("select"));
+					//Special case: add a "None" option to the entity list
+					if (Xrm.RESTBuilder.EntityLogical === "workflow" && attribute[0].LogicalName === "primaryentity") {
+						$($(tr).find("td:eq(2)").find("select")[0]).prepend("<option entitysetname='' logicalname='none' objecttypecode='' value='None' title='None'>None</option>");
+					}
 					$(tr).find("td:eq(2)").find("select")[0].selectedIndex = -1;
 					break;
 			}
@@ -5421,6 +5425,10 @@ Xrm.RESTBuilder.Attribute_Change = function () {
 						options2 += $(entityOptions2[i]).prop("outerHTML");
 					}
 					$(tr).find("td:eq(3)").html("<select class='Picklist ui-corner-all'>" + options2 + "</select>");
+					//Special case: add a "None" option to the entity list
+					if (Xrm.RESTBuilder.EntityLogical === "workflow" && attribute[0].LogicalName === "primaryentity") {
+						$($(tr).find("td:eq(3)").find("select")[0]).prepend("<option entitysetname='' logicalname='none' objecttypecode='' value='None' title='None'>None</option>");
+					}
 					$(tr).find("td:eq(3)").find("select")[0].selectedIndex = -1;
 					break;
 			}
