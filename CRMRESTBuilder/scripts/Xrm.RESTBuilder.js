@@ -463,7 +463,7 @@ Xrm.RESTBuilder.IsUnsearchable = function (schemaName) {
 	"Subscription", "SubscriptionClients", "SubscriptionManuallyTrackedObject", "SubscriptionStatisticsOffline", "SubscriptionStatisticsOutlook", "SubscriptionSyncEntryOffline",
 	"SubscriptionSyncEntryOutlook", "SubscriptionSyncInfo", "SubscriptionTrackingDeletedObject", "SyncAttributeMapping", "SyncAttributeMappingProfile", "SystemApplicationMetadata",
 	"SystemUserManagerMap", "SystemUserSyncMappingProfiles", "TeamSyncAttributeMappingProfiles", "TimeStampDateMapping", "TraceAssociation", "TraceRegarding",
-	"UserApplicationMetadata", "WorkflowWaitSubscription"];
+	"UserApplicationMetadata", "WorkflowWaitSubscription", "DeleveActionHub", "LocalConfigStore", "MetadataDifference", "RecommendedDocument"];
 
 	return ((entities.indexOf(schemaName) !== -1) ? true : false);
 }
@@ -4772,6 +4772,7 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	$("#AssociateId1").val("");
 	$("#AssociateId2").val("");
 	$("#QueryId").val("");
+	$("#TargetId").val("");
 	$("#AssociateEntity1").prop("selectedIndex", 0);
 	$("#AssociateRelationship").prop("selectedIndex", 0);
 	$("#ScriptOutput").val("");
