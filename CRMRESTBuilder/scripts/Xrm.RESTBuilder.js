@@ -4978,10 +4978,7 @@ Xrm.RESTBuilder.AddAttribute_Click = function () {
 		Xrm.RESTBuilder.BindAttributeSelectList(ctrlA[0], Xrm.RESTBuilder.GetSelectedAttributes());
 	}
 
-	if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
-		Xrm.RESTBuilder.SetFilterItemDisabled();
-	}
-	else if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 		Xrm.RESTBuilder.SetAttributeItemDisabled();
 	}
 
@@ -5145,10 +5142,7 @@ Xrm.RESTBuilder.DeleteAttribute_Click = function () {
 		Xrm.RESTBuilder.AddAttribute_Click();
 	}
 
-	if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
-		Xrm.RESTBuilder.SetFilterItemDisabled();
-	}
-	else if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 		Xrm.RESTBuilder.SetAttributeItemDisabled();
 	}
 
@@ -5440,10 +5434,7 @@ Xrm.RESTBuilder.Attribute_Change = function () {
 		$(tr).find(".SelectAttribute").button("option", "disabled", false);
 	}
 
-	if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
-		Xrm.RESTBuilder.SetFilterItemDisabled();
-	}
-	else if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 		Xrm.RESTBuilder.SetAttributeItemDisabled();
 	}
 };
