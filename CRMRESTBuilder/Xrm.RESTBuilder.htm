@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="scripts/esprima.js"></script>
 	<script type="text/javascript" src="scripts/clipboard.min.js"></script>
 	<script type="text/javascript" src="scripts/beautify.min.js"></script>
+	<script type="text/javascript" src="scripts/vkbeautify.min.js"></script>
 	<script type="text/javascript" src="scripts/Xrm.RESTBuilder.js"></script>
 </head>
 <body>
@@ -304,8 +305,10 @@
 			<div id="FetchXmlWrapper">
 				<div id="FetchXml">
 					<label for="Fetch" class="CrudLabel" style="float: left;">FetchXML Query</label>
+					<br />
+					<div style="width: 129px; float: left;"><a id="FormatFetch" href="#">Format</a></div>			
 					<textarea id="Fetch" style="float: left;"></textarea>
-					<span style="margin-left: 125px;"><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
+					<span><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
 				</div>
 			</div>
 		</div>

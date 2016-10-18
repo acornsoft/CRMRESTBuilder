@@ -79,6 +79,7 @@
     <Content Include="scripts\SDK.REST.js" />
     <Content Include="scripts\Sdk.RetrieveMetadataChanges.js" />
     <Content Include="scripts\Sdk.Soap.min.js" />
+    <Content Include="scripts\vkbeautify.min.js" />
     <Content Include="scripts\xml.js" />
     <Content Include="scripts\Xrm.RESTBuilder.js" />
     <Content Include="scripts\XrmServiceToolkit.js" />

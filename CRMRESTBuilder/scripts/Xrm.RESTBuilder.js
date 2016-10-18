@@ -70,9 +70,8 @@ $(function () {
 	Xrm.RESTBuilder.CreateCleanResultsButton();
 	Xrm.RESTBuilder.CreateBackButton();
 	Xrm.RESTBuilder.CreateExecuteButton();
-
 	Xrm.RESTBuilder.CreateFormatCodeButton();
-
+	Xrm.RESTBuilder.CreateFormatFetchButton();
 	Xrm.RESTBuilder.CreateDisplayRetrieveUrlButton();
 	Xrm.RESTBuilder.CreateCreateRequestButton();
 	Xrm.RESTBuilder.CreateAddAttributeButtons();
@@ -111,9 +110,8 @@ $(function () {
 	$("#Actions").change(Xrm.RESTBuilder.Actions_Change);
 	$("#Functions").change(Xrm.RESTBuilder.Functions_Change);
 	$("#Execute").click(Xrm.RESTBuilder.Execute_Click);
-
 	$("#FormatCode").click(Xrm.RESTBuilder.FormatCode_Click);
-
+	$("#FormatFetch").click(Xrm.RESTBuilder.FormatFetch_Click);
 	$("#CleanResults").click(Xrm.RESTBuilder.CleanResults_Click);
 	$("#DisplayRetrieveUrl").click(Xrm.RESTBuilder.DisplayRetrieveUrl_Click);
 	$("#ExpandEntity").change(Xrm.RESTBuilder.Expand_Change);
@@ -226,6 +224,13 @@ Xrm.RESTBuilder.CreateExecuteButton = function () {
 
 Xrm.RESTBuilder.CreateFormatCodeButton = function () {
 	$("#FormatCode").button({
+		icons: { primary: "ui-icon-carat-2-e-w" },
+		text: true
+	});
+};
+
+Xrm.RESTBuilder.CreateFormatFetchButton = function () {
+	$("#FormatFetch").button({
 		icons: { primary: "ui-icon-carat-2-e-w" },
 		text: true
 	});
@@ -4321,6 +4326,12 @@ Xrm.RESTBuilder.FormatCode_Click = function () {
 	var unformatted = Xrm.RESTBuilder.Editor2.getValue();
 	var formatted = js_beautify(unformatted, { indent_size: 4 });
 	Xrm.RESTBuilder.Editor2.setValue(formatted);
+}
+
+Xrm.RESTBuilder.FormatFetch_Click = function () {
+	var unformatted = Xrm.RESTBuilder.FetchEditor.getValue();
+	var formatted = vkbeautify.xml(unformatted, 2);
+	Xrm.RESTBuilder.FetchEditor.setValue(formatted);
 }
 
 Xrm.RESTBuilder.ValidateCode = function (script) {
