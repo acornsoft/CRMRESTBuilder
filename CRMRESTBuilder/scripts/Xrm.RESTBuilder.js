@@ -359,9 +359,9 @@ Xrm.RESTBuilder.GetAllEntityMetadata = function () {
 	entityFilter.addCondition(semp.ObjectTypeCode, mdq.MetadataConditionOperator.GreaterThan, 0);
 	var entityProperties;
 	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
-		entityProperties = new mdq.MetadataPropertiesExpression(false, [emp.DisplayName, emp.SchemaName, emp.EntitySetName, emp.ObjectTypeCode]);
+		entityProperties = new mdq.MetadataPropertiesExpression(false, [emp.DisplayName, emp.SchemaName, emp.IsIntersect, emp.EntitySetName, emp.ObjectTypeCode]);
 	} else {
-		entityProperties = new mdq.MetadataPropertiesExpression(false, [emp.DisplayName, emp.SchemaName]);
+		entityProperties = new mdq.MetadataPropertiesExpression(false, [emp.DisplayName, emp.SchemaName, emp.IsIntersect]);
 	}
 	var labelQuery = new mdq.LabelQueryExpression([window.parent.Xrm.Page.context.getUserLcid()]);
 	var query = new mdq.EntityQueryExpression(
@@ -393,7 +393,7 @@ Xrm.RESTBuilder.GetAllEntityMetadata_Response = function (response) {
 			entitySetName = response.getEntityMetadata()[i].EntitySetName;
 		}
 		options.push("<option EntitySetName='" + entitySetName + "' LogicalName='" + response.getEntityMetadata()[i].LogicalName + "' ObjectTypeCode='" + response.getEntityMetadata()[i].ObjectTypeCode +
-			"' value='" + response.getEntityMetadata()[i].SchemaName + "' title='" + Xrm.RESTBuilder.GetLabel(response.getEntityMetadata()[i].DisplayName) + "'>" +
+			"' value='" + response.getEntityMetadata()[i].SchemaName + "' title='" + Xrm.RESTBuilder.GetLabel(response.getEntityMetadata()[i].DisplayName) + "' IsIntersect='" + response.getEntityMetadata()[i].IsIntersect + "'>" +
             response.getEntityMetadata()[i].SchemaName + "</option>");
 	}
 	$("#EntityList").html(options.join(""));
@@ -407,6 +407,7 @@ Xrm.RESTBuilder.GetAllEntityMetadata_Response = function (response) {
 	}
 	Xrm.RESTBuilder.EntitySchema = $("#EntityList").val();
 	$("#EntityList option").clone().appendTo("#AssociateEntity1");
+	$("#AssociateEntity1 option[isintersect='true']").remove();
 	Xrm.RESTBuilder.GetAttributeMetadata(Xrm.RESTBuilder.EntityLogical, Xrm.RESTBuilder.GetAttributeMetadata_Response, null);
 };
 
@@ -1080,11 +1081,11 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var association = {");
 	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
-        "(" + $("#AssociateId2").val() + ")\"");
+	    "(" + $("#AssociateId2").val() + ")\"");
 	js.push("};\n");
 	js.push("var req = new XMLHttpRequest();\n");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
-        "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
+	    "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
@@ -4938,7 +4939,8 @@ Xrm.RESTBuilder.AssociateEntity2_Change = function () {
 			var selfReferencing1 = ((Xrm.RESTBuilder.CurrentEntityOneToManyRelationships[i].ReferencedEntity === Xrm.RESTBuilder.CurrentEntityOneToManyRelationships[i].ReferencingEntity) ? "Referenced" : "");
 			var schemaName1 = Xrm.RESTBuilder.AssociateEntityOneToManyRelationships[i].SchemaName;
 			relationshipOptions.push("<option value='" + selfReferencing1 + schemaName1 + "' webapivalue='" + schemaName1 +
-				"' selfreferencing='" + ((selfReferencing1 === "") ? false : true) + "'>(1:N) " + schemaName1 + "</option>");
+				"' selfreferencing='" + ((selfReferencing1 === "") ? false : true) + "' referenced='" + Xrm.RESTBuilder.AssociateEntityOneToManyRelationships[i].ReferencedEntity +
+				"' referencing='" + Xrm.RESTBuilder.AssociateEntityOneToManyRelationships[i].ReferencingEntity + "'>(1:N) " + schemaName1 + "</option>");
 		}
 	}
 
@@ -4950,7 +4952,8 @@ Xrm.RESTBuilder.AssociateEntity2_Change = function () {
 			var selfReferencing2 = ((Xrm.RESTBuilder.CurrentEntityManyToManyRelationships[j].Entity1LogicalName === Xrm.RESTBuilder.CurrentEntityManyToManyRelationships[j].Entity2LogicalName) ? "Referenced" : "");
 			var schemaName2 = Xrm.RESTBuilder.AssociateEntityManyToManyRelationships[j].SchemaName;
 			relationshipOptions.push("<option value='" + selfReferencing2 + schemaName2 + "' webapivalue='" + schemaName2 +
-				"' selfreferencing='" + ((selfReferencing2 === "") ? false : true) + "'>(N:N) " + schemaName2 + "</option>");
+				"' selfreferencing='" + ((selfReferencing2 === "") ? false : true) + "'  referenced='" + Xrm.RESTBuilder.AssociateEntityManyToManyRelationships[j].ReferencedEntity +
+				"' referencing='" + Xrm.RESTBuilder.AssociateEntityManyToManyRelationships[j].ReferencingEntity + "'>(N:N) " + schemaName2 + "</option>");
 		}
 	}
 
