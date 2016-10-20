@@ -69,6 +69,8 @@ $(function () {
 	Xrm.RESTBuilder.CreateCopyUrlButton();
 	Xrm.RESTBuilder.CreateCleanResultsButton();
 	Xrm.RESTBuilder.CreateBackButton();
+	Xrm.RESTBuilder.CreateActionReferenceButton();
+	Xrm.RESTBuilder.CreateFunctionReferenceButton();
 	Xrm.RESTBuilder.CreateExecuteButton();
 	Xrm.RESTBuilder.CreateFormatCodeButton();
 	Xrm.RESTBuilder.CreateFormatFetchButton();
@@ -96,6 +98,8 @@ $(function () {
 	$("#CreateRequest").click(Xrm.RESTBuilder.CreateRequest_Click);
 	$("#Reset").click(Xrm.RESTBuilder.Reset_Click);
 	$("#Back").click(Xrm.RESTBuilder.Back_Click);
+	$("#ActionReference").click(Xrm.RESTBuilder.ActionReference_Click);
+	$("#FunctionReference").click(Xrm.RESTBuilder.FunctionReference_Click);
 	$("#RESTType input[name=Type]:radio").change(Xrm.RESTBuilder.Type_Change);
 	$("#RESTLibrary input[name=Library]:radio").change(Xrm.RESTBuilder.Library_Change);
 	$("#Async input[name=Async]:radio").change(Xrm.RESTBuilder.Async_Change);
@@ -214,6 +218,20 @@ Xrm.RESTBuilder.CreateBackButton = function () {
 		text: true
 	});
 };
+
+Xrm.RESTBuilder.CreateActionReferenceButton = function() {
+	$("#ActionReference").button({
+		icons: { primary: "ui-icon-info" },
+		text: false
+	});
+}
+
+Xrm.RESTBuilder.CreateFunctionReferenceButton = function () {
+	$("#FunctionReference").button({
+		icons: { primary: "ui-icon-info" },
+		text: false
+	});
+}
 
 Xrm.RESTBuilder.CreateExecuteButton = function () {
 	$("#Execute").button({
@@ -5049,6 +5067,14 @@ Xrm.RESTBuilder.Back_Click = function () {
 	$("#Generate").show();
 	$("#Output").hide();
 };
+
+Xrm.RESTBuilder.ActionReference_Click = function() {
+	window.open("https://msdn.microsoft.com/en-us/library/mt607829.aspx");
+}
+
+Xrm.RESTBuilder.FunctionReference_Click = function () {
+	window.open("https://msdn.microsoft.com/en-us/library/mt607866.aspx");
+}
 
 //EntityList Change
 Xrm.RESTBuilder.EntityList_Change = function () {
