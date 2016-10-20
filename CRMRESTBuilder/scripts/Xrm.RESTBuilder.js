@@ -2043,6 +2043,106 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
 	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
 };
 
+Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi = function () {
+	var js = [];
+	js.push("var req = new XMLHttpRequest();\n");
+	js.push("req.open(\"GET\", \"" + $("#NextLinkUrl").val() + "\"");
+	js.push(", " + Xrm.RESTBuilder.Async + ");\n");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	if (Xrm.RESTBuilder.FormattedValues) {
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+	}
+	if (Xrm.RESTBuilder.DetectChanges) {
+		js.push("req.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
+	}
+	if (Xrm.RESTBuilder.AuthToken) {
+		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
+	}
+	if (Xrm.RESTBuilder.Impersonate) {
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+	}
+	js.push("req.onreadystatechange = function () {\n");
+	js.push("    if (this.readyState === 4) {\n");
+	js.push("        req.onreadystatechange = null;\n");
+	js.push("        if (this.status === 200) {\n");
+	js.push("            var results = JSON.parse(this.response);\n");
+	js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 12));
+	js.push("        }\n");
+	if (Xrm.RESTBuilder.DetectChanges) {
+		js.push("        else if (this.status === 304) {\n");
+		js.push("            //Handle data not changed\n");
+		js.push("        }\n");
+	}
+	js.push("        else {\n");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
+	js.push("        }\n");
+	js.push("    }\n");
+	js.push("};\n");
+	js.push("req.send();");
+
+	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
+	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "        else if (this.status === 304) {\n";
+	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+};
+
+Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi = function () {
+	var js = [];
+	js.push("$.ajax({\n");
+	js.push("    type: \"GET\",\n");
+	js.push("    contentType: \"application/json; charset=utf-8\",\n");
+	js.push("    datatype: \"json\",\n");
+	js.push("    url: \"" + $("#NextLinkUrl").val() + "\",\n");
+	js.push("    beforeSend: function (XMLHttpRequest) {\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	if (Xrm.RESTBuilder.FormattedValues) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+	}
+	if (Xrm.RESTBuilder.DetectChanges) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
+	}
+	if (Xrm.RESTBuilder.AuthToken) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
+	}
+	if (Xrm.RESTBuilder.Impersonate) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+	}
+	js.push("    },\n");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
+	js.push("    success: function (data, textStatus, xhr) {\n");
+	if (Xrm.RESTBuilder.DetectChanges) {
+		js.push("        if (xhr.status === 304) {\n");
+		js.push("            //Handle data not changed\n");
+		js.push("        }\n");
+		js.push("        else {\n");
+		js.push("            var results = data;\n");
+		js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 12));
+		js.push("        }\n");
+	} else {
+		js.push("        var results = data;\n");
+		js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 8));
+	}
+	js.push("    },\n");
+	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
+	js.push("    }\n");
+	js.push("});");
+
+	if (Xrm.RESTBuilder.DetectChanges) {
+		Xrm.RESTBuilder.ReplaceLine = "            var results = data;\n";
+	} else {
+		Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
+	}
+	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "        if (xhr.status === 304) {\n";
+	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+};
+
 Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	var js = [];
 	js.push("var req = new XMLHttpRequest();\n");
@@ -3062,6 +3162,17 @@ Xrm.RESTBuilder.Function = function (library) {
 	}
 };
 
+Xrm.RESTBuilder.RetrieveNextLink = function (library) {
+	switch (library) {
+		case "XMLHTTP":
+			Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi();
+			break;
+		case "jQuery":
+			Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi();
+			break;
+	}
+}
+
 Xrm.RESTBuilder.ShowResults = function (results) {
 	Xrm.RESTBuilder.RawResults = JSON.parse(JSON.stringify(results));
 
@@ -3251,6 +3362,35 @@ Xrm.RESTBuilder.GenerateResultVars = function (selects, spaces) {
 	return output.join("");
 };
 
+Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi = function (url, spaces) {
+	if (url.indexOf("select=") === -1) {
+		return "";
+	}
+
+	var output = [];
+	var pre = "";
+	for (var x = 0; x < spaces; x++) {
+		pre += " ";
+	}
+
+	output.push(pre + "for (var i = 0; i < results.value.length; i++) {\n");
+	pre += "    ";
+
+	var fieldString = url.split("select=")[1];
+	var fields = fieldString.split(",");
+
+	for (var i = 0; i < fields.length; i++) {
+		output.push(pre + "var " + fields[i] + " = results.value[i][\"" + fields[i] + "\"];\n");
+		if (Xrm.RESTBuilder.FormattedValues) {
+			//TODO: Handle formatted values
+		}
+	}
+
+	output.push(pre.replace("    ", "") + "}\n");
+
+	return output.join("");
+}
+
 Xrm.RESTBuilder.GenerateResultVars_WebApi = function (selects, expand, spaces) {
 	var output = [];
 	var pre = "";
@@ -3297,7 +3437,19 @@ Xrm.RESTBuilder.GenerateResultVars_WebApi = function (selects, expand, spaces) {
 		}
 	}
 
-	if (expand !== null && expand !== undefined) {
+	//Web API does not return related items in a RetrieveMultiple so you don't accidently return 25,000,000 records (5,000 x 5,000)
+	//Instead you need to use the @odata.nextLink to return the individual collection results
+	if (expand !== null && expand !== undefined && Xrm.RESTBuilder.Type === "RetrieveMultiple") {
+		expand = expand.replace("$expand=", "");
+		var expandRelationshipsLink = expand.split("),");
+		output.push(pre + "//Use @odata.nextLink to query resulting related records\n");
+		for (var l = 0; l < expandRelationshipsLink.length; l++) {
+			var expandNameLink = expandRelationshipsLink[l].split("(")[0];
+			output.push(pre + "var " + Xrm.RESTBuilder.GenerateResultVarName(expandNameLink) + "_NextLink = results.value[i][\"" + expandNameLink + "@odata.nextLink\"];\n");
+		}
+	}
+
+	if (expand !== null && expand !== undefined && Xrm.RESTBuilder.Type !== "RetrieveMultiple") {
 		var expandVariables = ["a", "b", "c", "d", "e", "f"]; //Should be limited to 6 expands per query
 		var expandVariablesCount = -1;
 		var currentExpandRelationship = "";
@@ -4315,7 +4467,7 @@ Xrm.RESTBuilder.Execute_Click = function () {
 	var generatedCode = new Function(script);
 	generatedCode();
 
-	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" ||
+	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" || Xrm.RESTBuilder.Type === "RetrieveNextLink" || 
 		(Xrm.RESTBuilder.Type === "Create" && Xrm.RESTBuilder.Endpoint === "2011") || Xrm.RESTBuilder.Type === "PredefinedQuery" ||
 		(Xrm.RESTBuilder.Type === "Action" && Xrm.RESTBuilder.SelectedAction.ReturnTypes.length !== 0) ||
 		(Xrm.RESTBuilder.Type === "Function" && Xrm.RESTBuilder.SelectedFunction.ReturnTypes.length !== 0)) {
@@ -4590,6 +4742,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 
 	$("#EntityList option").filter(function () { return !this.value || $.trim(this.value).length === 0; }).remove();
 	$("#CreateRequest").button("option", "disabled", false);
+	$("#Entity").show();
 
 	switch (Xrm.RESTBuilder.Type) {
 		case "RetrieveMultiple":
@@ -4732,6 +4885,11 @@ Xrm.RESTBuilder.Type_Change = function () {
 			$("#ActionDefinition").hide();
 			Xrm.RESTBuilder.BuildFunctionList();
 			break;
+		case "RetrieveNextLink":
+			$("#NextLink").show();
+			$("#DetectChanges").show();
+			$("#Entity").hide();
+			break;
 	}
 
 	(Xrm.RESTBuilder.Type === "Update") ? $("#UpdateGUID").show() : $("#UpdateGUID").hide();
@@ -4820,6 +4978,9 @@ Xrm.RESTBuilder.CreateRequest_Click = function () {
 		case "Function":
 			Xrm.RESTBuilder.Function(Xrm.RESTBuilder.Library);
 			break;
+		case "RetrieveNextLink":
+			Xrm.RESTBuilder.RetrieveNextLink(Xrm.RESTBuilder.Library);
+			break;
 	}
 	Xrm.RESTBuilder.Editor1.refresh();
 	$("#CopyUrlResults").button("option", "disabled", true);
@@ -4837,6 +4998,7 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	$("#AssociateId2").val("");
 	$("#QueryId").val("");
 	$("#TargetId").val("");
+	$("#NextLinkUrl").val("");
 	$("#AssociateEntity1").prop("selectedIndex", 0);
 	$("#AssociateRelationship").prop("selectedIndex", 0);
 	$("#ScriptOutput").val("");

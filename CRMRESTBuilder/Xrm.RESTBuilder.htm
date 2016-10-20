@@ -81,6 +81,10 @@
 					<label for="TypeAssociate" class="radio">Associate</label>
 					<input id="TypeDisassociate" type="radio" value="Disassociate" name="Type" />
 					<label for="TypeDisassociate" class="radio">Disassociate</label>
+					<br />
+					<label class="CrudLabel"></label>
+					<input id="TypeRetrieveNextLink" type="radio" value="RetrieveNextLink" name="Type" />
+					<label for="TypeRetrieveNextLink" class="radio">Retrieve NextLink</label>
 					<input id="TypePredefinedQuery" type="radio" value="PredefinedQuery" name="Type" />
 					<label for="TypePredefinedQuery" class="radio">Predefined Query</label>
 					<input id="TypeAction" type="radio" value="Action" name="Type" />
@@ -306,10 +310,16 @@
 				<div id="FetchXml">
 					<label for="Fetch" class="CrudLabel" style="float: left;">FetchXML Query</label>
 					<br />
-					<div style="width: 129px; float: left;"><a id="FormatFetch" href="#">Format</a></div>			
+					<div style="width: 129px; float: left;"><a id="FormatFetch" href="#">Format</a></div>
 					<textarea id="Fetch" style="float: left;"></textarea>
 					<span><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
 				</div>
+			</div>
+		</div>
+		<div id="NextLink" class="Method" style="display: none;">
+			<div style="height: 40px;">
+				<label for="NextLinkUrl" class="CrudLabel">NextLink</label>
+				<input id="NextLinkUrl" class="Guid focus ui-corner-all" placeholder="@odata.nextLink url" />
 			</div>
 		</div>
 		<div id="Message" class="Method" style="display: none;">
