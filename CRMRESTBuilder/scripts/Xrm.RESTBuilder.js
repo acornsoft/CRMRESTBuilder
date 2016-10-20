@@ -1080,7 +1080,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP = function () {
 Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 	var js = [];
 	js.push("var association = {");
-	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
+	js.push("\"@odata.id\": Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
 	    "(" + $("#AssociateId2").val() + ")\"");
 	js.push("};\n");
 	js.push("var req = new XMLHttpRequest();\n");
@@ -1117,7 +1117,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
 	var js = [];
 	js.push("var association = {");
-	js.push("'@odata.id': Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
+	js.push("\"@odata.id\": Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId2").val() + ")\"");
 	js.push("};\n");
 	js.push("$.ajax({\n");
@@ -5090,6 +5090,8 @@ Xrm.RESTBuilder.AssociateEntity1_Change = function () {
 	Xrm.RESTBuilder.Block();
 	Xrm.RESTBuilder.GetAssociateRelationshipMetadata($("#AssociateEntity1 option:selected").attr("LogicalName"));
 	$("#AssociateRelationship").find("option").remove();
+	$("#AssociateId1").val("");
+	$("#AssociateId2").val("");
 };
 
 //AssociateEntity2 Change
