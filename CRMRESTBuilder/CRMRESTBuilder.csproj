@@ -64,6 +64,7 @@
     <Content Include="css\smoothness\images\uiicons888888256x240.png" />
     <Content Include="css\smoothness\images\uiiconscd0a0a256x240.png" />
     <Content Include="css\smoothness\jqueryui1.10.3.custom.min.css" />
+    <Content Include="images\logo.png" />
     <Content Include="packages.config" />
     <Content Include="scripts\beautify.min.js" />
     <Content Include="scripts\clipboard.min.js" />
@@ -104,6 +105,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

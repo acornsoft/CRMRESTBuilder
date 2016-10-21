@@ -83,6 +83,7 @@ $(function () {
 	Xrm.RESTBuilder.CreateRadioButtons($("#Endpoint"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#FormattedValues"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#RESTType"));
+	Xrm.RESTBuilder.CreateRadioButtons($("#RESTType2"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#RESTLibrary"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#Async"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#DetectChanges"));
@@ -101,6 +102,7 @@ $(function () {
 	$("#ActionReference").click(Xrm.RESTBuilder.ActionReference_Click);
 	$("#FunctionReference").click(Xrm.RESTBuilder.FunctionReference_Click);
 	$("#RESTType input[name=Type]:radio").change(Xrm.RESTBuilder.Type_Change);
+	$("#RESTType2 input[name=Type]:radio").change(Xrm.RESTBuilder.Type_Change);
 	$("#RESTLibrary input[name=Library]:radio").change(Xrm.RESTBuilder.Library_Change);
 	$("#Async input[name=Async]:radio").change(Xrm.RESTBuilder.Async_Change);
 	$("#Count input[name=Count]:radio").change(Xrm.RESTBuilder.Count_Change);

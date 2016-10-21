@@ -112,7 +112,7 @@ table {
 	border-collapse: collapse;
 }
 
-th {	
+th {
 	padding-left: 10px;
 	text-align: left;
 }
@@ -135,8 +135,14 @@ td {
 	vertical-align: top;
 }
 
-#TopInnerLeft {
+#TopInnerLeft, #Endpoint, #EndPointType, #RetrieveSkip, #Fetch {
 	float: left;
+}
+
+#EndpointVersion {
+	float: left;
+	margin-left: 4px;
+	padding-left: 4px;
 }
 
 #TopOuter {
@@ -151,8 +157,19 @@ td {
 	margin-bottom: 10px;
 }
 
-#RESTType, #RESTLibrary, #Header, #FormattedValues, #DetectChanges, #AuthToken, #Count, #ActionDefinition, #FunctionDefinition, #TargetDefinition {
+#RetrieveTop {
+	float: left;
+	margin-right: 12px;
+}
+
+#RESTType2, #RESTLibrary, #Header, #FormattedValues, #DetectChanges, #AuthToken, #Count, #ActionDefinition, #FunctionDefinition, #TargetDefinition {
 	margin-bottom: 5px;
+}
+
+#FormattedValues, #DetectChanges, #AuthToken, #Impersonate {
+	display: none;
+	float: left;
+	margin-right: 12px;
 }
 
 .ui-tooltip {
@@ -171,7 +188,7 @@ div.ui-datepicker {
 body {
 	font-family: Segoe\000020UI,Tahoma,Arial;
 	font-size: 14px;
-	margin: 3px;
+	margin: 0;
 }
 
 .ui-widget {
@@ -267,4 +284,83 @@ body {
 
 #NextLinkUrl {
 	width: 700px;
+}
+
+#Top {
+	background-color: gainsboro;
+	height: 40px;
+}
+
+.TopImage {
+	float: right;
+	margin-top: 5px;
+}
+
+#TopTitle {
+	font-size: 20px;
+	line-height: 40px;
+	margin-left: 10px;
+}
+
+
+#Wrapper {
+	padding: 10px;
+}
+
+#LoadingCsdl {
+	display: none;
+	margin-left: 15px;
+}
+
+	#LoadingCsdl img, #LoadingMessage {
+		vertical-align: middle;
+	}
+
+#ImpersonateId, #RetrieveExtras, #Count, #RetrieveFilters, #OrderBy, #CreateUpdate, #UpdateGUID, #Delete, #AssociateDisassociate,
+#PredefinedQuery, #SavedUserQuery, #NextLink, #Message, #ActionDefinition, #FunctionDefinition, #Output, #ResponseObject {
+	display: none;
+}
+
+#Relationships {
+	clear: both;
+	width: 600px !important;
+}
+
+#ExpandEntity {
+	width: 72px;
+}
+
+.AssociateDisassociateOuter {
+	height: 40px;
+}
+
+.AssociateDisassociateInner {
+	float: left;
+	width: 275px;
+}
+
+#PredefinedQueryInner {
+	height: 40px;
+}
+
+#FetchXml label {
+	float: left;
+}
+
+#FormatFetchButton {
+	float: left;
+	width: 129px;
+}
+
+#NextLinkInner {
+	height: 40px;
+}
+
+#MessageParameters {
+	clear: both;
+	width: 600px !important; 
+}
+
+#Url {
+	height: 600px;
 }

@@ -28,381 +28,389 @@
 	<script type="text/javascript" src="scripts/Xrm.RESTBuilder.js"></script>
 </head>
 <body>
-	<div id="Generate">
-		<div id="Header">
-			<label class="CrudLabel"></label>
-			<a id="CreateRequest" href="#">Create Request</a>
-			<a id="Reset" href="#">Reset</a>
-			<span class="Version">CRM Version: </span><span id="CrmVersion" class="Version"></span>
-			<span id="LoadingCsdl" style="margin-left: 15px; display: none;">
-				<img width="16" height="16" title="Loading" alt="Loading" src="data:image/gif;base64,R0lGODlhEAAQAPQAAP///wAAAPDw8IqKiuDg4EZGRnp6egAAAFhYWCQkJKysrL6+vhQUFJycnAQEBDY2NmhoaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAAFdyAgAgIJIeWoAkRCCMdBkKtIHIngyMKsErPBYbADpkSCwhDmQCBethRB6Vj4kFCkQPG4IlWDgrNRIwnO4UKBXDufzQvDMaoSDBgFb886MiQadgNABAokfCwzBA8LCg0Egl8jAggGAA1kBIA1BAYzlyILczULC2UhACH5BAAKAAEALAAAAAAQABAAAAV2ICACAmlAZTmOREEIyUEQjLKKxPHADhEvqxlgcGgkGI1DYSVAIAWMx+lwSKkICJ0QsHi9RgKBwnVTiRQQgwF4I4UFDQQEwi6/3YSGWRRmjhEETAJfIgMFCnAKM0KDV4EEEAQLiF18TAYNXDaSe3x6mjidN1s3IQAh+QQACgACACwAAAAAEAAQAAAFeCAgAgLZDGU5jgRECEUiCI+yioSDwDJyLKsXoHFQxBSHAoAAFBhqtMJg8DgQBgfrEsJAEAg4YhZIEiwgKtHiMBgtpg3wbUZXGO7kOb1MUKRFMysCChAoggJCIg0GC2aNe4gqQldfL4l/Ag1AXySJgn5LcoE3QXI3IQAh+QQACgADACwAAAAAEAAQAAAFdiAgAgLZNGU5joQhCEjxIssqEo8bC9BRjy9Ag7GILQ4QEoE0gBAEBcOpcBA0DoxSK/e8LRIHn+i1cK0IyKdg0VAoljYIg+GgnRrwVS/8IAkICyosBIQpBAMoKy9dImxPhS+GKkFrkX+TigtLlIyKXUF+NjagNiEAIfkEAAoABAAsAAAAABAAEAAABWwgIAICaRhlOY4EIgjH8R7LKhKHGwsMvb4AAy3WODBIBBKCsYA9TjuhDNDKEVSERezQEL0WrhXucRUQGuik7bFlngzqVW9LMl9XWvLdjFaJtDFqZ1cEZUB0dUgvL3dgP4WJZn4jkomWNpSTIyEAIfkEAAoABQAsAAAAABAAEAAABX4gIAICuSxlOY6CIgiD8RrEKgqGOwxwUrMlAoSwIzAGpJpgoSDAGifDY5kopBYDlEpAQBwevxfBtRIUGi8xwWkDNBCIwmC9Vq0aiQQDQuK+VgQPDXV9hCJjBwcFYU5pLwwHXQcMKSmNLQcIAExlbH8JBwttaX0ABAcNbWVbKyEAIfkEAAoABgAsAAAAABAAEAAABXkgIAICSRBlOY7CIghN8zbEKsKoIjdFzZaEgUBHKChMJtRwcWpAWoWnifm6ESAMhO8lQK0EEAV3rFopIBCEcGwDKAqPh4HUrY4ICHH1dSoTFgcHUiZjBhAJB2AHDykpKAwHAwdzf19KkASIPl9cDgcnDkdtNwiMJCshACH5BAAKAAcALAAAAAAQABAAAAV3ICACAkkQZTmOAiosiyAoxCq+KPxCNVsSMRgBsiClWrLTSWFoIQZHl6pleBh6suxKMIhlvzbAwkBWfFWrBQTxNLq2RG2yhSUkDs2b63AYDAoJXAcFRwADeAkJDX0AQCsEfAQMDAIPBz0rCgcxky0JRWE1AmwpKyEAIfkEAAoACAAsAAAAABAAEAAABXkgIAICKZzkqJ4nQZxLqZKv4NqNLKK2/Q4Ek4lFXChsg5ypJjs1II3gEDUSRInEGYAw6B6zM4JhrDAtEosVkLUtHA7RHaHAGJQEjsODcEg0FBAFVgkQJQ1pAwcDDw8KcFtSInwJAowCCA6RIwqZAgkPNgVpWndjdyohACH5BAAKAAkALAAAAAAQABAAAAV5ICACAimc5KieLEuUKvm2xAKLqDCfC2GaO9eL0LABWTiBYmA06W6kHgvCqEJiAIJiu3gcvgUsscHUERm+kaCxyxa+zRPk0SgJEgfIvbAdIAQLCAYlCj4DBw0IBQsMCjIqBAcPAooCBg9pKgsJLwUFOhCZKyQDA3YqIQAh+QQACgAKACwAAAAAEAAQAAAFdSAgAgIpnOSonmxbqiThCrJKEHFbo8JxDDOZYFFb+A41E4H4OhkOipXwBElYITDAckFEOBgMQ3arkMkUBdxIUGZpEb7kaQBRlASPg0FQQHAbEEMGDSVEAA1QBhAED1E0NgwFAooCDWljaQIQCE5qMHcNhCkjIQAh+QQACgALACwAAAAAEAAQAAAFeSAgAgIpnOSoLgxxvqgKLEcCC65KEAByKK8cSpA4DAiHQ/DkKhGKh4ZCtCyZGo6F6iYYPAqFgYy02xkSaLEMV34tELyRYNEsCQyHlvWkGCzsPgMCEAY7Cg04Uk48LAsDhRA8MVQPEF0GAgqYYwSRlycNcWskCkApIyEAOwAAAAAAAAAAAA==" />
-				<span id="LoadingMessage">Loading CSDL...</span>
-			</span>
-			<a href="https://www.paypal.me/JLattimer" target="_blank" style="float: right;">
-				<img class="HeaderImage" title="Feel free to donate if this saved you some time" alt="PayPal"
-					 src="data:image/png;base64,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" />
-			</a>
-			<a href="https://github.com/jlattimer/CRMRESTBuilder" target="_blank" style="float: right;">
-				<img class="HeaderImage" title="Check out the project on GitHub" alt="GitHub"
-					 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTJDBGvsAAACQUlEQVRIS63WT0sVURjH8VvYHykpaae+AXetLKRNUYoiuYsyrL2thJCKNlGbXkBQLYMgJYuiF5AYZOCbEAQhiaD8k5Ta9zfMkXMfnzMOd+YHH+5l5tznMHfOPHMaJdOOUTzDN6ziX07fdUznruI4KqcTT/ADuyVp7GPoty3lJnQ1XvEy9NsxlM4RvIRXrBUv0IbCaNL38ApU8Q6qnUydV2rpyt3onsYDN3AetzGXHyvjM26hH3/yY8ENNEUr0C6kecQZxgwe4Bou5/Rdx3RuCHG+IK6pOZpWux6ZeIDMompUw9bVo5ZFzcF7Tr+iahZg6+qqjyLrSPakfETVfIJXWx0ua3X2hBZWF6qmG5uw9TVn1mftibeoK6pl6+sWuG3xPuqKVryt/x3ZG8aemERdUS1b/y/ciR+hrqiWra853b96GnVFtWx9zekurr1nrWKOwesR2eLyHieZQNXcgVc7e5xSDeQ3+tBqzmENXu2sgWiPFP8dS9jKv6/jLk6gbDowBTWhUDPWdBvDS2IbI1DX0tspDP4FvczvQb3d5iQe4gNSVxnsvSSU+LW4g3GcwUp+LHiNVN4gHutR4ziNpmhjFgb8xCmcxSL0TyzjIlK5jngSz76NQIi2J2HQUx3Icyj/LIo2BfEk1nMko92g7mUY/AoX0INeFO2ViyZWzVI7zfjKYyqeyhV4v9GVHjhpHN0P204HkMog4rFaSMl7elC0ArX8VUTFihbXJYQJ9Zt9q7eV6IFXFytaZIehblWixzca/wHl+IA7gyLVvwAAAABJRU5ErkJggg==" />
-			</a>
-		</div>
-		<div id="Endpoint" style="float: left;">
-			<div style="float: left;">
-				<label class="CrudLabel" title="Web API is only availble for CRM 2016+ ">Endpoint</label>
-				<input id="Endpoint2011" checked="checked" type="radio" value="2011" name="Endpoint" />
-				<label for="Endpoint2011" class="radio">2011</label>
-				<input id="EndpointWebApi" type="radio" value="WebApi" name="Endpoint" />
-				<label for="EndpointWebApi" class="radio">Web API</label>
+	<div id="Top">
+		<span id="TopTitle">CRM REST Builder</span>
+		<a href="https://www.paypal.me/JLattimer" target="_blank" class="TopImage">
+			<img class="HeaderImage" title="Feel free to donate if this saved you some time" alt="PayPal"
+				 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAHM0lEQVR42pRXW2wbZRY+c/P47tiOQ52ExiZJL6TZZaEtLSWtKJeq3FtxWQntA2jRSvvSfUK8oV1VWgkBe0E8IIFAygMgIaCotCogUFsJKiAICmpomrakuZDEsT2+zniunP8f27E9zqW/NR7PeOac75zzncvPWJYFZP37za+gtliOhZDIx//z5tcfTExnh8SAWAILGFhhEQkMfkSWKflFbmFLMjoeDLrHfBHvu7xHzGRmJXjq/puBFzjQdJO+8+f7h+iZrwnJLZXqAsMhN5w4M/noxNj0LugLQ0U1ArDWQhQVw4S8ZNw0d3lpN7DMM93x0NHEYOzopsGuV1aCXwewc/vG+s2+eBDGJlIDgIgBvQGMtaZ+qoA87xYAAm56PZeTw3PHfnrZ/8jwxugDQ/+QcjKwLNMewNsf/kjPpmlBLOqDSxcXtoCHh3Uvq/61fB10U0Cfnho/sn938tNdu5InUuliFW0LgMFElJ4FHi1GlIuSnASea5J53QuNAQ96BGW+89H55wMR74kUhprQ7rGDNzcDOLAnSc9+jwuWpHLHa6PfJKj7rRUQMMz6wGkGAHp0PF3aPpeWg4GAO69UdKcHTp6+TM8ukQOlUNmslDUPuHmnnxmOpAlaZ9ggVuME+WLQCK8LVFP3nDk3GXaJfL5YMeCFv480Axgbn7dvIJHknDxoknRxCS1COeQj3s/9hgBUG8yqxETlHAeWwkJ4Q1fu3sd2TnlFHvxcGxL+5aFt9Nzd5Yc33v+x3zyLHvEJzW5m8XE5i0cG3xSJf9dmJj7CZLJQ8YL3ay5y5Kmtwf91Cm1ImMYUIUtE1pby8kDdha2BNlEiJ9hg1rNY4gUeyrGocPLszH83qyH+wZ3dLzsAfPXDDFUY8C/B1LVsP41/G/3U9dezCImxQDHJPrBCLnj19LWXRgbCo5AILlJ8tef2YSE6cEcShgdjnrmCshVcfItywnoknrEG+VozpVwG6OwEK0GyTCVY4PiF9JG6g2o/KqoJFSSeqmgJLL0dtKo1piARRphv6WuTr9H9WeTM8DDW9zCCwTAHXHDsijTiCMH3mAUuFwfFrDxgKRhnrAetGQAGut/QbcFrLR5FLywA9PSAtXs3QCZjG8GQiCwbVpf06P5N8OzhW8AfdG/VJbnhn+UIMIZmhwGY1d2OqUeVExBPPmkDVhRaYUHW4La4b9zhgUKxAnmvCJJU7m+fASQEetUKZmXClbCrShK1HJ54AqxIBCCVskFZdnm+L9lx0gHgwy8uQjTig7npbB+IbTKAVD8FG0kWhQtis1LK9Co5o9hTduwAa88e2/LFRdsTRJ5igM/vkrvD4mcOAEMDXUBEfJ5TNmNHalGOguSS7f6BAZsPNcXkP1G0SRaPg9XbCxAK2eQjbuf5ZRlSGXYNx45H/ULJAeDu2xOQSpc2vi5rCUcG6KhYq4D1wEFsmzehm+XmmFMLSYhMOwTz88tcqEWTNCC8/Nu+nheHugPOSvjWsfPAa0bSIspcXLMCYkkErerZgGyWbHe3hqAGmDzfmCX0Go/ZPDyyt/f/+4di383nK84sGOrvhJJqbNKRjNAytdDq4XHbSjTNtrR2NCqukZNpUKwi2KkcHNzT89Ho08NHXHgv5hOcAB7c2w8ejzBkldQWlletC/js8Wy14YMA1aoHkVNQISIw5obewL/u/VPXoQB6VsVneLZNMxr95AJcu5ruozNdYwZYVTf73SsPJ4qOzZEzGRYXx5D4SMkO8eeQ33Um2iG+PV1Qr8xmK01YHQDinX4cw8o4BTHtSyrxQA1Mg6sZTK1b4v7Rjoj7n10+gdvW5VVPTUqLEZ9Q7kRXX83I2A50R1QdADYnOkKLZXWQNqFGiDT+mGY+D2aD3lwEDYu689AfYkd/SCuXDQQX9gr0nlTSwI3GNOJdFcDEZHpLOVX0QsjTPFZpqDTgtXsD+d2IAGMtePnKbX3B1N7BMHw7W4T5ggY6GsCts2HWAfx8KXUXtbzxTQKdpJwblbvRC3KlGRx6J8yzV8/NFLI+nHzT6GqNJoZFN1LM9QCYmZPuhAwWkaWivcGosYXUgI1xHCwRQFlpSU8LegOu8aysw3hORf6yMBB10xDIiGQ9Y0MdwOMPDT8nm+a5w/dsVYulikH3FV7Bmr60YH6sew9Pp0sjzpHbhOQNvit/3R6HKUmxh2ZSU27wwdhcEb7Dw7LWCQD3dRfu3jd44fln72h64ItrBTj13sVhpPMIhD3LqUiUiSxkytrk+z+lQFL0emEk+U6uFTLgYJgKOIZrhrU6ALIly2bLWPZNmJnP0yDPygZ8+WuBW8yUH6bl2awWpWq7Jj87ePaXy0v4nr6s4Df8w4PhuDXmxQZnYfG0sMGybfcxbUdbN8ZwoqDDLwUDdvT62Q0B11Re1kWBY8pgMZRdWkH1bLsxeP65A8lvyIZTqW67G1uEiV8iVs9DfzQghENuTjUcun4XYAC8igKHtPmhkgAAAABJRU5ErkJggg==" />
+		</a>
+		<a href="https://github.com/jlattimer/CRMRESTBuilder" target="_blank" class="TopImage">
+			<img class="HeaderImage" title="Check out the project on GitHub" alt="GitHub"
+				 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTJDBGvsAAACQUlEQVRIS63WT0sVURjH8VvYHykpaae+AXetLKRNUYoiuYsyrL2thJCKNlGbXkBQLYMgJYuiF5AYZOCbEAQhiaD8k5Ta9zfMkXMfnzMOd+YHH+5l5tznMHfOPHMaJdOOUTzDN6ziX07fdUznruI4KqcTT/ADuyVp7GPoty3lJnQ1XvEy9NsxlM4RvIRXrBUv0IbCaNL38ApU8Q6qnUydV2rpyt3onsYDN3AetzGXHyvjM26hH3/yY8ENNEUr0C6kecQZxgwe4Bou5/Rdx3RuCHG+IK6pOZpWux6ZeIDMompUw9bVo5ZFzcF7Tr+iahZg6+qqjyLrSPakfETVfIJXWx0ua3X2hBZWF6qmG5uw9TVn1mftibeoK6pl6+sWuG3xPuqKVryt/x3ZG8aemERdUS1b/y/ciR+hrqiWra853b96GnVFtWx9zekurr1nrWKOwesR2eLyHieZQNXcgVc7e5xSDeQ3+tBqzmENXu2sgWiPFP8dS9jKv6/jLk6gbDowBTWhUDPWdBvDS2IbI1DX0tspDP4FvczvQb3d5iQe4gNSVxnsvSSU+LW4g3GcwUp+LHiNVN4gHutR4ziNpmhjFgb8xCmcxSL0TyzjIlK5jngSz76NQIi2J2HQUx3Icyj/LIo2BfEk1nMko92g7mUY/AoX0INeFO2ViyZWzVI7zfjKYyqeyhV4v9GVHjhpHN0P204HkMog4rFaSMl7elC0ArX8VUTFihbXJYQJ9Zt9q7eV6IFXFytaZIehblWixzca/wHl+IA7gyLVvwAAAABJRU5ErkJggg==" />
+		</a>
+	</div>
+	<div id="Wrapper">
+		<div id="Generate">
+			<div id="Header">
+				<label class="CrudLabel"></label>
+				<a id="CreateRequest" href="#">Create Request</a>
+				<a id="Reset" href="#">Reset</a>
 			</div>
-			<div style="float: left; margin-left: 4px;">
-				<select id="WebApiVersion" class="ui-corner-all" disabled="disabled">
-					<option value="8.0">8.0</option>
-					<option value="8.1">8.1</option>
-				</select>
+			<div id="Endpoint">
+				<div id="EndPointType">
+					<label class="CrudLabel" title="Web API is only availble for CRM 2016+ ">Endpoint</label>
+					<input id="Endpoint2011" checked="checked" type="radio" value="2011" name="Endpoint" />
+					<label for="Endpoint2011" class="radio">2011</label>
+					<input id="EndpointWebApi" type="radio" value="WebApi" name="Endpoint" />
+					<label for="EndpointWebApi" class="radio">Web API</label>
+				</div>
+				<div id="EndpointVersion">
+					<select id="WebApiVersion" class="ui-corner-all" disabled="disabled">
+						<option value="8.0">8.0</option>
+						<option value="8.1">8.1</option>
+					</select>
+					<span class="Version">Version: </span><span id="CrmVersion" class="Version"></span>
+				</div>
 			</div>
-		</div>
-		<div style="clear: both;"></div>
-		<div id="TopOuter">
-			<div id="TopInnerLeft">
-				<div id="RESTType">
-					<label class="CrudLabel">Action</label>
-					<input id="TypeRetrieve" checked="checked" type="radio" value="Retrieve" name="Type" />
-					<label for="TypeRetrieve" class="radio">Retrieve Single</label>
-					<input id="TypeRetrieveMultiple" type="radio" value="RetrieveMultiple" name="Type" />
-					<label for="TypeRetrieveMultiple" class="radio">Retrieve Multiple</label>
-					<input id="TypeCreate" type="radio" value="Create" name="Type" />
-					<label for="TypeCreate" class="radio">Create</label>
-					<input id="TypeUpdate" type="radio" value="Update" name="Type" />
-					<label for="TypeUpdate" class="radio">Update</label>
-					<input id="TypeDelete" type="radio" value="Delete" name="Type" />
-					<label for="TypeDelete" class="radio">Delete</label>
-					<input id="TypeAssociate" type="radio" value="Associate" name="Type" />
-					<label for="TypeAssociate" class="radio">Associate</label>
-					<input id="TypeDisassociate" type="radio" value="Disassociate" name="Type" />
-					<label for="TypeDisassociate" class="radio">Disassociate</label>
+			<div class="clear"></div>
+			<div id="TopOuter">
+				<div id="TopInnerLeft">
+					<div id="RESTType">
+						<label class="CrudLabel">Action</label>
+						<input id="TypeRetrieve" checked="checked" type="radio" value="Retrieve" name="Type" />
+						<label for="TypeRetrieve" class="radio">Retrieve Single</label>
+						<input id="TypeRetrieveMultiple" type="radio" value="RetrieveMultiple" name="Type" />
+						<label for="TypeRetrieveMultiple" class="radio">Retrieve Multiple</label>
+						<input id="TypeCreate" type="radio" value="Create" name="Type" />
+						<label for="TypeCreate" class="radio">Create</label>
+						<input id="TypeUpdate" type="radio" value="Update" name="Type" />
+						<label for="TypeUpdate" class="radio">Update</label>
+						<input id="TypeDelete" type="radio" value="Delete" name="Type" />
+						<label for="TypeDelete" class="radio">Delete</label>
+						<input id="TypeAssociate" type="radio" value="Associate" name="Type" />
+						<label for="TypeAssociate" class="radio">Associate</label>
+						<input id="TypeDisassociate" type="radio" value="Disassociate" name="Type" />
+						<label for="TypeDisassociate" class="radio">Disassociate</label>
+					</div>
+					<div id="RESTType2">
+						<label class="CrudLabel"></label>
+						<input id="TypeRetrieveNextLink" type="radio" value="RetrieveNextLink" name="Type" />
+						<label for="TypeRetrieveNextLink" class="radio">Retrieve NextLink</label>
+						<input id="TypePredefinedQuery" type="radio" value="PredefinedQuery" name="Type" />
+						<label for="TypePredefinedQuery" class="radio">Predefined Query</label>
+						<input id="TypeAction" type="radio" value="Action" name="Type" />
+						<label for="TypeAction" class="radio">Action</label>
+						<input id="TypeFunction" type="radio" value="Function" name="Type" />
+						<label for="TypeFunction" class="radio">Function</label>
+						<span id="LoadingCsdl">
+							<img width="16" height="16" title="Loading" alt="Loading" src="data:image/gif;base64,R0lGODlhEAAQAPQAAP///wAAAPDw8IqKiuDg4EZGRnp6egAAAFhYWCQkJKysrL6+vhQUFJycnAQEBDY2NmhoaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAAFdyAgAgIJIeWoAkRCCMdBkKtIHIngyMKsErPBYbADpkSCwhDmQCBethRB6Vj4kFCkQPG4IlWDgrNRIwnO4UKBXDufzQvDMaoSDBgFb886MiQadgNABAokfCwzBA8LCg0Egl8jAggGAA1kBIA1BAYzlyILczULC2UhACH5BAAKAAEALAAAAAAQABAAAAV2ICACAmlAZTmOREEIyUEQjLKKxPHADhEvqxlgcGgkGI1DYSVAIAWMx+lwSKkICJ0QsHi9RgKBwnVTiRQQgwF4I4UFDQQEwi6/3YSGWRRmjhEETAJfIgMFCnAKM0KDV4EEEAQLiF18TAYNXDaSe3x6mjidN1s3IQAh+QQACgACACwAAAAAEAAQAAAFeCAgAgLZDGU5jgRECEUiCI+yioSDwDJyLKsXoHFQxBSHAoAAFBhqtMJg8DgQBgfrEsJAEAg4YhZIEiwgKtHiMBgtpg3wbUZXGO7kOb1MUKRFMysCChAoggJCIg0GC2aNe4gqQldfL4l/Ag1AXySJgn5LcoE3QXI3IQAh+QQACgADACwAAAAAEAAQAAAFdiAgAgLZNGU5joQhCEjxIssqEo8bC9BRjy9Ag7GILQ4QEoE0gBAEBcOpcBA0DoxSK/e8LRIHn+i1cK0IyKdg0VAoljYIg+GgnRrwVS/8IAkICyosBIQpBAMoKy9dImxPhS+GKkFrkX+TigtLlIyKXUF+NjagNiEAIfkEAAoABAAsAAAAABAAEAAABWwgIAICaRhlOY4EIgjH8R7LKhKHGwsMvb4AAy3WODBIBBKCsYA9TjuhDNDKEVSERezQEL0WrhXucRUQGuik7bFlngzqVW9LMl9XWvLdjFaJtDFqZ1cEZUB0dUgvL3dgP4WJZn4jkomWNpSTIyEAIfkEAAoABQAsAAAAABAAEAAABX4gIAICuSxlOY6CIgiD8RrEKgqGOwxwUrMlAoSwIzAGpJpgoSDAGifDY5kopBYDlEpAQBwevxfBtRIUGi8xwWkDNBCIwmC9Vq0aiQQDQuK+VgQPDXV9hCJjBwcFYU5pLwwHXQcMKSmNLQcIAExlbH8JBwttaX0ABAcNbWVbKyEAIfkEAAoABgAsAAAAABAAEAAABXkgIAICSRBlOY7CIghN8zbEKsKoIjdFzZaEgUBHKChMJtRwcWpAWoWnifm6ESAMhO8lQK0EEAV3rFopIBCEcGwDKAqPh4HUrY4ICHH1dSoTFgcHUiZjBhAJB2AHDykpKAwHAwdzf19KkASIPl9cDgcnDkdtNwiMJCshACH5BAAKAAcALAAAAAAQABAAAAV3ICACAkkQZTmOAiosiyAoxCq+KPxCNVsSMRgBsiClWrLTSWFoIQZHl6pleBh6suxKMIhlvzbAwkBWfFWrBQTxNLq2RG2yhSUkDs2b63AYDAoJXAcFRwADeAkJDX0AQCsEfAQMDAIPBz0rCgcxky0JRWE1AmwpKyEAIfkEAAoACAAsAAAAABAAEAAABXkgIAICKZzkqJ4nQZxLqZKv4NqNLKK2/Q4Ek4lFXChsg5ypJjs1II3gEDUSRInEGYAw6B6zM4JhrDAtEosVkLUtHA7RHaHAGJQEjsODcEg0FBAFVgkQJQ1pAwcDDw8KcFtSInwJAowCCA6RIwqZAgkPNgVpWndjdyohACH5BAAKAAkALAAAAAAQABAAAAV5ICACAimc5KieLEuUKvm2xAKLqDCfC2GaO9eL0LABWTiBYmA06W6kHgvCqEJiAIJiu3gcvgUsscHUERm+kaCxyxa+zRPk0SgJEgfIvbAdIAQLCAYlCj4DBw0IBQsMCjIqBAcPAooCBg9pKgsJLwUFOhCZKyQDA3YqIQAh+QQACgAKACwAAAAAEAAQAAAFdSAgAgIpnOSonmxbqiThCrJKEHFbo8JxDDOZYFFb+A41E4H4OhkOipXwBElYITDAckFEOBgMQ3arkMkUBdxIUGZpEb7kaQBRlASPg0FQQHAbEEMGDSVEAA1QBhAED1E0NgwFAooCDWljaQIQCE5qMHcNhCkjIQAh+QQACgALACwAAAAAEAAQAAAFeSAgAgIpnOSoLgxxvqgKLEcCC65KEAByKK8cSpA4DAiHQ/DkKhGKh4ZCtCyZGo6F6iYYPAqFgYy02xkSaLEMV34tELyRYNEsCQyHlvWkGCzsPgMCEAY7Cg04Uk48LAsDhRA8MVQPEF0GAgqYYwSRlycNcWskCkApIyEAOwAAAAAAAAAAAA==" />
+							<span id="LoadingMessage">Loading CSDL...</span>
+						</span>
+					</div>
+					<div id="RESTLibrary">
+						<label class="CrudLabel">Output Format</label>
+						<input id="LibraryXMLHTTP" checked="checked" type="radio" value="XMLHTTP" name="Library" />
+						<label for="LibraryXMLHTTP" class="radio" title="Requires no external libraries">XMLHTTP</label>
+						<input id="LibraryJQ" type="radio" value="jQuery" name="Library" />
+						<label for="LibraryJQ" class="radio" title="Requires jQuery - http://jquery.com/download/">jQuery</label>
+						<input id="LibraryXRMST" type="radio" value="XST" name="Library" />
+						<label for="LibraryXRMST" class="radio" title="Requires the XrmServiceToolkit library - http://xrmservicetoolkit.codeplex.com">XrmServiceToolkit</label>
+						<input id="LibrarySDK" type="radio" value="SDK" name="Library" />
+						<label for="LibrarySDK" class="radio" title="Requires the SDK.REST.js library from the CRM SDK">SDK.REST</label>
+						<input id="LibrarySDKJQ" type="radio" value="SDKJQ" name="Library" />
+						<label for="LibrarySDKJQ" class="radio" title="Requires the SDK.JQUERY.js library from the CRM SDK">SDK.JQUERY</label>
+						<input id="LibraryXSVC" type="radio" value="XSVC" name="Library" />
+						<label for="LibraryXSVC" class="radio" title="Requires the XrmSvcToolkit library - https://xrmsvctoolkit.codeplex.com">XrmSvcToolkit</label>
+					</div>
+					<div>
+						<div id="FormattedValues">
+							<label class="CrudLabel" title="Retrieve formatted values for properties with the result(s), text values for option sets, properly formatted currency, etc.">Formatted Values</label>
+							<input id="FormattedValuesTrue" checked="checked" type="radio" value="true" name="FormattedValues" />
+							<label for="FormattedValuesTrue" class="radio">Yes</label>
+							<input id="FormattedValuesFalse" type="radio" value="false" name="FormattedValues" />
+							<label for="FormattedValuesFalse" class="radio">No</label>
+						</div>
+						<div id="DetectChanges">
+							<label class="CrudLabel" title="Include ETag header value used to detect data changes since the last request">Detect Changes</label>
+							<input id="DetectChangesTrue" type="radio" value="true" name="DetectChanges" />
+							<label for="DetectChangesTrue" class="radio">Yes</label>
+							<input id="DetectChangesFalse" checked="checked" type="radio" value="false" name="DetectChanges" />
+							<label for="DetectChangesFalse" class="radio">No</label>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div>
+						<div id="AuthToken">
+							<label class="CrudLabel" title="Include header placeholder value for authentication token, only required when using from outside CRM">Token Header</label>
+							<input id="AuthTokenTrue" type="radio" value="true" name="AuthToken" />
+							<label for="AuthTokenTrue" class="radio">Yes</label>
+							<input id="AuthTokenFalse" checked="checked" type="radio" value="false" name="AuthToken" />
+							<label for="AuthTokenFalse" class="radio">No</label>
+						</div>
+						<div id="Impersonate">
+							<label class="CrudLabel" title="Include header to impersonate a different user">Impersonate</label>
+							<input id="ImpersonateTrue" type="radio" value="true" name="Impersonate" />
+							<label for="ImpersonateTrue" class="radio">Yes</label>
+							<input id="ImpersonateFalse" checked="checked" type="radio" value="false" name="Impersonate" />
+							<label for="ImpersonateFalse" class="radio">No</label>
+						</div>
+						<input id="ImpersonateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+					</div>
+					<div class="clear"></div>
+					<div id="Async">
+						<label class="CrudLabel">Process</label>
+						<input id="AsyncTrue" checked="checked" type="radio" value="true" name="Async" />
+						<label for="AsyncTrue" class="radio">Asynchronous</label>
+						<input id="AsyncFalse" type="radio" value="false" name="Async" />
+						<label for="AsyncFalse" class="radio">Synchronous</label>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div id="Entity">
+				<label for="EntityList" class="CrudLabel">Primary Entity</label>
+				<select id="EntityList" class="ui-corner-all"></select>
+			</div>
+			<!--Object Section-->
+			<div id="Retrieve" class="Method">
+				<div id="RetrieveGUID">
+					<label for="RetrieveId" class="CrudLabel">Id To Retrieve</label>
+					<input id="RetrieveId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				</div>
+				<div id="RetrieveExtras">
+					<div id="RetrieveTop">
+						<label for="TopAmount" class="CrudLabel" title="Will retrieve only the first X records of the result">Top</label>
+						<input type="text" id="TopAmount" placeholder="50 Max" class="Top" />
+					</div>
+					<div id="Count">
+						<label class="CrudLabel" title="Returns the total record count for the query along with the results">Retrieve Count</label>
+						<input id="CountTrue" type="radio" value="true" name="Count" />
+						<label for="CountTrue" class="radio">Yes</label>
+						<input id="CountFalse" checked="checked" type="radio" value="false" name="Count" />
+						<label for="CountFalse" class="radio">No</label>
+					</div>
+					<div id="RetrieveSkip">
+						<label for="SkipAmount" class="CrudLabel" title="The first X records will be skipped from the query result">Skip</label>
+						<input type="text" id="SkipAmount" class="Skip" />
+					</div>
+				</div>
+				<div id="Relationships">
+					<b>Fields To Select</b>
+					<div id="Accordion">
+						<h3>Entity</h3>
+						<div id="RetrieveSelects">
+							<ul id="SelectList1" class="selectlist"></ul>
+						</div>
+						<h3>One To Many Relationships</h3>
+						<div id="RetrieveSelects2">
+							<ul id="SelectList2" class="selectlist"></ul>
+						</div>
+						<h3>Many To One Relationships</h3>
+						<div id="RetrieveSelects3">
+							<ul id="SelectList3" class="selectlist"></ul>
+						</div>
+						<h3>Many To Many Relationships</h3>
+						<div id="RetrieveSelects4">
+							<ul id="SelectList4" class="selectlist"></ul>
+						</div>
+					</div>
+				</div>
+				<div id="RetrieveFilters">
+					<div>
+						<label for="ExpandEntity" class="CrudLabel" title="Only possible to filter on 1 entity at a time">Filter</label>
+						<select id="ExpandEntity" class="Expand ui-corner-all"></select>
+					</div>
+					<table id="TableRetrieve">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Attribute</th>
+								<th style="width: 162px;">Operator</th>
+								<th style="width: 260px;">Value</th>
+								<th style="width: 56px;"></th>
+								<th style="width: 56px;"></th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
 					<br />
-					<label class="CrudLabel"></label>
-					<input id="TypeRetrieveNextLink" type="radio" value="RetrieveNextLink" name="Type" />
-					<label for="TypeRetrieveNextLink" class="radio">Retrieve NextLink</label>
-					<input id="TypePredefinedQuery" type="radio" value="PredefinedQuery" name="Type" />
-					<label for="TypePredefinedQuery" class="radio">Predefined Query</label>
-					<input id="TypeAction" type="radio" value="Action" name="Type" />
-					<label for="TypeAction" class="radio">Action</label>
-					<input id="TypeFunction" type="radio" value="Function" name="Type" />
-					<label for="TypeFunction" class="radio">Function</label>
+					<a href="#" id="AddRetrieve" class="AddAttribute">Add Attribute</a>
+					<a href="#" id="GroupAdd" class="Group">Group AND</a>
+					<a href="#" id="GroupOr" class="Group">Group OR</a>
 				</div>
-				<div id="RESTLibrary">
-					<label class="CrudLabel">Output Format</label>
-					<input id="LibraryXMLHTTP" checked="checked" type="radio" value="XMLHTTP" name="Library" />
-					<label for="LibraryXMLHTTP" class="radio" title="Requires no external libraries">XMLHTTP</label>
-					<input id="LibraryJQ" type="radio" value="jQuery" name="Library" />
-					<label for="LibraryJQ" class="radio" title="Requires jQuery - http://jquery.com/download/">jQuery</label>
-					<input id="LibraryXRMST" type="radio" value="XST" name="Library" />
-					<label for="LibraryXRMST" class="radio" title="Requires the XrmServiceToolkit library - http://xrmservicetoolkit.codeplex.com">XrmServiceToolkit</label>
-					<input id="LibrarySDK" type="radio" value="SDK" name="Library" />
-					<label for="LibrarySDK" class="radio" title="Requires the SDK.REST.js library from the CRM SDK">SDK.REST</label>
-					<input id="LibrarySDKJQ" type="radio" value="SDKJQ" name="Library" />
-					<label for="LibrarySDKJQ" class="radio" title="Requires the SDK.JQUERY.js library from the CRM SDK">SDK.JQUERY</label>
-					<input id="LibraryXSVC" type="radio" value="XSVC" name="Library" />
-					<label for="LibraryXSVC" class="radio" title="Requires the XrmSvcToolkit library - https://xrmsvctoolkit.codeplex.com">XrmSvcToolkit</label>
-				</div>
-				<div>
-					<div id="FormattedValues" style="display: none; float: left; margin-right: 12px;">
-						<label class="CrudLabel" title="Retrieve formatted values for properties with the result(s), text values for option sets, properly formatted currency, etc.">Formatted Values</label>
-						<input id="FormattedValuesTrue" checked="checked" type="radio" value="true" name="FormattedValues" />
-						<label for="FormattedValuesTrue" class="radio">Yes</label>
-						<input id="FormattedValuesFalse" type="radio" value="false" name="FormattedValues" />
-						<label for="FormattedValuesFalse" class="radio">No</label>
-					</div>
-					<div id="DetectChanges" style="display: none; float: left; margin-right: 12px;">
-						<label class="CrudLabel" title="Include ETag header value used to detect data changes since the last request">Detect Changes</label>
-						<input id="DetectChangesTrue" type="radio" value="true" name="DetectChanges" />
-						<label for="DetectChangesTrue" class="radio">Yes</label>
-						<input id="DetectChangesFalse" checked="checked" type="radio" value="false" name="DetectChanges" />
-						<label for="DetectChangesFalse" class="radio">No</label>
-					</div>
-				</div>
-				<div style="clear: both;"></div>
-				<div>
-					<div id="AuthToken" style="display: none; float: left; margin-right: 12px;">
-						<label class="CrudLabel" title="Include header placeholder value for authentication token, only required when using from outside CRM">Token Header</label>
-						<input id="AuthTokenTrue" type="radio" value="true" name="AuthToken" />
-						<label for="AuthTokenTrue" class="radio">Yes</label>
-						<input id="AuthTokenFalse" checked="checked" type="radio" value="false" name="AuthToken" />
-						<label for="AuthTokenFalse" class="radio">No</label>
-					</div>
-					<div id="Impersonate" style="display: none; float: left; margin-right: 12px;">
-						<label class="CrudLabel" title="Include header to impersonate a different user">Impersonate</label>
-						<input id="ImpersonateTrue" type="radio" value="true" name="Impersonate" />
-						<label for="ImpersonateTrue" class="radio">Yes</label>
-						<input id="ImpersonateFalse" checked="checked" type="radio" value="false" name="Impersonate" />
-						<label for="ImpersonateFalse" class="radio">No</label>
-					</div>
-					<input id="ImpersonateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" style="display: none;" />
-				</div>
-				<div style="clear: both;"></div>
-				<div id="Async">
-					<label class="CrudLabel">Process</label>
-					<input id="AsyncTrue" checked="checked" type="radio" value="true" name="Async" />
-					<label for="AsyncTrue" class="radio">Asynchronous</label>
-					<input id="AsyncFalse" type="radio" value="false" name="Async" />
-					<label for="AsyncFalse" class="radio">Synchronous</label>
+				<div id="OrderBy">
+					<table id="TableOrderBy">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Order By (12 Max)</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<br />
+					<a href="#" id="AddOrder" class="AddAttribute">Add Order By</a>
 				</div>
 			</div>
-		</div>
-		<div class="clear"></div>
-		<div id="Entity">
-			<label for="EntityList" class="CrudLabel">Primary Entity</label>
-			<select id="EntityList" class="ui-corner-all"></select>
-		</div>
-		<!--Object Section-->
-		<div id="Retrieve" class="Method">
-			<div id="RetrieveGUID">
-				<label for="RetrieveId" class="CrudLabel">Id To Retrieve</label>
-				<input id="RetrieveId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<div id="RetrieveExtras" style="display: none;">
-				<div id="RetrieveTop" style="float: left; margin-right: 12px;">
-					<label for="TopAmount" class="CrudLabel" title="Will retrieve only the first X records of the result">Top</label>
-					<input type="text" id="TopAmount" placeholder="50 Max" class="Top" />
+			<div id="CreateUpdate" class="Method">
+				<div id="UpdateGUID">
+					<label for="UpdateId" class="CrudLabel">Id To Update</label>
+					<input id="UpdateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
 				</div>
-				<div id="Count" style="display: none;">
-					<label class="CrudLabel" title="Returns the total record count for the query along with the results">Retrieve Count</label>
-					<input id="CountTrue" type="radio" value="true" name="Count" />
-					<label for="CountTrue" class="radio">Yes</label>
-					<input id="CountFalse" checked="checked" type="radio" value="false" name="Count" />
-					<label for="CountFalse" class="radio">No</label>
-				</div>
-				<div id="RetrieveSkip" style="float: left;">
-					<label for="SkipAmount" class="CrudLabel" title="The first X records will be skipped from the query result">Skip</label>
-					<input type="text" id="SkipAmount" class="Skip" />
-				</div>
-			</div>
-			<div style="width: 600px !important; clear: both;">
-				<b>Fields To Select</b>
-				<div id="Accordion">
-					<h3>Entity</h3>
-					<div id="RetrieveSelects">
-						<ul id="SelectList1" class="selectlist"></ul>
-					</div>
-					<h3>One To Many Relationships</h3>
-					<div id="RetrieveSelects2">
-						<ul id="SelectList2" class="selectlist"></ul>
-					</div>
-					<h3>Many To One Relationships</h3>
-					<div id="RetrieveSelects3">
-						<ul id="SelectList3" class="selectlist"></ul>
-					</div>
-					<h3>Many To Many Relationships</h3>
-					<div id="RetrieveSelects4">
-						<ul id="SelectList4" class="selectlist"></ul>
-					</div>
-				</div>
-			</div>
-			<div id="RetrieveFilters" style="display: none;">
-				<div>
-					<label for="ExpandEntity" class="CrudLabel" style="width: 72px;" title="Only possible to filter on 1 entity at a time">Filter</label>
-					<select id="ExpandEntity" class="Expand ui-corner-all"></select>
-				</div>
-				<table id="TableRetrieve">
+				<table id="TableCreateUpdate">
 					<thead>
 						<tr>
 							<th></th>
 							<th>Attribute</th>
-							<th style="width: 162px;">Operator</th>
-							<th style="width: 260px;">Value</th>
-							<th style="width: 56px;"></th>
-							<th style="width: 56px;"></th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-				<br />
-				<a href="#" id="AddRetrieve" class="AddAttribute">Add Attribute</a>
-				<a href="#" id="GroupAdd" class="Group">Group AND</a>
-				<a href="#" id="GroupOr" class="Group">Group OR</a>
-			</div>
-			<div id="OrderBy" style="display: none;">
-				<table id="TableOrderBy">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Order By (12 Max)</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-				<br />
-				<a href="#" id="AddOrder" class="AddAttribute">Add Order By</a>
-			</div>
-		</div>
-		<div id="CreateUpdate" class="Method" style="display: none;">
-			<div id="UpdateGUID" style="display: none;">
-				<label for="UpdateId" class="CrudLabel">Id To Update</label>
-				<input id="UpdateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<table id="TableCreateUpdate">
-				<thead>
-					<tr>
-						<th></th>
-						<th>Attribute</th>
-						<th>Value</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-			<br />
-			<a href="#" id="AddCreateUpdate" class="AddAttribute">Add Attribute</a>
-		</div>
-		<div id="Delete" class="Method" style="display: none;">
-			<label for="DeleteId" class="CrudLabel">Id To Delete</label>
-			<input id="DeleteId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-		</div>
-		<div id="AssociateDisassociate" class="Method" style="display: none;">
-			<div style="height: 40px;">
-				<div style="width: 275px; float: left;">
-					<b>Parent Type to Associate/Disassociate</b>
-				</div>
-				<select id="AssociateEntity1" class="ui-corner-all"></select>
-			</div>
-			<div style="height: 40px;">
-				<div style="width: 275px; float: left;">
-					<b>Parent Id To Associate/Disassociate</b>
-				</div>
-				<input id="AssociateId1" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<div style="height: 40px;">
-				<div style="width: 275px; float: left;">
-					<b>Child Type to Associate/Disassociate</b>
-				</div>
-				<select id="AssociateEntity2" class="ui-corner-all"></select>
-			</div>
-			<div style="height: 40px;">
-				<div style="width: 275px; float: left;">
-					<b>Child Id To Associate/Disassociate</b>
-				</div>
-				<input id="AssociateId2" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<div style="height: 40px;">
-				<div style="width: 275px; float: left;">
-					<b>Relationship Name</b>
-				</div>
-				<select id="AssociateRelationship" class="ui-corner-all"></select>
-			</div>
-		</div>
-		<div id="PredefinedQuery" class="Method" style="display: none;">
-			<div style="height: 40px;">
-				<label for="PredefinedQueryType" class="CrudLabel">Query Type</label>
-				<select id="PredefinedQueryType" class="ui-corner-all">
-					<option type="fetchXml">FetchXML</option>
-					<option type="savedQuery">Saved Query</option>
-					<option type="userQuery">User Query</option>
-				</select>
-			</div>
-			<div id="SavedUserQuery" style="display: none;">
-				<label for="QueryId" class="CrudLabel">Id To Retrieve</label>
-				<input id="QueryId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<div id="FetchXmlWrapper">
-				<div id="FetchXml">
-					<label for="Fetch" class="CrudLabel" style="float: left;">FetchXML Query</label>
-					<br />
-					<div style="width: 129px; float: left;"><a id="FormatFetch" href="#">Format</a></div>
-					<textarea id="Fetch" style="float: left;"></textarea>
-					<span><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
-				</div>
-			</div>
-		</div>
-		<div id="NextLink" class="Method" style="display: none;">
-			<div style="height: 40px;">
-				<label for="NextLinkUrl" class="CrudLabel">NextLink</label>
-				<input id="NextLinkUrl" class="Guid focus ui-corner-all" placeholder="@odata.nextLink url" />
-			</div>
-		</div>
-		<div id="Message" class="Method" style="display: none;">
-			<div id="ActionDefinition" style="display: none;">
-				<label for="Actions" class="CrudLabel">Action</label>
-				<select id="Actions" class="ui-corner-all"></select>
-				<a id="ActionReference" href="#">CRM SDK Action Reference</a>
-			</div>
-			<div id="FunctionDefinition" style="display: none;">
-				<label for="Functions" class="CrudLabel">Function</label>
-				<select id="Functions" class="ui-corner-all"></select>
-				<a id="FunctionReference" href="#">CRM SDK Function Reference</a>
-			</div>
-			<div id="TargetDefinition">
-				<label for="TargetId" class="CrudLabel">Id To Target</label>
-				<input id="TargetId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
-			</div>
-			<div style="width: 600px !important; clear: both;">
-				<table id="InputParameters">
-					<thead>
-						<tr>
-							<th>Parameter</th>
 							<th>Value</th>
-							<th>Optional</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody></tbody>
 				</table>
+				<br />
+				<a href="#" id="AddCreateUpdate" class="AddAttribute">Add Attribute</a>
+			</div>
+			<div id="Delete" class="Method">
+				<label for="DeleteId" class="CrudLabel">Id To Delete</label>
+				<input id="DeleteId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+			</div>
+			<div id="AssociateDisassociate" class="Method">
+				<div class="AssociateDisassociateOuter">
+					<div class="AssociateDisassociateInner">
+						<b>Parent Type to Associate/Disassociate</b>
+					</div>
+					<select id="AssociateEntity1" class="ui-corner-all"></select>
+				</div>
+				<div class="AssociateDisassociateOuter">
+					<div class="AssociateDisassociateInner">
+						<b>Parent Id To Associate/Disassociate</b>
+					</div>
+					<input id="AssociateId1" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				</div>
+				<div class="AssociateDisassociateOuter">
+					<div class="AssociateDisassociateInner">
+						<b>Child Type to Associate/Disassociate</b>
+					</div>
+					<select id="AssociateEntity2" class="ui-corner-all"></select>
+				</div>
+				<div class="AssociateDisassociateOuter">
+					<div class="AssociateDisassociateInner">
+						<b>Child Id To Associate/Disassociate</b>
+					</div>
+					<input id="AssociateId2" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				</div>
+				<div class="AssociateDisassociateOuter">
+					<div class="AssociateDisassociateInner">
+						<b>Relationship Name</b>
+					</div>
+					<select id="AssociateRelationship" class="ui-corner-all"></select>
+				</div>
+			</div>
+			<div id="PredefinedQuery" class="Method">
+				<div class="PredefinedQueryInner">
+					<label for="PredefinedQueryType" class="CrudLabel">Query Type</label>
+					<select id="PredefinedQueryType" class="ui-corner-all">
+						<option type="fetchXml">FetchXML</option>
+						<option type="savedQuery">Saved Query</option>
+						<option type="userQuery">User Query</option>
+					</select>
+				</div>
+				<div id="SavedUserQuery">
+					<label for="QueryId" class="CrudLabel">Id To Retrieve</label>
+					<input id="QueryId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				</div>
+				<div id="FetchXmlWrapper">
+					<div id="FetchXml">
+						<label for="Fetch" class="CrudLabel">FetchXML Query</label>
+						<br />
+						<div id="FormatFetchButton">
+							<a id="FormatFetch" href="#">Format</a>
+						</div>
+						<textarea id="Fetch"></textarea>
+						<span><em>Make sure any & ' " > < values inside quotes are already escaped - the FetchXML from CRM is already escaped when required</em></span>
+					</div>
+				</div>
+			</div>
+			<div id="NextLink" class="Method">
+				<div id="NextLinkInner">
+					<label for="NextLinkUrl" class="CrudLabel">NextLink</label>
+					<input id="NextLinkUrl" class="Guid focus ui-corner-all" placeholder="@odata.nextLink url" />
+				</div>
+			</div>
+			<div id="Message" class="Method">
+				<div id="ActionDefinition">
+					<label for="Actions" class="CrudLabel">Action</label>
+					<select id="Actions" class="ui-corner-all"></select>
+					<a id="ActionReference" href="#">CRM SDK Action Reference</a>
+				</div>
+				<div id="FunctionDefinition">
+					<label for="Functions" class="CrudLabel">Function</label>
+					<select id="Functions" class="ui-corner-all"></select>
+					<a id="FunctionReference" href="#">CRM SDK Function Reference</a>
+				</div>
+				<div id="TargetDefinition">
+					<label for="TargetId" class="CrudLabel">Id To Target</label>
+					<input id="TargetId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				</div>
+				<div id="MessageParameters">
+					<table id="InputParameters">
+						<thead>
+							<tr>
+								<th>Parameter</th>
+								<th>Value</th>
+								<th>Optional</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
 			</div>
 		</div>
-	</div>
-	<!--Output Section-->
-	<div id="Output" style="display: none;">
-		<a id="Back" href="#">Back</a>
-		<a id="Execute" href="#">Execute Code (Read-Only)</a>
-		<b>Beware - this will attempt to execute any code in this area!!!</b>
-		<br />
-		<div id="tabs">
-			<ul>
-				<li><a href="#Code">Code (Read-Only)</a></li>
-				<li><a href="#ResultsTab">Results</a></li>
-				<li><a href="#CodeEditor">Code (Editor)</a></li>
-				<li><a href="#Url">Url</a></li>
-			</ul>
-			<div id="Code">
-				<a id="CopyCode1" href="#" class="clipcode1">Copy Code</a>
-				<br /><br />
-				<textarea id="ScriptOutput" readonly></textarea>
-			</div>
-			<div id="ResultsTab">
-				<div>
-					<div id="ResultType">
-						<input id="ResultTypeTree" checked="checked" type="radio" value="tree" name="ResultType" />
-						<label for="ResultTypeTree" class="radio">Tree</label>
-						<input id="ResultTypePlain" type="radio" value="plain" name="ResultType" />
-						<label for="ResultTypePlain" class="radio">Plain Text</label>
+		<!--Output Section-->
+		<div id="Output">
+			<a id="Back" href="#">Back</a>
+			<a id="Execute" href="#">Execute Code (Read-Only)</a>
+			<b>Beware - this will attempt to execute any code in this area!!!</b>
+			<br />
+			<div id="tabs">
+				<ul>
+					<li><a href="#Code">Code (Read-Only)</a></li>
+					<li><a href="#ResultsTab">Results</a></li>
+					<li><a href="#CodeEditor">Code (Editor)</a></li>
+					<li><a href="#Url">Url</a></li>
+				</ul>
+				<div id="Code">
+					<a id="CopyCode1" href="#" class="clipcode1">Copy Code</a>
+					<br /><br />
+					<textarea id="ScriptOutput" readonly></textarea>
+				</div>
+				<div id="ResultsTab">
+					<div>
+						<div id="ResultType">
+							<input id="ResultTypeTree" checked="checked" type="radio" value="tree" name="ResultType" />
+							<label for="ResultTypeTree" class="radio">Tree</label>
+							<input id="ResultTypePlain" type="radio" value="plain" name="ResultType" />
+							<label for="ResultTypePlain" class="radio">Plain Text</label>
+						</div>
+						<a id="CopyResults" href="#" class="resultsclipboard">Copy Results</a>
+						<input type="checkbox" id="CleanResults" />
+						<label for="CleanResults">Clean Results</label>
 					</div>
-					<a id="CopyResults" href="#" class="resultsclipboard">Copy Results</a>
-					<input type="checkbox" id="CleanResults" />
-					<label for="CleanResults">Clean Results</label>
+					<div id="Results">
+						<pre id="ResponseObject"></pre>
+					</div>
 				</div>
-				<div id="Results">
-					<pre id="ResponseObject" style="display: none;"></pre>
+				<div id="CodeEditor">
+					<a id="CopyCode2" href="#" class="clipcode2">Copy Code</a>
+					<a id="FormatCode" href="#">Format</a>
+					<br /><br />
+					<textarea id="ScriptOutput2"></textarea>
 				</div>
-			</div>
-			<div id="CodeEditor">
-				<a id="CopyCode2" href="#" class="clipcode2">Copy Code</a>
-				<a id="FormatCode" href="#">Format</a>
-				<br /><br />
-				<textarea id="ScriptOutput2"></textarea>
-			</div>
-			<div id="Url" style="height: 600px;">
-				<div>
-					<a id="DisplayRetrieveUrl" href="#">Show Browser Output</a>
-					<a id="CopyUrl" href="#" class="urlclipboard">Copy Url</a>
-					<a id="CopyUrlResults" href="#" class="clipurlresult">Copy Results</a><span id="RetrieveUrlCount"></span>
-					<span id="RetrieveUrlWarning">Warning Internet Explorer Maximum URL Length of 2,048 Exceeded</span>
+				<div id="Url">
+					<div>
+						<a id="DisplayRetrieveUrl" href="#">Show Browser Output</a>
+						<a id="CopyUrl" href="#" class="urlclipboard">Copy Url</a>
+						<a id="CopyUrlResults" href="#" class="clipurlresult">Copy Results</a><span id="RetrieveUrlCount"></span>
+						<span id="RetrieveUrlWarning">Warning Internet Explorer Maximum URL Length of 2,048 Exceeded</span>
+					</div>
+					<br />
+					<div id="RetrieveUrlContainer">
+						<textarea id="RetrieveUrl"></textarea>
+					</div><br />
+					<textarea id="RetrieveUrlResult"></textarea>
 				</div>
-				<br />
-				<div id="RetrieveUrlContainer">
-					<textarea id="RetrieveUrl"></textarea>
-				</div><br />
-				<textarea id="RetrieveUrlResult"></textarea>
 			</div>
 		</div>
 	</div>
