@@ -3656,6 +3656,7 @@ Xrm.RESTBuilder.BuildObjectString_WebApi = function () {
 			case "Boolean":
 				js.push(Xrm.RESTBuilder.REST_Boolean(logical, sel1));
 				break;
+			case "State":
 			case "Status":
 			case "Picklist":
 				js.push(Xrm.RESTBuilder.REST_Picklist_WebApi(logical, sel1));
@@ -5606,6 +5607,7 @@ Xrm.RESTBuilder.Attribute_Change = function () {
 					Xrm.RESTBuilder.SortSelect($(tr).find("td:eq(2)").find("select"));
 					$(tr).find("td:eq(2)").find("select")[0].selectedIndex = -1;
 					break;
+				case "State":
 				case "Status":
 				case "Picklist":
 					var osItems1 = Xrm.RESTBuilder.CreateOptionsetSelects(attribute[0].OptionSet.Options);
