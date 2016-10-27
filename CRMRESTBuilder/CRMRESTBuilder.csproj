@@ -64,14 +64,14 @@
     <Content Include="css\smoothness\images\uiicons888888256x240.png" />
     <Content Include="css\smoothness\images\uiiconscd0a0a256x240.png" />
     <Content Include="css\smoothness\jqueryui1.10.3.custom.min.css" />
-    <Content Include="images\logo.png" />
+    <Content Include="images\logo16.png" />
+    <Content Include="images\logo32.png" />
     <Content Include="packages.config" />
     <Content Include="scripts\beautify.min.js" />
     <Content Include="scripts\clipboard.min.js" />
     <Content Include="scripts\codemirror.js" />
     <Content Include="scripts\esprima.js" />
     <Content Include="scripts\javascript.js" />
-    <Content Include="scripts\javascripthint.js" />
     <Content Include="scripts\jquery.blockUI.js" />
     <Content Include="scripts\jqueryui1.10.3.min.js" />
     <Content Include="scripts\jquery1.9.1.min.js" />
@@ -81,7 +81,6 @@
     <Content Include="scripts\SDK.REST.js" />
     <Content Include="scripts\Sdk.RetrieveMetadataChanges.js" />
     <Content Include="scripts\Sdk.Soap.min.js" />
-    <Content Include="scripts\showhint.js" />
     <Content Include="scripts\vkbeautify.min.js" />
     <Content Include="scripts\xml.js" />
     <Content Include="scripts\Xrm.RESTBuilder.js" />
