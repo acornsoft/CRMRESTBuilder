@@ -71,6 +71,7 @@
     <Content Include="scripts\codemirror.js" />
     <Content Include="scripts\esprima.js" />
     <Content Include="scripts\javascript.js" />
+    <Content Include="scripts\javascripthint.js" />
     <Content Include="scripts\jquery.blockUI.js" />
     <Content Include="scripts\jqueryui1.10.3.min.js" />
     <Content Include="scripts\jquery1.9.1.min.js" />
@@ -80,6 +81,7 @@
     <Content Include="scripts\SDK.REST.js" />
     <Content Include="scripts\Sdk.RetrieveMetadataChanges.js" />
     <Content Include="scripts\Sdk.Soap.min.js" />
+    <Content Include="scripts\showhint.js" />
     <Content Include="scripts\vkbeautify.min.js" />
     <Content Include="scripts\xml.js" />
     <Content Include="scripts\Xrm.RESTBuilder.js" />

@@ -4678,6 +4678,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#ui-accordion-Accordion-header-3").show();
 		$("#ExpandEntity").prop("disabled", false);
 		$("#WebApiVersion").prop("disabled", true);
+		$("#TypeRetrieveNextLink").button("option", "disabled", true);
 
 		$("#PredefinedQuery").hide();
 		if (Xrm.RESTBuilder.Type === "PredefinedQuery" || Xrm.RESTBuilder.Type === "Action") {
@@ -4685,10 +4686,12 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 			Xrm.RESTBuilder.Type_Change();
 		}
 
-		$("#LibrarySDKJQ").button("option", "disabled", true);
-		if ($("#LibrarySDKJQ").is(":checked")) {
-			$("#LibrarySDKJQ").prop("checked", "false").button("refresh");
-			$("#LibraryJQ").prop("checked", "true").button("refresh");
+		if (Xrm.RESTBuilder.Type === "Associate" || Xrm.RESTBuilder.Type === "Disassociate") {
+			$("#LibrarySDKJQ").button("option", "disabled", true);
+			if ($("#LibrarySDKJQ").is(":checked")) {
+				$("#LibrarySDKJQ").prop("checked", "false").button("refresh");
+				$("#LibraryJQ").prop("checked", "true").button("refresh");
+			}
 		}
 
 		Xrm.RESTBuilder.DisplaySelfReferencingNtoN();
@@ -4714,6 +4717,8 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#RetrieveSkip").hide();
 		$("#Count").show();
 		$("#WebApiVersion").prop("disabled", false);
+		$("#TypeRetrieveNextLink").button("option", "disabled", false);
+
 		if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
 			//Web API - expands on relationships aren't currently supported in 8.0
 			if ($("#WebApiVersion").val() === "8.0") { //Expands are allowed in 8.1+
