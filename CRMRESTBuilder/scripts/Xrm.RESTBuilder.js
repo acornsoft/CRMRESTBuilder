@@ -4668,6 +4668,12 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 			Xrm.RESTBuilder.Type_Change();
 		}
 
+		$("#LibrarySDKJQ").button("option", "disabled", true);
+		if ($("#LibrarySDKJQ").is(":checked")) {
+			$("#LibrarySDKJQ").prop("checked", "false").button("refresh");
+			$("#LibraryJQ").prop("checked", "true").button("refresh");
+		}
+
 		Xrm.RESTBuilder.DisplaySelfReferencingNtoN();
 		Xrm.RESTBuilder.DisplaySelfReferencingAssociateNtoN();
 
