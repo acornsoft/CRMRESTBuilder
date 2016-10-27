@@ -221,7 +221,7 @@ Xrm.RESTBuilder.CreateBackButton = function () {
 	});
 };
 
-Xrm.RESTBuilder.CreateActionReferenceButton = function() {
+Xrm.RESTBuilder.CreateActionReferenceButton = function () {
 	$("#ActionReference").button({
 		icons: { primary: "ui-icon-info" },
 		text: false
@@ -1027,74 +1027,74 @@ Xrm.RESTBuilder.CreateInputParameters = function (item) {
 
 Xrm.RESTBuilder.Associate_XST = function () {
 	var js = [];
-	js.push("XrmServiceToolkit.Rest.Associate(\n");
-	js.push("    \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "Set\",\n");
-	js.push("    \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity2 option:selected").text() + "Set\",\n");
-	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    function () {\n");
+	js.push("XrmServiceToolkit.Rest.Associate(");
+	js.push("    \"" + $("#AssociateId1").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "Set\",");
+	js.push("    \"" + $("#AssociateId2").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity2 option:selected").text() + "Set\",");
+	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_SDK = function () {
 	var js = [];
-	js.push("SDK.REST.associateRecords(\n");
-	js.push("    \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "\",\n");
-	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity2 option:selected").text() + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.REST.associateRecords(");
+	js.push("    \"" + $("#AssociateId1").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "\",");
+	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    \"" + $("#AssociateId2").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity2 option:selected").text() + "\",");
+	js.push("    function() {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XMLHTTP = function () {
 	var js = [];
-	js.push("var association = {};\n");
+	js.push("var association = {};");
 	js.push("association.uri = Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity2 option:selected").text() +
-        "Set(guid'" + $("#AssociateId2").val() + "')\";\n\n");
-	js.push("var req = new XMLHttpRequest();\n");
+        "Set(guid'" + $("#AssociateId2").val() + "')\";");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity1 option:selected").text() +
         "Set(guid'" + $("#AssociateId1").val() + "')/$links/" + $("#AssociateRelationship option:selected").val() +
-        "\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
+        "\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(association));");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
@@ -1102,36 +1102,36 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 	js.push("var association = {");
 	js.push("\"@odata.id\": Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
 	    "(" + $("#AssociateId2").val() + ")\"");
-	js.push("};\n");
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("};");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
-	    "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+	    "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(association));");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
@@ -1139,941 +1139,941 @@ Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
 	js.push("var association = {");
 	js.push("\"@odata.id\": Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity2 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId2").val() + ")\"");
-	js.push("};\n");
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("};");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
-                    "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\",\n");
-	js.push("    data: JSON.stringify(association),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+                    "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "/$ref\",");
+	js.push("    data: JSON.stringify(association),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_jQuery = function () {
 	var js = [];
-	js.push("var association = {};\n");
+	js.push("var association = {};");
 	js.push("association.uri = Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity2 option:selected").text() +
-        "Set(guid'" + $("#AssociateId2").val() + "')\";\n\n");
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+        "Set(guid'" + $("#AssociateId2").val() + "')\";");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity1 option:selected").text() +
-                    "Set(guid'" + $("#AssociateId1").val() + "')/$links/" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    data: JSON.stringify(association),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+                    "Set(guid'" + $("#AssociateId1").val() + "')/$links/" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    data: JSON.stringify(association),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XSVC = function () {
 	var js = [];
-	js.push("XrmSvcToolkit.associate({\n");
-	js.push("    entity1Name: \"" + $("#AssociateEntity1 option:selected").text() + "\",\n");
-	js.push("    entity1Id: \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    entity2Name: \"" + $("#AssociateEntity2 option:selected").text() + "\",\n");
-	js.push("    entity2Id: \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    relationshipName: \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function () {\n");
+	js.push("XrmSvcToolkit.associate({");
+	js.push("    entity1Name: \"" + $("#AssociateEntity1 option:selected").text() + "\",");
+	js.push("    entity1Id: \"" + $("#AssociateId1").val() + "\",");
+	js.push("    entity2Name: \"" + $("#AssociateEntity2 option:selected").text() + "\",");
+	js.push("    entity2Id: \"" + $("#AssociateId2").val() + "\",");
+	js.push("    relationshipName: \"" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XST = function () {
 	var js = [];
-	js.push("XrmServiceToolkit.Rest.Disassociate(\n");
-	js.push("    \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "Set\",\n");
-	js.push("    \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
+	js.push("XrmServiceToolkit.Rest.Disassociate(");
+	js.push("    \"" + $("#AssociateId1").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "Set\",");
+	js.push("    \"" + $("#AssociateId2").val() + "\",");
+	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",");
 	js.push("    function () {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    function (error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_SDK = function () {
 	var js = [];
-	js.push("SDK.REST.disassociateRecords(\n");
-	js.push("    \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "\",\n");
-	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.REST.disassociateRecords(");
+	js.push("    \"" + $("#AssociateId1").val() + "\",");
+	js.push("    \"" + $("#AssociateEntity1 option:selected").text() + "\",");
+	js.push("    \"" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    \"" + $("#AssociateId2").val() + "\",");
+	js.push("    function() {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XMLHTTP = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity1 option:selected").text() +
         "Set(guid'" + $("#AssociateId1").val() + "')/$links/" + $("#AssociateRelationship option:selected").val() +
-        "(guid'" + $("#AssociateId2").val() + "')\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
+        "(guid'" + $("#AssociateId2").val() + "')\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XMLHTTP_WebApi = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
         "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "(" +
-        $("#AssociateId2").val() + ")/$ref\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+        $("#AssociateId2").val() + ")/$ref\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_jQuery_WebApi = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"DELETE\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"DELETE\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + $("#AssociateEntity1 option:selected").attr("entitysetname") +
                     "(" + $("#AssociateId1").val() + ")/" + $("#AssociateRelationship option:selected").attr("webapivalue") + "(" +
-                    $("#AssociateId2").val() + ")/$ref\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+                    $("#AssociateId2").val() + ")/$ref\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_jQuery = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + $("#AssociateEntity1 option:selected").text() +
                     "Set(guid'" + $("#AssociateId1").val() + "')/$links/" + $("#AssociateRelationship option:selected").val() + "(guid'" +
-                    $("#AssociateId2").val() + "')\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+                    $("#AssociateId2").val() + "')\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XSVC = function () {
 	var js = [];
-	js.push("XrmSvcToolkit.disassociate({\n");
-	js.push("    entity1Name: \"" + $("#AssociateEntity1 option:selected").text() + "\",\n");
-	js.push("    entity1Id: \"" + $("#AssociateId1").val() + "\",\n");
-	js.push("    entity2Name: \"" + $("#AssociateEntity2 option:selected").text() + "\",\n");
-	js.push("    entity2Id: \"" + $("#AssociateId2").val() + "\",\n");
-	js.push("    relationshipName: \"" + $("#AssociateRelationship option:selected").val() + "\",\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function () {\n");
+	js.push("XrmSvcToolkit.disassociate({");
+	js.push("    entity1Name: \"" + $("#AssociateEntity1 option:selected").text() + "\",");
+	js.push("    entity1Id: \"" + $("#AssociateId1").val() + "\",");
+	js.push("    entity2Name: \"" + $("#AssociateEntity2 option:selected").text() + "\",");
+	js.push("    entity2Id: \"" + $("#AssociateId2").val() + "\",");
+	js.push("    relationshipName: \"" + $("#AssociateRelationship option:selected").val() + "\",");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XST = function () {
 	var js = [];
-	js.push("XrmServiceToolkit.Rest.Delete(\n");
-	js.push("    \"" + $("#DeleteId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
-	js.push("    function () {\n");
+	js.push("XrmServiceToolkit.Rest.Delete(");
+	js.push("    \"" + $("#DeleteId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",");
+	js.push("    function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_SDK = function () {
 	var js = [];
-	js.push("SDK.REST.deleteRecord(\n");
-	js.push("    \"" + $("#DeleteId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.REST.deleteRecord(");
+	js.push("    \"" + $("#DeleteId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function() {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XMLHTTP = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema +
-       "Set(guid'" + $("#DeleteId").val() + "')\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
+       "Set(guid'" + $("#DeleteId").val() + "')\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XMLHTTP_WebApi = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"DELETE\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" +
-        $("#DeleteId").val() + ")\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
+        $("#DeleteId").val() + ")\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_jQuery_WebApi = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"DELETE\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" + $("#DeleteId").val() + ")\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("$.ajax({");
+	js.push("    type: \"DELETE\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" + $("#DeleteId").val() + ")\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_jQuery = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#DeleteId").val() + "')\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#DeleteId").val() + "')\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"DELETE\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_SDKJQ = function () {
 	var js = [];
-	js.push("SDK.JQuery.deleteRecord(\n");
-	js.push("    \"" + $("#DeleteId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.JQuery.deleteRecord(");
+	js.push("    \"" + $("#DeleteId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function() {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XSVC = function () {
 	var js = [];
-	js.push("XrmSvcToolkit.deleteRecord({\n");
-	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    id: \"" + $("#DeleteId").val() + "\",\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function () {\n");
+	js.push("XrmSvcToolkit.deleteRecord({");
+	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    id: \"" + $("#DeleteId").val() + "\",");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XST = function (js) {
-	js.push("XrmServiceToolkit.Rest.Create(\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
-	js.push("    function (result) {\n");
-	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("XrmServiceToolkit.Rest.Create(");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",");
+	js.push("    function(result) {");
+	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_SDK = function (js) {
-	js.push("SDK.REST.createRecord(\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function (result) {\n");
-	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("SDK.REST.createRecord(");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function(result) {");
+	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_jQuery = function (js) {
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
-	js.push("    data: JSON.stringify(entity),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var result = data.d;\n");
-	js.push("        var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set\",");
+	js.push("    data: JSON.stringify(entity),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var result = data.d;");
+	js.push("        var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var result = data.d;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var result = data.d;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_SDKJQ = function (js) {
-	js.push("SDK.JQuery.createRecord(\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function (result) {\n");
-	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("SDK.JQuery.createRecord(");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function(result) {");
+	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", encodeURI(Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" +
-        Xrm.RESTBuilder.EntitySchema + "Set\"), " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
-	js.push("        if (this.status === 201) {\n");
-	js.push("            var result = JSON.parse(this.responseText).d;\n");
-	js.push("            var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+        Xrm.RESTBuilder.EntitySchema + "Set\"), " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
+	js.push("        if (this.status === 201) {");
+	js.push("            var result = JSON.parse(this.responseText).d;");
+	js.push("            var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var result = JSON.parse(this.responseText).d;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.responseText).d;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
-	js.push("var req = new XMLHttpRequest();\n");
-	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push("var req = new XMLHttpRequest();");
+	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
-	js.push("        if (this.status === 204) {\n");
-	js.push("            var uri = this.getResponseHeader(\"OData-EntityId\");\n");
-	js.push("            var regExp = \/\\(([^)]+)\\)\/;\n");
-	js.push("            var matches = regExp.exec(uri);\n");
-	js.push("            var newEntityId = matches[1];\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
+	js.push("        if (this.status === 204) {");
+	js.push("            var uri = this.getResponseHeader(\"OData-EntityId\");");
+	js.push("            var regExp = \/\\(([^)]+)\\)\/;");
+	js.push("            var matches = regExp.exec(uri);");
+	js.push("            var newEntityId = matches[1];");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var uri = this.getResponseHeader(\"OData-EntityId\");\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var uri = this.getResponseHeader(\"OData-EntityId\");";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
-	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\",\n");
-	js.push("    data: JSON.stringify(entity),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
+	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "\",");
+	js.push("    data: JSON.stringify(entity),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var uri = xhr.getResponseHeader(\"OData-EntityId\");\n");
-	js.push("        var regExp = \/\\(([^)]+)\\)\/;\n");
-	js.push("        var matches = regExp.exec(uri);\n");
-	js.push("        var newEntityId = matches[1];\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var uri = xhr.getResponseHeader(\"OData-EntityId\");");
+	js.push("        var regExp = \/\\(([^)]+)\\)\/;");
+	js.push("        var matches = regExp.exec(uri);");
+	js.push("        var newEntityId = matches[1];");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var uri = xhr.getResponseHeader(\"OData-EntityId\");\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var uri = xhr.getResponseHeader(\"OData-EntityId\");";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XSVC = function (js) {
-	js.push("XrmSvcToolkit.createRecord({\n");
-	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    entity: entity,\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function (result) {\n");
-	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;\n");
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("XrmSvcToolkit.createRecord({");
+	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    entity: entity,");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function(result) {");
+	js.push("         var newEntityId = result." + $("select[id=EntityList]").val() + "Id;");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XST = function (js) {
-	js.push("XrmServiceToolkit.Rest.Update(\n");
-	js.push("    \"" + $("#UpdateId").val() + "\",\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
-	js.push("    function () {\n");
+	js.push("XrmServiceToolkit.Rest.Update(");
+	js.push("    \"" + $("#UpdateId").val() + "\",");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",");
+	js.push("    function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_SDK = function (js) {
-	js.push("SDK.REST.updateRecord(\n");
-	js.push("    \"" + $("#UpdateId").val() + "\",\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.REST.updateRecord(");
+	js.push("    \"" + $("#UpdateId").val() + "\",");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_jQuery = function (js) {
 	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" +
-        Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#UpdateId").val() + "')\",\n");
-	js.push("    data: JSON.stringify(entity),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"MERGE\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+        Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#UpdateId").val() + "')\",");
+	js.push("    data: JSON.stringify(entity),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"X-HTTP-Method\", \"MERGE\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_SDKJQ = function (js) {
-	js.push("SDK.JQuery.updateRecord(\n");
-	js.push("    \"" + $("#UpdateId").val() + "\",\n");
-	js.push("    entity,\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    function () {\n");
+	js.push("SDK.JQuery.updateRecord(");
+	js.push("    \"" + $("#UpdateId").val() + "\",");
+	js.push("    entity,");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XMLHTTP = function (js) {
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema +
-        "Set(guid'" + $("#UpdateId").val() + "')\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"MERGE\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
+        "Set(guid'" + $("#UpdateId").val() + "')\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.setRequestHeader(\"X-HTTP-Method\", \"MERGE\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
 	js.push("        if (this.status === 204 || this.status === 1223) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "        if (this.status === 204 || this.status === 1223) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"PATCH\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName + "(" +
-        $("#UpdateId").val() + ")\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+        $("#UpdateId").val() + ")\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	js.push("        if (this.status === 204) {\n");
 	js.push("            //Success - No Return Data - Do Something\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "            //Success - No Return Data - Do Something\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
-	js.push("$.ajax({\n");
-	js.push("    type: \"PATCH\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"PATCH\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
-        Xrm.RESTBuilder.EntitySetName + "(" + $("#UpdateId").val() + ")\",\n");
-	js.push("    data: JSON.stringify(entity),\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+        Xrm.RESTBuilder.EntitySetName + "(" + $("#UpdateId").val() + ")\",");
+	js.push("    data: JSON.stringify(entity),");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {\n");
 	js.push("        //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    success: function (data, textStatus, xhr) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XSVC = function (js) {
-	js.push("XrmSvcToolkit.updateRecord({\n");
-	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    id: \"" + $("#UpdateId").val() + "\",\n");
-	js.push("    entity: entity,\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function () {\n");
+	js.push("XrmSvcToolkit.updateRecord({");
+	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    id: \"" + $("#UpdateId").val() + "\",");
+	js.push("    entity: entity,");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function() {\n");
 	js.push("         //Success - No Return Data - Do Something\n");
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function () {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XST = function (selects, expand) {
 	var js = [];
-	js.push("XrmServiceToolkit.Rest.Retrieve(\n");
-	js.push("    \"" + $("#RetrieveId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
+	js.push("XrmServiceToolkit.Rest.Retrieve(");
+	js.push("    \"" + $("#RetrieveId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, null, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$select=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
 	seft = Xrm.RESTBuilder.BuildRESTString(null, expand, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$expand=", "").replace("&$expand=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",\n");
-	js.push("    function (result) {\n");
+	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",");
+	js.push("    function(result) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 9));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_SDK = function (selects, expand) {
 	var js = [];
-	js.push("SDK.REST.retrieveRecord(\n");
-	js.push("    \"" + $("#RetrieveId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
+	js.push("SDK.REST.retrieveRecord(");
+	js.push("    \"" + $("#RetrieveId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, null, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$select=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
 	seft = Xrm.RESTBuilder.BuildRESTString(null, expand, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$expand=", "").replace("&$expand=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",\n");
-	js.push("    function (result) {\n");
+	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",");
+	js.push("    function(result) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" +
         Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#RetrieveId").val() + "')");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
 	js.push(((seft === null) ? "" : seft) + "\", ");
-	js.push(Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var result = JSON.parse(this.responseText).d;\n");
+	js.push(Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var result = JSON.parse(this.responseText).d;");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 12));
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var result = JSON.parse(this.responseText).d;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.responseText).d;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", \"" + $("#NextLinkUrl").val() + "\"");
-	js.push(", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push(", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("req.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2082,46 +2082,46 @@ Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi = function () {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var results = JSON.parse(this.response);\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var results = JSON.parse(this.response);");
 	js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 12));
-	js.push("        }\n");
+	js.push("        }");
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        else if (this.status === 304) {\n");
 		js.push("            //Handle data not changed\n");
-		js.push("        }\n");
+		js.push("        }");
 	}
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.NoChangeReplaceLine = "        else if (this.status === 304) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "else if (this.status === 304) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
-	js.push("    url: \"" + $("#NextLinkUrl").val() + "\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
+	js.push("    url: \"" + $("#NextLinkUrl").val() + "\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2130,53 +2130,53 @@ Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi = function () {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        if (xhr.status === 304) {\n");
 		js.push("            //Handle data not changed\n");
-		js.push("        }\n");
-		js.push("        else {\n");
-		js.push("            var results = data;\n");
+		js.push("        }");
+		js.push("        else {");
+		js.push("            var results = data;");
 		js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 12));
-		js.push("        }\n");
+		js.push("        }");
 	} else {
-		js.push("        var results = data;\n");
+		js.push("        var results = data;");
 		js.push(Xrm.RESTBuilder.GenerateResultVarsNextLink_WebApi($("#NextLinkUrl").val(), 8));
 	}
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
 	if (Xrm.RESTBuilder.DetectChanges) {
-		Xrm.RESTBuilder.ReplaceLine = "            var results = data;\n";
+		Xrm.RESTBuilder.ReplaceLine = "var results = data;";
 	} else {
-		Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
+		Xrm.RESTBuilder.ReplaceLine = "var results = data;";
 	}
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.NoChangeReplaceLine = "        if (xhr.status === 304) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "if (xhr.status === 304) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
         Xrm.RESTBuilder.EntitySetName + "(" + $("#RetrieveId").val() + ")");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
 	js.push(((seft === null) ? "" : seft) + "\", ");
-	js.push(Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push(Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("req.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2185,49 +2185,49 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var result = JSON.parse(this.response);\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var result = JSON.parse(this.response);");
 	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 12));
-	js.push("        }\n");
+	js.push("        }");
 	if (Xrm.RESTBuilder.DetectChanges) {
-		js.push("        else if (this.status === 304) {\n");
+		js.push("        else if (this.status === 304) {");
 		js.push("            //Handle data not changed\n");
-		js.push("        }\n");
+		js.push("        }");
 	}
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var result = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.NoChangeReplaceLine = "        else if (this.status === 304) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "else if (this.status === 304) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" +
         Xrm.RESTBuilder.EntitySetName + "(" + $("#RetrieveId").val() + ")");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
-	js.push(((seft === null) ? "" : seft) + "\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push(((seft === null) ? "" : seft) + "\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2236,100 +2236,100 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
 	if (Xrm.RESTBuilder.DetectChanges) {
-		js.push("        if (xhr.status === 304) {\n");
+		js.push("        if (xhr.status === 304) {");
 		js.push("            //Handle data not changed\n");
-		js.push("        }\n");
-		js.push("        else {\n");
-		js.push("            var result = data;\n");
+		js.push("        }");
+		js.push("        else {");
+		js.push("            var result = data;");
 		js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 12));
-		js.push("        }\n");
+		js.push("        }");
 	} else {
-		js.push("        var result = data;\n");
+		js.push("        var result = data;");
 		js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 8));
 	}
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
 	if (Xrm.RESTBuilder.DetectChanges) {
-		Xrm.RESTBuilder.ReplaceLine = "            var result = data;\n";
+		Xrm.RESTBuilder.ReplaceLine = "var result = data;";
 	} else {
-		Xrm.RESTBuilder.ReplaceLine = "        var result = data;\n";
+		Xrm.RESTBuilder.ReplaceLine = "var result = data;";
 	}
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.NoChangeReplaceLine = "        if (xhr.status === 304) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.NoChangeReplaceLine = "if (xhr.status === 304) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_jQuery = function (selects, expand) {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" +
         Xrm.RESTBuilder.EntitySchema + "Set(guid'" + $("#RetrieveId").val() + "')");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, null, null, null, null);
-	js.push(((seft === null) ? "" : seft) + "\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var result = data.d;\n");
+	js.push(((seft === null) ? "" : seft) + "\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var result = data.d;");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var result = data.d;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var result = data.d;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_SDKJQ = function (selects, expand) {
 	var js = [];
-	js.push("SDK.JQuery.retrieveRecord(\n");
-	js.push("    \"" + $("#RetrieveId").val() + "\",\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
+	js.push("SDK.JQuery.retrieveRecord(");
+	js.push("    \"" + $("#RetrieveId").val() + "\",");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, null, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$select=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
 	seft = Xrm.RESTBuilder.BuildRESTString(null, expand, null, null, null, null);
 	if (seft !== null && seft !== undefined) {
 		seft = seft.replace("?$expand=", "").replace("&$expand=", "");
 	}
-	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",\n");
-	js.push("    function (result) {\n");
+	js.push("    " + ((seft === null) ? "null" : "'" + seft + "'") + ",");
+	js.push("    function(result) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
 	var js = [];
-	js.push("XrmSvcToolkit.retrieve({\n");
-	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
-	js.push("    id: \"" + $("#RetrieveId").val() + "\",\n");
+	js.push("XrmSvcToolkit.retrieve({");
+	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",");
+	js.push("    id: \"" + $("#RetrieveId").val() + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, null, null, null, null, null);
 	var selectItems = [];
 	if (seft !== null && seft !== undefined) {
@@ -2339,7 +2339,7 @@ Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
 			selectItems[i] = "\"" + s[i] + "\"";
 		}
 	}
-	js.push("    select: [ " + ((seft === null) ? "null" : selectItems.join(",")) + " ],\n");
+	js.push("    select: [ " + ((seft === null) ? "null" : selectItems.join(",")) + " ],");
 	seft = Xrm.RESTBuilder.BuildRESTString(null, expand, null, null, null, null);
 	var expandItems = [];
 	if (seft !== null && seft !== undefined) {
@@ -2349,254 +2349,254 @@ Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
 			expandItems[j] = "\"" + e[j] + "\"";
 		}
 	}
-	js.push("    expand: [ " + ((seft === null) ? "null" : "'" + seft + "'") + " ],\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function (result) {\n");
+	js.push("    expand: [ " + ((seft === null) ? "null" : "'" + seft + "'") + " ],");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function(result) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 9));
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function (result) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function(result) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XST = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("XrmServiceToolkit.Rest.RetrieveMultiple(\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",\n");
+	js.push("XrmServiceToolkit.Rest.RetrieveMultiple(");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "Set\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
-	js.push("    function (results) {\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
+	js.push("    function(results) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    function () {\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    function() {\n");
 	js.push("         //On Complete - Do Something\n");
-	js.push("    },\n");
-	js.push("    " + Xrm.RESTBuilder.Async + "\n");
+	js.push("    },");
+	js.push("    " + Xrm.RESTBuilder.Async + "");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (results) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_SDK = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("SDK.REST.retrieveMultipleRecords(\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
+	js.push("SDK.REST.retrieveMultipleRecords(");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
-	js.push("    function (results) {\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
+	js.push("    function(results) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    function () {\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    function() {\n");
 	js.push("         //On Complete - Do Something\n");
-	js.push("    }\n");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (results) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
 	js.push(((seft === null) ? "" : seft) + "\", ");
-	js.push(Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        this.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var returned = JSON.parse(this.responseText).d;\n");
-	js.push("            var results = returned.results;\n");
+	js.push(Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        this.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var returned = JSON.parse(this.responseText).d;");
+	js.push("            var results = returned.results;");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 12));
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            " + Xrm.RESTBuilder.Alert() + "(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = returned.results;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = returned.results;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, filter, top, orderby, count) {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	var seft = Xrm.RESTBuilder.BuildRESTString_WebApi(selects, expand, filter, orderby, count);
 	js.push(((seft === null) ? "" : seft) + "\", ");
-	js.push(Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push(Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");");
 	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"" + top + "\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"" + top + "\");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var results = JSON.parse(this.response);\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var results = JSON.parse(this.response);");
 	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 12));
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filter, top, orderby, count) {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	var seft = Xrm.RESTBuilder.BuildRESTString_WebApi(selects, expand, filter, orderby, count);
-	js.push(((seft === null) ? "" : seft) + "\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push(((seft === null) ? "" : seft) + "\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");");
 	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
 	}
 	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"" + top + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"" + top + "\");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data;\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var results = data;");
 	js.push(Xrm.RESTBuilder.GenerateResultVars_WebApi(selects, expand, 8));
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_jQuery = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/XRMServices/2011/OrganizationData.svc/" + Xrm.RESTBuilder.EntitySchema + "Set");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
-	js.push(((seft === null) ? "" : seft) + "\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data.d.results;\n");
+	js.push(((seft === null) ? "" : seft) + "\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var results = data.d.results;");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 8));
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        " + Xrm.RESTBuilder.Alert() + "(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data.d.results;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = data.d.results;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_SDKJQ = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("SDK.JQuery.retrieveMultipleRecords(\n");
-	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
+	js.push("SDK.JQuery.retrieveMultipleRecords(");
+	js.push("    \"" + Xrm.RESTBuilder.EntitySchema + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
-	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
-	js.push("    function (results) {\n");
+	js.push("    " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
+	js.push("    function(results) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
-	js.push("    },\n");
-	js.push("    function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    },\n");
-	js.push("    function () {\n");
+	js.push("    },");
+	js.push("    function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    },");
+	js.push("    function() {\n");
 	js.push("         //On Complete - Do Something\n");
-	js.push("    }\n");
+	js.push("    }");
 	js.push(");");
 
-	Xrm.RESTBuilder.ReplaceLine = "    function (results) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XSVC = function (selects, expand, filter, top, orderby, skip) {
 	var js = [];
-	js.push("XrmSvcToolkit.retrieveMultiple({\n");
-	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",\n");
+	js.push("XrmSvcToolkit.retrieveMultiple({");
+	js.push("    entityName: \"" + Xrm.RESTBuilder.EntitySchema + "\",");
 	var seft = Xrm.RESTBuilder.BuildRESTString(selects, expand, filter, top, orderby, skip);
-	js.push("    odataQuery: " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    successCallback: function (results) {\n");
+	js.push("    odataQuery: " + ((seft === null) ? "null" : "\"" + seft + "\"") + ",");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    successCallback: function(results) {");
 	js.push(Xrm.RESTBuilder.GenerateResultVars(selects, 4));
-	js.push("    },\n");
-	js.push("    errorCallback: function (error) {\n");
-	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    errorCallback: function(error) {");
+	js.push("         " + Xrm.RESTBuilder.Alert() + "(error.message);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "    successCallback: function (results) {\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    errorCallback: function (error) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "successCallback: function(results) {";
+	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 	var js = [];
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	js.push("?" + $("#PredefinedQueryType option:selected").attr("type") + "=");
 	if ($("#PredefinedQueryType").val() === "FetchXML") {
@@ -2604,43 +2604,43 @@ Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 	} else {
 		js.push($("#QueryId").val());
 	}
-	js.push("\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
-	js.push("        if (this.status === 200) {\n");
-	js.push("            var results = JSON.parse(this.response);\n");
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
+	js.push("        if (this.status === 200) {");
+	js.push("            var results = JSON.parse(this.response);");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	js.push("req.send();");
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 	var js = [];
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/" + Xrm.RESTBuilder.EntitySetName);
 	js.push("?" + $("#PredefinedQueryType option:selected").attr("type") + "=");
 	if ($("#PredefinedQueryType").val() === "FetchXML") {
@@ -2648,213 +2648,213 @@ Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 	} else {
 		js.push($("#QueryId").val());
 	}
-	js.push("\",\n");
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("\",");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data.value;\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var results = data.value;");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data.value;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = data.value;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 	var js = [];
 	js.push(parameters);
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"POST\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (action.Entity === "none") { //Unbound
 		js.push(action.Name);
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + action.Name);
 	}
-	js.push("\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push("\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	if (action.ReturnTypes.length > 0) {
-		js.push("        if (this.status === 200) {\n");
-		js.push("            var results = JSON.parse(this.response);\n");
+		js.push("        if (this.status === 200) {");
+		js.push("            var results = JSON.parse(this.response);");
 	} else {
-		js.push("        if (this.status === 204) {\n");
-		js.push("            //Success - No Return Data - Do Something\n");
+		js.push("        if (this.status === 204) {");
+		js.push("            //Success - No Return Data - Do Something");
 	}
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	if (parameters) {
 		js.push("req.send(JSON.stringify(parameters));");
 	} else {
 		js.push("req.send();");
 	}
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
 	var js = [];
 	js.push(parameters);
-	js.push("$.ajax({\n");
-	js.push("    type: \"POST\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"POST\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (action.Entity === "none") { // Unbound
 		js.push(action.Name);
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + action.Name);
 	}
-	js.push("\",\n");
+	js.push("\",");
 	if (parameters) {
-		js.push("    data: JSON.stringify(parameters),\n");
+		js.push("    data: JSON.stringify(parameters),");
 	}
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data;\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var results = data;");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 	var js = [];
 	js.push(parameters);
-	js.push("var req = new XMLHttpRequest();\n");
+	js.push("var req = new XMLHttpRequest();");
 	js.push("req.open(\"GET\", Xrm.Page.context.getClientUrl() + \"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (func.Entity === "none") { //Unbound
 		js.push(func.Name + "()");
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + func.Name);
 	}
-	js.push("\", " + Xrm.RESTBuilder.Async + ");\n");
-	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("req.setRequestHeader(\"Accept\", \"application/json\");\n");
-	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");\n");
+	js.push("\", " + Xrm.RESTBuilder.Async + ");");
+	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
+	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("req.onreadystatechange = function () {\n");
-	js.push("    if (this.readyState === 4) {\n");
-	js.push("        req.onreadystatechange = null;\n");
+	js.push("req.onreadystatechange = function() {");
+	js.push("    if (this.readyState === 4) {");
+	js.push("        req.onreadystatechange = null;");
 	if (func.ReturnTypes.length > 0) {
-		js.push("        if (this.status === 200) {\n");
-		js.push("            var results = JSON.parse(this.response);\n");
+		js.push("        if (this.status === 200) {");
+		js.push("            var results = JSON.parse(this.response);");
 	} else {
-		js.push("        if (this.status === 204) {\n");
-		js.push("            //Success - No Return Data - Do Something\n");
+		js.push("        if (this.status === 204) {");
+		js.push("            //Success - No Return Data - Do Something");
 	}
-	js.push("        }\n");
-	js.push("        else {\n");
-	js.push("            Xrm.Utility.alertDialog(this.statusText);\n");
-	js.push("        }\n");
-	js.push("    }\n");
-	js.push("};\n");
+	js.push("        }");
+	js.push("        else {");
+	js.push("            Xrm.Utility.alertDialog(this.statusText);");
+	js.push("        }");
+	js.push("    }");
+	js.push("};");
 	if (parameters) {
 		js.push("req.send(JSON.stringify(parameters));");
 	} else {
 		js.push("req.send();");
 	}
 
-	Xrm.RESTBuilder.ReplaceLine = "            var results = JSON.parse(this.response);\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "        else {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
+	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
 	var js = [];
 	js.push(parameters);
-	js.push("$.ajax({\n");
-	js.push("    type: \"GET\",\n");
-	js.push("    contentType: \"application/json; charset=utf-8\",\n");
-	js.push("    datatype: \"json\",\n");
+	js.push("$.ajax({");
+	js.push("    type: \"GET\",");
+	js.push("    contentType: \"application/json; charset=utf-8\",");
+	js.push("    datatype: \"json\",");
 	js.push("    url: " + "Xrm.Page.context.getClientUrl() + " + "\"/api/data/v" + $("#WebApiVersion option:selected").val() + "/");
 	if (func.Entity === "none") { //Unbound
 		js.push(func.Name + "()");
 	} else { //Bound
 		js.push(Xrm.RESTBuilder.EntitySetName + "(" + $("#TargetId").val() + ")/Microsoft.Dynamics.CRM." + func.Name);
 	}
-	js.push("\",\n");
+	js.push("\",");
 	if (parameters) {
-		js.push("    data: JSON.stringify(parameters),\n");
+		js.push("    data: JSON.stringify(parameters),");
 	}
-	js.push("    beforeSend: function (XMLHttpRequest) {\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");\n");
-	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");\n");
+	js.push("    beforeSend: function(XMLHttpRequest) {");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
+	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");\n");
+		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
-	js.push("    },\n");
-	js.push("    async: " + Xrm.RESTBuilder.Async + ",\n");
-	js.push("    success: function (data, textStatus, xhr) {\n");
-	js.push("        var results = data;\n");
-	js.push("    },\n");
-	js.push("    error: function (xhr, textStatus, errorThrown) {\n");
-	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);\n");
-	js.push("    }\n");
+	js.push("    },");
+	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
+	js.push("    success: function(data, textStatus, xhr) {");
+	js.push("        var results = data;");
+	js.push("    },");
+	js.push("    error: function(xhr, textStatus, errorThrown) {");
+	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
+	js.push("    }");
 	js.push("});");
 
-	Xrm.RESTBuilder.ReplaceLine = "        var results = data;\n";
-	Xrm.RESTBuilder.ErrorReplaceLine = "    error: function (xhr, textStatus, errorThrown) {\n";
-	Xrm.RESTBuilder.DisplayOutPut(js.join(""));
+	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
+	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
+	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve = function (library) {
@@ -4471,11 +4471,13 @@ Xrm.RESTBuilder.Execute_Click = function () {
 			script = editor.getValue().replace(Xrm.RESTBuilder.ReplaceLine, Xrm.RESTBuilder.ReplaceLine + " $.unblockUI();");
 		}
 		script = script.replace(Xrm.RESTBuilder.ErrorReplaceLine, Xrm.RESTBuilder.ErrorReplaceLine + " $.unblockUI();");
-		script = script.replace(Xrm.RESTBuilder.NoChangeReplaceLine, Xrm.RESTBuilder.NoChangeReplaceLine + " $.unblockUI();");
+		if (Xrm.RESTBuilder.NoChangeReplaceLine !== "" && Xrm.RESTBuilder.NoChangeReplaceLine !== undefined) {
+			script = script.replace(Xrm.RESTBuilder.NoChangeReplaceLine, Xrm.RESTBuilder.NoChangeReplaceLine + " $.unblockUI();");
+		}
 	} else {
 		script = editor.getValue();
 	}
-
+	
 	if (!Xrm.RESTBuilder.ValidateCode(script)) {
 		return;
 	}
@@ -4487,7 +4489,7 @@ Xrm.RESTBuilder.Execute_Click = function () {
 	var generatedCode = new Function(script);
 	generatedCode();
 
-	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" || Xrm.RESTBuilder.Type === "RetrieveNextLink" || 
+	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" || Xrm.RESTBuilder.Type === "RetrieveNextLink" ||
 		(Xrm.RESTBuilder.Type === "Create" && Xrm.RESTBuilder.Endpoint === "2011") || Xrm.RESTBuilder.Type === "PredefinedQuery" ||
 		(Xrm.RESTBuilder.Type === "Action" && Xrm.RESTBuilder.SelectedAction.ReturnTypes.length !== 0) ||
 		(Xrm.RESTBuilder.Type === "Function" && Xrm.RESTBuilder.SelectedFunction.ReturnTypes.length !== 0)) {
@@ -5070,7 +5072,7 @@ Xrm.RESTBuilder.Back_Click = function () {
 	$("#Output").hide();
 };
 
-Xrm.RESTBuilder.ActionReference_Click = function() {
+Xrm.RESTBuilder.ActionReference_Click = function () {
 	window.open("https://msdn.microsoft.com/en-us/library/mt607829.aspx");
 }
 
