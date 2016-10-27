@@ -4477,7 +4477,7 @@ Xrm.RESTBuilder.Execute_Click = function () {
 	} else {
 		script = editor.getValue();
 	}
-	
+
 	if (!Xrm.RESTBuilder.ValidateCode(script)) {
 		return;
 	}
@@ -4486,8 +4486,10 @@ Xrm.RESTBuilder.Execute_Click = function () {
 		Xrm.RESTBuilder.Block();
 	}
 
-	var generatedCode = new Function(script);
-	generatedCode();
+	var error = Xrm.RESTBuilder.ExecuteCode(script);
+	if (error) {
+		return;
+	}
 
 	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" || Xrm.RESTBuilder.Type === "RetrieveNextLink" ||
 		(Xrm.RESTBuilder.Type === "Create" && Xrm.RESTBuilder.Endpoint === "2011") || Xrm.RESTBuilder.Type === "PredefinedQuery" ||
@@ -4496,6 +4498,20 @@ Xrm.RESTBuilder.Execute_Click = function () {
 		$("#tabs").tabs({ active: 1 });
 	}
 };
+
+Xrm.RESTBuilder.ExecuteCode = function (script) {
+	var generatedCode = new Function(script);
+
+	try {
+		generatedCode();
+	} catch (e) {
+		$.unblockUI();
+		Xrm.Utility.alertDialog(e.message);
+		return true;
+	}
+
+	return false;
+}
 
 Xrm.RESTBuilder.FormatCode_Click = function () {
 	var unformatted = Xrm.RESTBuilder.Editor2.getValue();
