@@ -52,8 +52,9 @@ $(function () {
 	Xrm.RESTBuilder.GetCrmVersion();
 	Xrm.RESTBuilder.SetWebApiVersion();
 	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
-		$("#LoadingCsdl").show();
-		Xrm.RESTBuilder.GetCsdl();
+		//$("#LoadingCsdl").show();
+		//Xrm.RESTBuilder.GetCsdl();
+		Xrm.RESTBuilder.ToggleWebApiFunctionality();
 	}
 
 	//Make window text selectable in IE
@@ -756,6 +757,7 @@ Xrm.RESTBuilder.GetCsdl = function () {
 				$("#TypeAction").button("option", "disabled", false);
 				$("#TypeFunction").button("option", "disabled", false);
 				$("#LoadingCsdl").hide();
+				$("#WebApiVersion").prop("disabled", false);
 			}
 		}
 	};
@@ -767,22 +769,32 @@ Xrm.RESTBuilder.SetWebApiVersion = function () {
 		return;
 	}
 
-	$("#WebApiVersion").prop("disabled", false);
-
 	var version = Xrm.RESTBuilder.CrmVersion[0] + "." + Xrm.RESTBuilder.CrmVersion[1];
 	switch (version) {
 		case "8.0":
 			$("#WebApiVersion").val("8.0");
 			$("#WebApiVersion option[value='8.1']").remove();
-
+			$("#WebApiVersion option[value='8.2']").remove();
 			break;
 		case "8.1":
 			$("#WebApiVersion").val("8.1");
+			$("#WebApiVersion option[value='8.2']").remove();
+			break;
+		default: //8.2
+			$("#WebApiVersion").val("8.2");
 			break;
 	}
 }
 
 Xrm.RESTBuilder.ToggleWebApiFunctionality = function () {
+	$("#WebApiVersion").prop("disabled", true);
+	if (Xrm.RESTBuilder.CsdlLoaded) {
+		$("#TypeAction").button("option", "disabled", true);
+		$("#TypeFunction").button("option", "disabled", true);
+	}
+	$("#LoadingCsdl").show();
+	Xrm.RESTBuilder.GetCsdl();
+
 	if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
 		if ($("#WebApiVersion").val() === "8.0") {
 			//Web API - expands on relationships aren't currently supported in 8.0
@@ -4507,7 +4519,7 @@ Xrm.RESTBuilder.ExecuteCode = function (script) {
 		generatedCode();
 	} catch (e) {
 		$.unblockUI();
-		Xrm.Utility.alertDialog(e.message);
+		Xrm.RESTBuilder.DisplayAlert(e.message);
 		return true;
 	}
 
@@ -4709,6 +4721,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		if (Xrm.RESTBuilder.CsdlLoaded) {
 			$("#TypeAction").button("option", "disabled", false);
 			$("#TypeFunction").button("option", "disabled", false);
+			$("#WebApiVersion").prop("disabled", false);
 		}
 		$("#FormattedValues").show();
 		$("#DetectChanges").show();
@@ -4716,7 +4729,6 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#Impersonate").show();
 		$("#RetrieveSkip").hide();
 		$("#Count").show();
-		$("#WebApiVersion").prop("disabled", false);
 		$("#TypeRetrieveNextLink").button("option", "disabled", false);
 
 		if (Xrm.RESTBuilder.Type === "RetrieveMultiple") {
