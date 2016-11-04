@@ -166,7 +166,7 @@ td {
 	margin-bottom: 5px;
 }
 
-#FormattedValues, #DetectChanges, #AuthToken, #Impersonate {
+#FormattedValues, #DetectChanges, #AuthToken, #Impersonate, #ReturnRecord {
 	display: none;
 	float: left;
 	margin-right: 12px;

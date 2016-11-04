@@ -27,6 +27,7 @@ Xrm.RESTBuilder.FormattedValues = true;
 Xrm.RESTBuilder.DetectChanges = false;
 Xrm.RESTBuilder.AuthToken = false;
 Xrm.RESTBuilder.Impersonate = false;
+Xrm.RESTBuilder.ReturnRecord = false;
 Xrm.RESTBuilder.Async = true;
 Xrm.RESTBuilder.Count = false;
 Xrm.RESTBuilder.EntityLogical = "";
@@ -52,8 +53,6 @@ $(function () {
 	Xrm.RESTBuilder.GetCrmVersion();
 	Xrm.RESTBuilder.SetWebApiVersion();
 	if (Xrm.RESTBuilder.CrmVersion[0] > 7) {
-		//$("#LoadingCsdl").show();
-		//Xrm.RESTBuilder.GetCsdl();
 		Xrm.RESTBuilder.ToggleWebApiFunctionality();
 	}
 
@@ -90,6 +89,7 @@ $(function () {
 	Xrm.RESTBuilder.CreateRadioButtons($("#DetectChanges"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#AuthToken"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#Impersonate"));
+	Xrm.RESTBuilder.CreateRadioButtons($("#ReturnRecord"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#ResultType"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#Count"));
 	Xrm.RESTBuilder.SetTopMax();
@@ -110,6 +110,7 @@ $(function () {
 	$("#DetectChanges input[name=DetectChanges]:radio").change(Xrm.RESTBuilder.DetectChanges_Change);
 	$("#AuthToken input[name=AuthToken]:radio").change(Xrm.RESTBuilder.AuthToken_Change);
 	$("#Impersonate input[name=Impersonate]:radio").change(Xrm.RESTBuilder.Impersonate_Change);
+	$("#ReturnRecord input[name=ReturnRecord]:radio").change(Xrm.RESTBuilder.ReturnRecord_Change);
 	$("#EntityList").change(Xrm.RESTBuilder.EntityList_Change);
 	$("#AssociateEntity1").change(Xrm.RESTBuilder.AssociateEntity1_Change);
 	$("#AssociateEntity2").change(Xrm.RESTBuilder.AssociateEntity2_Change);
@@ -362,7 +363,9 @@ Xrm.RESTBuilder.GetCrmVersion = function () {
 			if (req.status === 200) {
 				var version = $(req.responseXML).find("c\\:value, value").text();
 				$("#CrmVersion").text(version);
-				Xrm.RESTBuilder.CrmVersion = version.split(".");
+				Xrm.RESTBuilder.CrmVersion = $.map(version.split("."), function (value) {
+					return parseInt(value, 10);
+				});
 			}
 		}
 	};
@@ -775,13 +778,22 @@ Xrm.RESTBuilder.SetWebApiVersion = function () {
 			$("#WebApiVersion").val("8.0");
 			$("#WebApiVersion option[value='8.1']").remove();
 			$("#WebApiVersion option[value='8.2']").remove();
+			if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+				$("#FormattedValues").buttonset({ disabled: true });
+			}
 			break;
 		case "8.1":
 			$("#WebApiVersion").val("8.1");
 			$("#WebApiVersion option[value='8.2']").remove();
+			if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+				$("#FormattedValues").buttonset({ disabled: true });
+			}
 			break;
 		default: //8.2
 			$("#WebApiVersion").val("8.2");
+			if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {	
+				$("#FormattedValues").show();
+			}
 			break;
 	}
 }
@@ -807,6 +819,16 @@ Xrm.RESTBuilder.ToggleWebApiFunctionality = function () {
 			$("#ui-accordion-Accordion-header-1").show();
 			$("#ui-accordion-Accordion-header-2").show();
 			$("#ui-accordion-Accordion-header-3").show();
+		}
+	}
+
+	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+		if (Number($("#WebApiVersion").val()) < 8.2) {
+			$("#ReturnRecord").hide();
+			$("#FormattedValues").hide();
+		} else {
+			$("#ReturnRecord").show();
+			$("#FormattedValues").show();
 		}
 	}
 }
@@ -1719,6 +1741,10 @@ Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("req.setRequestHeader(" + prefer + ");");
+	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -1728,11 +1754,14 @@ Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
 	js.push("req.onreadystatechange = function() {");
 	js.push("    if (this.readyState === 4) {");
 	js.push("        req.onreadystatechange = null;");
-	js.push("        if (this.status === 204) {");
+	js.push("        if (this.status === " + ((Xrm.RESTBuilder.ReturnRecord) ? "201" : "204") + ") {");
 	js.push("            var uri = this.getResponseHeader(\"OData-EntityId\");");
 	js.push("            var regExp = \/\\(([^)]+)\\)\/;");
 	js.push("            var matches = regExp.exec(uri);");
 	js.push("            var newEntityId = matches[1];");
+	if (Xrm.RESTBuilder.ReturnRecord) {
+		js.push("            \n//Handle returned attributes\n");
+	}
 	js.push("        }");
 	js.push("        else {");
 	js.push("            Xrm.Utility.alertDialog(this.statusText);");
@@ -1757,6 +1786,10 @@ Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("        XMLHttpRequest.setRequestHeader(" + prefer + ");");
+	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -1770,6 +1803,9 @@ Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
 	js.push("        var regExp = \/\\(([^)]+)\\)\/;");
 	js.push("        var matches = regExp.exec(uri);");
 	js.push("        var newEntityId = matches[1];");
+	if (Xrm.RESTBuilder.ReturnRecord) {
+		js.push("        \n//Handle returned attributes\n");
+	}
 	js.push("    },");
 	js.push("    error: function(xhr, textStatus, errorThrown) {");
 	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
@@ -1913,6 +1949,10 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("req.setRequestHeader(" + prefer + ");");
+	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -1922,8 +1962,12 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	js.push("req.onreadystatechange = function() {");
 	js.push("    if (this.readyState === 4) {");
 	js.push("        req.onreadystatechange = null;");
-	js.push("        if (this.status === 204) {\n");
-	js.push("            //Success - No Return Data - Do Something\n");
+	js.push("        if (this.status === " + ((Xrm.RESTBuilder.ReturnRecord) ? "200" : "204") + ") {\n");
+	if (Xrm.RESTBuilder.ReturnRecord) {
+		js.push("            //Handle returned attributes\n");
+	} else {
+		js.push("            //Success - No Return Data - Do Something\n");
+	}
 	js.push("        }");
 	js.push("        else {");
 	js.push("            Xrm.Utility.alertDialog(this.statusText);");
@@ -1932,7 +1976,7 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	js.push("};");
 	js.push("req.send(JSON.stringify(entity));");
 
-	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204) {";
+	Xrm.RESTBuilder.ReplaceLine = "if (this.status === " + ((Xrm.RESTBuilder.ReturnRecord) ? "200" : "204") + ") {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
 	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
 };
@@ -1949,6 +1993,10 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("        XMLHttpRequest.setRequestHeader(" + prefer + ");");
+	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
 	}
@@ -1958,7 +2006,11 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 	js.push("    },");
 	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
 	js.push("    success: function(data, textStatus, xhr) {\n");
-	js.push("        //Success - No Return Data - Do Something\n");
+	if (Xrm.RESTBuilder.ReturnRecord) {
+		js.push("        //Handle returned attributes\n");
+	} else {
+		js.push("        //Success - No Return Data - Do Something\n");
+	}
 	js.push("    },");
 	js.push("    error: function(xhr, textStatus, errorThrown) {");
 	js.push("        Xrm.Utility.alertDialog(textStatus + \" \" + errorThrown);");
@@ -2187,8 +2239,9 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("req.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("req.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2238,8 +2291,9 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("        XMLHttpRequest.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.DetectChanges) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"W\\\/\\\"000000\\\"\"); //Change 000000 to your value\n");
@@ -2461,13 +2515,9 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, fil
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
 	js.push("req.setRequestHeader(\"Content-Type\", \"application/json; charset=utf-8\");");
-	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");");
-	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
-	}
-	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"" + top + "\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, top, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("req.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
@@ -2507,13 +2557,9 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
-	if (top !== null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\," + top + "\");");
-	} else if (top === null && Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"*\\\"\");");
-	}
-	else if (top !== null && !Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"" + top + "\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, top, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("        XMLHttpRequest.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
@@ -2620,8 +2666,9 @@ Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 	js.push("req.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("req.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("req.setRequestHeader(\"Accept\", \"application/json\");");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("req.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("req.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("req.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
@@ -2665,8 +2712,9 @@ Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-MaxVersion\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"OData-Version\", \"4.0\");");
 	js.push("        XMLHttpRequest.setRequestHeader(\"Accept\", \"application/json\");");
-	if (Xrm.RESTBuilder.FormattedValues) {
-		js.push("        XMLHttpRequest.setRequestHeader(\"Prefer\", \"odata.include-annotations=\\\"OData.Community.Display.V1.FormattedValue\\\"\");");
+	var prefer = Xrm.RESTBuilder.BuildPrefer(Xrm.RESTBuilder.FormattedValues, null, Xrm.RESTBuilder.ReturnRecord);
+	if (prefer !== null) {
+		js.push("        XMLHttpRequest.setRequestHeader(" + prefer + ");");
 	}
 	if (Xrm.RESTBuilder.AuthToken) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"Authorization\", \"Bearer \" + token); //Replace token with your token value\n");
@@ -3885,6 +3933,31 @@ Xrm.RESTBuilder.BuildSkipString = function () {
 	return (skip !== "") ? "$skip=" + $("#SkipAmount").val() : null;
 };
 
+Xrm.RESTBuilder.BuildPrefer = function (annotations, top, returnRecord) {
+
+	var preferItems = [];
+	var prefer = null;
+	if (annotations) {
+		preferItems.push("odata.include-annotations=\\\"*\\\"");
+	}
+
+	if (top) {
+		preferItems.push(top);
+	}
+
+	if (returnRecord) {
+		preferItems.push("return=representation");
+	}
+
+	if (preferItems.length) {
+		prefer = preferItems.join(",");
+		prefer = "\"Prefer\", \"" + prefer;
+		prefer += "\"";
+	}
+
+	return prefer;
+}
+
 Xrm.RESTBuilder.BuildExpandString = function () {
 	var expand = [];
 	if ($("#ExpandEntity").val() !== "" && Xrm.RESTBuilder.Type === "RetrieveMultiple") {
@@ -4663,6 +4736,17 @@ Xrm.RESTBuilder.Impersonate_Change = function () {
 	}
 };
 
+Xrm.RESTBuilder.ReturnRecord_Change = function () {
+	Xrm.RESTBuilder.ReturnRecord = $.parseJSON($("input[name='ReturnRecord']:checked").val());
+
+	if (Xrm.RESTBuilder.ReturnRecord) {
+		$("#FormattedValuesTrue").prop("checked", "true").button("refresh");
+	} else {
+		$("#FormattedValuesFalse").prop("checked", "true").button("refresh");
+	}
+	Xrm.RESTBuilder.FormattedValues_Change();
+};
+
 Xrm.RESTBuilder.FormattedValues_Change = function () {
 	Xrm.RESTBuilder.FormattedValues = $.parseJSON($("input[name='FormattedValues']:checked").val());
 };
@@ -4683,6 +4767,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#DetectChanges").hide();
 		$("#AuthToken").hide();
 		$("#Impersonate").hide();
+		$("#ReturnRecord").hide();
 		$("#RetrieveSkip").show();
 		$("#Count").hide();
 		$("#ui-accordion-Accordion-header-1").show();
@@ -4741,6 +4826,10 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 				$("#ui-accordion-Accordion-header-3").hide();
 			}
 			$("#ExpandEntity").prop("disabled", true);
+		}
+
+		if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+			$("#ReturnRecord").show();
 		}
 
 		//Clear checked items in related entities until Web API supports this
@@ -4804,6 +4893,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 
 	$("#EntityList option").filter(function () { return !this.value || $.trim(this.value).length === 0; }).remove();
 	$("#CreateRequest").button("option", "disabled", false);
+	$("#FormattedValues").show();
 	$("#Entity").show();
 
 	switch (Xrm.RESTBuilder.Type) {
@@ -4826,6 +4916,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 
 				$("#DetectChanges").hide();
 				$("#FormattedValues").show();
+				$("#ReturnRecord").hide();
 				$("#Count").show();
 
 				//Clear checked items in related entities until Web API supports this
@@ -4846,6 +4937,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 				$("#DetectChanges").show();
 				$("#FormattedValues").show();
 				$("#Count").hide();
+				$("#ReturnRecord").hide();
 			} else {
 				$("#DetectChanges").hide();
 				$("#FormattedValues").hide();
@@ -4862,8 +4954,18 @@ Xrm.RESTBuilder.Type_Change = function () {
 			$("#CreateUpdate").show();
 			if (Xrm.RESTBuilder.Endpoint === "WebApi") {
 				$("#DetectChanges").hide();
-				$("#FormattedValues").hide();
+				$("#FormattedValues").show();
 				$("#Count").hide();
+				if (Number($("#WebApiVersion").val() >= 8.2)) {
+					$("#ReturnRecord").show();
+					$("#FormattedValues").show();
+					if (!Xrm.RESTBuilder.ReturnRecord) {
+						$("#FormattedValuesFalse").prop("checked", "true").button("refresh");
+						Xrm.RESTBuilder.FormattedValues_Change();
+					}
+				} else {
+					$("#FormattedValues").hide();
+				}
 			}
 			else {
 				$("#DetectChanges").hide();
@@ -4877,6 +4979,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 				$("#DetectChanges").hide();
 				$("#FormattedValues").hide();
 				$("#Count").hide();
+				$("#ReturnRecord").hide();
 			}
 			else {
 				$("#DetectChanges").hide();
@@ -4891,6 +4994,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 				$("#FormattedValues").hide();
 				$("#DetectChanges").hide();
 				$("#Count").hide();
+				$("#ReturnRecord").hide();
 			}
 			else {
 				$("#DetectChanges").hide();
@@ -4910,6 +5014,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 		case "PredefinedQuery":
 			$("#DetectChanges").hide();
 			$("#PredefinedQuery").show();
+			$("#ReturnRecord").hide();
 
 			if (Xrm.RESTBuilder.FetchEditor) {
 				Xrm.RESTBuilder.FetchEditor.toTextArea();
@@ -4926,6 +5031,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 			$("#DetectChanges").hide();
 			$("#AuthToken").show();
 			$("#Impersonate").show();
+			$("#ReturnRecord").hide();
 			$("#Message").show();
 			$("#ActionDefinition").show();
 			$("#EntityList").prepend("<option value='' logicalname='none' selected='selected'></option>");
@@ -4939,6 +5045,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 			$("#DetectChanges").hide();
 			$("#AuthToken").show();
 			$("#Impersonate").show();
+			$("#ReturnRecord").hide();
 			$("#Message").show();
 			$("#FunctionDefinition").show();
 			$("#EntityList").prepend("<option value='' logicalname='none' selected='selected'></option>");
@@ -4951,6 +5058,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 			$("#NextLink").show();
 			$("#DetectChanges").show();
 			$("#Entity").hide();
+			$("#ReturnRecord").hide();
 			break;
 	}
 
@@ -5079,11 +5187,15 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	$("#CleanResults").button("option", "disabled", true);
 	$("#CountFalse").prop("checked", "true").button("refresh");
 	$("#ImpersonateFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.Impersonate_Change();
 	$("#ImpersonateId").val("");
 	$("#ImpersonateId").hide();
 	$("#FormattedValuesTrue").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.FormattedValues_Change();
 	$("#DetectChangesFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.DetectChanges_Change();
 	$("#AuthTokenFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.AuthToken_Change();
 	Xrm.RESTBuilder.RawResults = null;
 	$("#Accordion").accordion("option", "active", 0);
 	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple") {
