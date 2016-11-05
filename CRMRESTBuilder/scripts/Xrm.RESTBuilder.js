@@ -752,9 +752,8 @@ Xrm.RESTBuilder.GetCsdl = function () {
 				var csdl = req.responseXML;
 				var actions = $(csdl).find("Action").toArray();
 				var functions = $(csdl).find("Function").toArray();
-				var functionImports = $(csdl).find("FunctionImport").toArray();
 				actions.forEach(Xrm.RESTBuilder.ProcessActions);
-				Xrm.RESTBuilder.ProcessFunctions(functions, functionImports);
+				Xrm.RESTBuilder.ProcessFunctions(functions);
 
 				Xrm.RESTBuilder.CsdlLoaded = true;
 				$("#TypeAction").button("option", "disabled", false);
@@ -833,7 +832,7 @@ Xrm.RESTBuilder.ToggleWebApiFunctionality = function () {
 	}
 }
 
-Xrm.RESTBuilder.ProcessActions = function (e, index, array) {
+Xrm.RESTBuilder.ProcessActions = function (e) {
 	if (Xrm.RESTBuilder.IsInternalAction($(e).attr("Name"))) {
 		return;
 	}
@@ -868,7 +867,7 @@ Xrm.RESTBuilder.ProcessActions = function (e, index, array) {
 	Xrm.RESTBuilder.Actions.push(action);
 }
 
-Xrm.RESTBuilder.ProcessFunctions = function (functions, functionImports) {
+Xrm.RESTBuilder.ProcessFunctions = function (functions) {
 	for (var i = 0; i < functions.length; i++) {
 		if (Xrm.RESTBuilder.IsInternalFunction($(functions[i]).attr("Name"))) {
 			continue;
@@ -1078,7 +1077,7 @@ Xrm.RESTBuilder.Associate_XST = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_SDK = function () {
@@ -1099,7 +1098,7 @@ Xrm.RESTBuilder.Associate_SDK = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XMLHTTP = function () {
@@ -1128,7 +1127,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
@@ -1165,7 +1164,7 @@ Xrm.RESTBuilder.Associate_XMLHTTP_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
@@ -1203,7 +1202,7 @@ Xrm.RESTBuilder.Associate_jQuery_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_jQuery = function () {
@@ -1232,7 +1231,7 @@ Xrm.RESTBuilder.Associate_jQuery = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Associate_XSVC = function () {
@@ -1254,7 +1253,7 @@ Xrm.RESTBuilder.Associate_XSVC = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XST = function () {
@@ -1275,7 +1274,7 @@ Xrm.RESTBuilder.Disassociate_XST = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_SDK = function () {
@@ -1295,7 +1294,7 @@ Xrm.RESTBuilder.Disassociate_SDK = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XMLHTTP = function () {
@@ -1322,7 +1321,7 @@ Xrm.RESTBuilder.Disassociate_XMLHTTP = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XMLHTTP_WebApi = function () {
@@ -1356,7 +1355,7 @@ Xrm.RESTBuilder.Disassociate_XMLHTTP_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_jQuery_WebApi = function () {
@@ -1390,7 +1389,7 @@ Xrm.RESTBuilder.Disassociate_jQuery_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_jQuery = function () {
@@ -1417,7 +1416,7 @@ Xrm.RESTBuilder.Disassociate_jQuery = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Disassociate_XSVC = function () {
@@ -1439,7 +1438,7 @@ Xrm.RESTBuilder.Disassociate_XSVC = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XST = function () {
@@ -1458,7 +1457,7 @@ Xrm.RESTBuilder.Delete_XST = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_SDK = function () {
@@ -1476,7 +1475,7 @@ Xrm.RESTBuilder.Delete_SDK = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XMLHTTP = function () {
@@ -1502,7 +1501,7 @@ Xrm.RESTBuilder.Delete_XMLHTTP = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XMLHTTP_WebApi = function () {
@@ -1535,7 +1534,7 @@ Xrm.RESTBuilder.Delete_XMLHTTP_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_jQuery_WebApi = function () {
@@ -1567,7 +1566,7 @@ Xrm.RESTBuilder.Delete_jQuery_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_jQuery = function () {
@@ -1592,7 +1591,7 @@ Xrm.RESTBuilder.Delete_jQuery = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_SDKJQ = function () {
@@ -1610,7 +1609,7 @@ Xrm.RESTBuilder.Delete_SDKJQ = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Delete_XSVC = function () {
@@ -1629,7 +1628,7 @@ Xrm.RESTBuilder.Delete_XSVC = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XST = function (js) {
@@ -1647,7 +1646,7 @@ Xrm.RESTBuilder.Create_XST = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_SDK = function (js) {
@@ -1664,7 +1663,7 @@ Xrm.RESTBuilder.Create_SDK = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_jQuery = function (js) {
@@ -1689,7 +1688,7 @@ Xrm.RESTBuilder.Create_jQuery = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var result = data.d;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_SDKJQ = function (js) {
@@ -1706,7 +1705,7 @@ Xrm.RESTBuilder.Create_SDKJQ = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
@@ -1731,7 +1730,7 @@ Xrm.RESTBuilder.Create_XMLHTTP = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.responseText).d;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
@@ -1772,7 +1771,7 @@ Xrm.RESTBuilder.Create_XMLHTTP_WebApi = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var uri = this.getResponseHeader(\"OData-EntityId\");";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
@@ -1814,7 +1813,7 @@ Xrm.RESTBuilder.Create_jQuery_WebApi = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var uri = xhr.getResponseHeader(\"OData-EntityId\");";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Create_XSVC = function (js) {
@@ -1832,7 +1831,7 @@ Xrm.RESTBuilder.Create_XSVC = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XST = function (js) {
@@ -1851,7 +1850,7 @@ Xrm.RESTBuilder.Update_XST = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_SDK = function (js) {
@@ -1869,7 +1868,7 @@ Xrm.RESTBuilder.Update_SDK = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_jQuery = function (js) {
@@ -1895,7 +1894,7 @@ Xrm.RESTBuilder.Update_jQuery = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_SDKJQ = function (js) {
@@ -1913,7 +1912,7 @@ Xrm.RESTBuilder.Update_SDKJQ = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XMLHTTP = function (js) {
@@ -1938,7 +1937,7 @@ Xrm.RESTBuilder.Update_XMLHTTP = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === 204 || this.status === 1223) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
@@ -1978,7 +1977,7 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "if (this.status === " + ((Xrm.RESTBuilder.ReturnRecord) ? "200" : "204") + ") {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
@@ -2019,7 +2018,7 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "success: function(data, textStatus, xhr) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Update_XSVC = function (js) {
@@ -2038,7 +2037,7 @@ Xrm.RESTBuilder.Update_XSVC = function (js) {
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function() {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XST = function (selects, expand) {
@@ -2067,7 +2066,7 @@ Xrm.RESTBuilder.Retrieve_XST = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_SDK = function (selects, expand) {
@@ -2095,7 +2094,7 @@ Xrm.RESTBuilder.Retrieve_SDK = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
@@ -2124,7 +2123,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.responseText).d;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi = function () {
@@ -2170,7 +2169,7 @@ Xrm.RESTBuilder.RetrieveNextLink_XMLHTTP_WebApi = function () {
 	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
 	Xrm.RESTBuilder.NoChangeReplaceLine = "else if (this.status === 304) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi = function () {
@@ -2224,7 +2223,7 @@ Xrm.RESTBuilder.RetrieveNextLink_jQuery_WebApi = function () {
 	}
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
 	Xrm.RESTBuilder.NoChangeReplaceLine = "if (xhr.status === 304) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
@@ -2274,7 +2273,7 @@ Xrm.RESTBuilder.Retrieve_XMLHTTP_WebApi = function (selects, expand) {
 	Xrm.RESTBuilder.ReplaceLine = "var result = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
 	Xrm.RESTBuilder.NoChangeReplaceLine = "else if (this.status === 304) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
@@ -2332,7 +2331,7 @@ Xrm.RESTBuilder.Retrieve_jQuery_WebApi = function (selects, expand) {
 	}
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
 	Xrm.RESTBuilder.NoChangeReplaceLine = "if (xhr.status === 304) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_jQuery = function (selects, expand) {
@@ -2360,7 +2359,7 @@ Xrm.RESTBuilder.Retrieve_jQuery = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var result = data.d;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_SDKJQ = function (selects, expand) {
@@ -2388,7 +2387,7 @@ Xrm.RESTBuilder.Retrieve_SDKJQ = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
@@ -2427,7 +2426,7 @@ Xrm.RESTBuilder.Retrieve_XSVC = function (selects, expand) {
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function(result) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XST = function (selects, expand, filter, top, orderby, skip) {
@@ -2450,7 +2449,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XST = function (selects, expand, filter, top, o
 
 	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_SDK = function (selects, expand, filter, top, orderby, skip) {
@@ -2472,7 +2471,7 @@ Xrm.RESTBuilder.RetrieveMultiple_SDK = function (selects, expand, filter, top, o
 
 	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP = function (selects, expand, filter, top, orderby, skip) {
@@ -2501,7 +2500,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP = function (selects, expand, filter, to
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = returned.results;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, filter, top, orderby, count) {
@@ -2541,7 +2540,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XMLHTTP_WebApi = function (selects, expand, fil
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filter, top, orderby, count) {
@@ -2580,7 +2579,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery_WebApi = function (selects, expand, filt
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_jQuery = function (selects, expand, filter, top, orderby, skip) {
@@ -2607,7 +2606,7 @@ Xrm.RESTBuilder.RetrieveMultiple_jQuery = function (selects, expand, filter, top
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = data.d.results;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_SDKJQ = function (selects, expand, filter, top, orderby, skip) {
@@ -2629,7 +2628,7 @@ Xrm.RESTBuilder.RetrieveMultiple_SDKJQ = function (selects, expand, filter, top,
 
 	Xrm.RESTBuilder.ReplaceLine = "function(results) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.RetrieveMultiple_XSVC = function (selects, expand, filter, top, orderby, skip) {
@@ -2649,7 +2648,7 @@ Xrm.RESTBuilder.RetrieveMultiple_XSVC = function (selects, expand, filter, top, 
 
 	Xrm.RESTBuilder.ReplaceLine = "successCallback: function(results) {";
 	Xrm.RESTBuilder.ErrorReplaceLine = "errorCallback: function(error) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
@@ -2691,7 +2690,7 @@ Xrm.RESTBuilder.PredefinedQuery_XMLHTTP_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
@@ -2734,7 +2733,7 @@ Xrm.RESTBuilder.PredefinedQuery_jQuery_WebApi = function () {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = data.value;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
@@ -2782,7 +2781,7 @@ Xrm.RESTBuilder.Action_XMLHTTP_WebApi = function (action, parameters) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
@@ -2824,7 +2823,7 @@ Xrm.RESTBuilder.Action_jQuery_WebApi = function (action, parameters) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
@@ -2872,7 +2871,7 @@ Xrm.RESTBuilder.Function_XMLHTTP_WebApi = function (func, parameters) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = JSON.parse(this.response);";
 	Xrm.RESTBuilder.ErrorReplaceLine = "else {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
@@ -2914,7 +2913,7 @@ Xrm.RESTBuilder.Function_jQuery_WebApi = function (func, parameters) {
 
 	Xrm.RESTBuilder.ReplaceLine = "var results = data;";
 	Xrm.RESTBuilder.ErrorReplaceLine = "error: function(xhr, textStatus, errorThrown) {";
-	Xrm.RESTBuilder.DisplayOutPut(js_beautify(js.join(""), { indent_size: 4 }));
+	Xrm.RESTBuilder.DisplayOutPut(window.js_beautify(js.join(""), { indent_size: 4 }));
 };
 
 Xrm.RESTBuilder.Retrieve = function (library) {
@@ -4601,7 +4600,7 @@ Xrm.RESTBuilder.ExecuteCode = function (script) {
 
 Xrm.RESTBuilder.FormatCode_Click = function () {
 	var unformatted = Xrm.RESTBuilder.Editor2.getValue();
-	var formatted = js_beautify(unformatted, { indent_size: 4 });
+	var formatted = window.js_beautify(unformatted, { indent_size: 4 });
 	Xrm.RESTBuilder.Editor2.setValue(formatted);
 }
 
