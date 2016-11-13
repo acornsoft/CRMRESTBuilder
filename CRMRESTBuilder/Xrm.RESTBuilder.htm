@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8" />
 	<title>CRM REST Builder</title>
-	<link rel="stylesheet" href="css/smoothness/jqueryui1.10.3.custom.min.css"/>
-	<link rel="stylesheet" href="css/jsontree.css"/>
-	<link rel="stylesheet" href="css/codemirror.css"/>
-	<link rel="stylesheet" href="css/Xrm.RESTBuilder.css"/>
+	<link rel="stylesheet" href="css/smoothness/jqueryui1.10.3.custom.min.css" />
+	<link rel="stylesheet" href="css/jsontree.css" />
+	<link rel="stylesheet" href="css/codemirror.css" />
+	<link rel="stylesheet" href="css/Xrm.RESTBuilder.css" />
 	<script src="../../ClientGlobalContext.js.aspx" type="text/javascript"></script>
 	<script type="text/javascript" src="scripts/json2.js"></script>
 	<script type="text/javascript" src="scripts/jquery1.9.1.min.js"></script>
@@ -172,9 +172,16 @@
 			</div>
 			<!--Object Section-->
 			<div id="Retrieve" class="Method">
-				<div id="RetrieveGUID">
-					<label for="RetrieveId" class="CrudLabel">Id To Retrieve</label>
-					<input id="RetrieveId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				<div>
+					<div id="RetrieveGUID">
+						<label for="RetrieveId" class="CrudLabel">Id To Retrieve</label>
+						<input id="RetrieveId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+					</div>
+					<div id="AlternateKeyRetrieve" class="AltKeyField">
+						<label class="CrudLabel">Alternate Key</label>
+						<select id="AlternateKeyRetrieveField" class="ui-corner-all"></select>
+					</div>
+					<button id="SwitchIdKeyRetrieve" class="AltKey" action="Retrieve" title="Switch between primary and alternate key"></button>
 				</div>
 				<div id="RetrieveExtras">
 					<div id="RetrieveTop">
@@ -253,10 +260,18 @@
 				</div>
 			</div>
 			<div id="CreateUpdate" class="Method">
-				<div id="UpdateGUID">
-					<label for="UpdateId" class="CrudLabel">Id To Update</label>
-					<input id="UpdateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				<div>
+					<div id="UpdateGUID">
+						<label for="UpdateId" class="CrudLabel">Id To Update</label>
+						<input id="UpdateId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+					</div>
+					<div id="AlternateKeyUpdate" class="AltKeyField">
+						<label class="CrudLabel">Alternate Key</label>
+						<select id="AlternateKeyUpdateField" class="ui-corner-all"></select>
+					</div>
+					<button id="SwitchIdKeyUpdate" class="AltKey" action="Update" title="Switch between primary and alternate key"></button>
 				</div>
+				<div class="clear"></div>
 				<table id="TableCreateUpdate">
 					<thead>
 						<tr>
@@ -272,8 +287,17 @@
 				<a href="#" id="AddCreateUpdate" class="AddAttribute">Add Attribute</a>
 			</div>
 			<div id="Delete" class="Method">
-				<label for="DeleteId" class="CrudLabel">Id To Delete</label>
-				<input id="DeleteId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+				<div>
+					<div id="DeleteGUID">
+						<label for="DeleteId" class="CrudLabel">Id To Delete</label>
+						<input id="DeleteId" class="Guid focus ui-corner-all" maxlength="36" placeholder="00000000-0000-0000-0000-000000000000" />
+					</div>
+					<div id="AlternateKeyDelete" class="AltKeyField">
+						<label class="CrudLabel">Alternate Key</label>
+						<select id="AlternateKeyDeleteField" class="ui-corner-all"></select>
+					</div>
+					<button id="SwitchIdKeyDelete" class="AltKey" action="Delete" title="Switch between primary and alternate key"></button>
+				</div>
 			</div>
 			<div id="AssociateDisassociate" class="Method">
 				<div class="AssociateDisassociateOuter">

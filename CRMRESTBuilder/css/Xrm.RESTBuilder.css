@@ -153,8 +153,22 @@ td {
 	margin: 5px 0 5px auto;
 }
 
-#RetrieveTop, #RetrieveGUID, #RetrieveFilters {
+#RetrieveTop, #RetrieveGUID, #RetrieveFilters, #AlternateKeyRetrieve, #AlternateKeyUpdate {
 	margin-bottom: 10px;
+}
+
+#RetrieveGUID, #UpdateGUID, #DeleteGUID {
+	float: left;
+}
+
+.AltKeyField {
+	display: none; 
+	float: left;
+}
+
+.AltKey {
+	float: left; 
+	margin-left: 5px;
 }
 
 #RetrieveTop {
