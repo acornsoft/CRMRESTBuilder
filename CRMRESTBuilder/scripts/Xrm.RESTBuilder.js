@@ -804,8 +804,10 @@ Xrm.RESTBuilder.GetCsdl = function () {
 				Xrm.RESTBuilder.ProcessFunctions(functions);
 
 				Xrm.RESTBuilder.CsdlLoaded = true;
-				$("#TypeAction").button("option", "disabled", false);
-				$("#TypeFunction").button("option", "disabled", false);
+				if (Xrm.RESTBuilder.Endpoint === "WebApi") {
+					$("#TypeAction").button("option", "disabled", false);
+					$("#TypeFunction").button("option", "disabled", false);
+				}
 				$("#LoadingCsdl").hide();
 				$("#WebApiVersion").prop("disabled", false);
 			}
