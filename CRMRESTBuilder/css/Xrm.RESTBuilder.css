@@ -302,6 +302,10 @@ body {
 	width: 125px;
 }
 
+#Top .Version {
+	margin-left: 10px;
+}
+
 .Version {
 	font-style: italic;
 }
