@@ -4858,10 +4858,10 @@ Xrm.RESTBuilder.SetAlternateKeyState = function () {
 		$(".AltKey").show();
 	}
 
-	if (Xrm.RESTBuilder.Endpoint === "2011") {
-		$(".AltKey").button("option", "disabled", true);
-	} else {
+	if (Xrm.RESTBuilder.Endpoint === "WebApi" && Xrm.RESTBuilder.CurrentEntityAlternateKeys.length > 0) {
 		$(".AltKey").button("option", "disabled", false);
+	} else {
+		$(".AltKey").button("option", "disabled", true);
 	}
 
 	if ($("#AlternateKeyRetrieve").is(":visible")) {
@@ -5332,7 +5332,7 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	$("#ImpersonateId").hide();
 	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 		$("#FormattedValuesFalse").prop("checked", "true").button("refresh");
-		Xrm.RESTBuilder.FormattedValues = false;	
+		Xrm.RESTBuilder.FormattedValues = false;
 	} else {
 		$("#FormattedValuesTrue").prop("checked", "true").button("refresh");
 		Xrm.RESTBuilder.FormattedValues = true;
