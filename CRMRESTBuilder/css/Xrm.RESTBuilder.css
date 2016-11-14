@@ -162,12 +162,12 @@ td {
 }
 
 .AltKeyField {
-	display: none; 
+	display: none;
 	float: left;
 }
 
 .AltKey {
-	float: left; 
+	float: left;
 	margin-left: 5px;
 }
 
@@ -184,6 +184,21 @@ td {
 	display: none;
 	float: left;
 	margin-right: 12px;
+}
+
+#Upsert {
+	display: none;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+
+#PreventCreate {
+	float: left;
+	margin-right: 12px;
+}
+
+#PreventUpdate {
+	float: left;
 }
 
 .ui-tooltip {
@@ -368,7 +383,7 @@ body {
 
 #MessageParameters {
 	clear: both;
-	width: 600px !important; 
+	width: 600px !important;
 }
 
 #Url {

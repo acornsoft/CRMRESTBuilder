@@ -29,6 +29,8 @@ Xrm.RESTBuilder.DetectChanges = false;
 Xrm.RESTBuilder.AuthToken = false;
 Xrm.RESTBuilder.Impersonate = false;
 Xrm.RESTBuilder.ReturnRecord = false;
+Xrm.RESTBuilder.PreventCreate = false;
+Xrm.RESTBuilder.PreventUpdate = false;
 Xrm.RESTBuilder.Async = true;
 Xrm.RESTBuilder.Count = false;
 Xrm.RESTBuilder.EntityLogical = "";
@@ -96,11 +98,15 @@ $(function () {
 	Xrm.RESTBuilder.CreateRadioButtons($("#ReturnRecord"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#ResultType"));
 	Xrm.RESTBuilder.CreateRadioButtons($("#Count"));
+	Xrm.RESTBuilder.CreateRadioButtons($("#PreventCreate"));
+	Xrm.RESTBuilder.CreateRadioButtons($("#PreventUpdate"));
 	Xrm.RESTBuilder.SetTopMax();
 	Xrm.RESTBuilder.MakeSpinner(1, 500000, 1, "SkipAmount");
 	$("#Endpoint input[name=Endpoint]:radio").change(Xrm.RESTBuilder.Endpoint_Change);
 	$("#WebApiVersion").change(Xrm.RESTBuilder.ToggleWebApiFunctionality);
 	$("#FormattedValues input[name=FormattedValues]:radio").change(Xrm.RESTBuilder.FormattedValues_Change);
+	$("#PreventCreate input[name=PreventCreate]:radio").change(Xrm.RESTBuilder.PreventCreate_Change);
+	$("#PreventUpdate input[name=PreventUpdate]:radio").change(Xrm.RESTBuilder.PreventUpdate_Change);
 	$("#CreateRequest").click(Xrm.RESTBuilder.CreateRequest_Click);
 	$("#Reset").click(Xrm.RESTBuilder.Reset_Click);
 	$("#SwitchIdKeyRetrieve").click(Xrm.RESTBuilder.SwitchIdKey_Click);
@@ -2009,6 +2015,12 @@ Xrm.RESTBuilder.Update_XMLHTTP_WebApi = function (js) {
 	if (Xrm.RESTBuilder.Impersonate) {
 		js.push("req.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
 	}
+	if (Xrm.RESTBuilder.PreventCreate) {
+		js.push("req.setRequestHeader(\"If-Match\", \"*\");");
+	}
+	if (Xrm.RESTBuilder.PreventUpdate) {
+		js.push("req.setRequestHeader(\"If-None-Match\", \"*\");");
+	}
 	js.push("req.onreadystatechange = function() {");
 	js.push("    if (this.readyState === 4) {");
 	js.push("        req.onreadystatechange = null;");
@@ -2052,6 +2064,12 @@ Xrm.RESTBuilder.Update_jQuery_WebApi = function (js) {
 	}
 	if (Xrm.RESTBuilder.Impersonate) {
 		js.push("        XMLHttpRequest.setRequestHeader(\"MSCRMCallerID\", \"" + $("#ImpersonateId").val() + "\");");
+	}
+	if (Xrm.RESTBuilder.PreventCreate) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"If-Match\", \"*\");");
+	}
+	if (Xrm.RESTBuilder.PreventUpdate) {
+		js.push("        XMLHttpRequest.setRequestHeader(\"If-None-Match\", \"*\");");
 	}
 	js.push("    },");
 	js.push("    async: " + Xrm.RESTBuilder.Async + ",");
@@ -4816,6 +4834,22 @@ Xrm.RESTBuilder.FormattedValues_Change = function () {
 	Xrm.RESTBuilder.FormattedValues = $.parseJSON($("input[name='FormattedValues']:checked").val());
 };
 
+Xrm.RESTBuilder.PreventCreate_Change = function () {
+	Xrm.RESTBuilder.PreventCreate = $.parseJSON($("input[name='PreventCreate']:checked").val());
+	if (Xrm.RESTBuilder.PreventUpdate) {
+		$("#PreventUpdateFalse").prop("checked", "true").button("refresh");
+		Xrm.RESTBuilder.PreventUpdate = false;
+	}
+};
+
+Xrm.RESTBuilder.PreventUpdate_Change = function () {
+	Xrm.RESTBuilder.PreventUpdate = $.parseJSON($("input[name='PreventUpdate']:checked").val());
+	if (Xrm.RESTBuilder.PreventCreate) {
+		$("#PreventCreateFalse").prop("checked", "true").button("refresh");
+		Xrm.RESTBuilder.PreventCreate = false;
+	}
+};
+
 Xrm.RESTBuilder.SetAlternateKeyState = function () {
 	if (Xrm.RESTBuilder.Type !== "Retrieve" && Xrm.RESTBuilder.Type !== "Update" && Xrm.RESTBuilder.Type !== "Delete") {
 		$(".AltKey").hide();
@@ -4872,6 +4906,7 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 		$("#ExpandEntity").prop("disabled", false);
 		$("#WebApiVersion").prop("disabled", true);
 		$("#TypeRetrieveNextLink").button("option", "disabled", true);
+		$("#Upsert").hide();
 
 		$("#PredefinedQuery").hide();
 		if (Xrm.RESTBuilder.Type === "PredefinedQuery" || Xrm.RESTBuilder.Type === "Action") {
@@ -4926,6 +4961,10 @@ Xrm.RESTBuilder.Endpoint_Change = function () {
 
 		if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 			$("#ReturnRecord").show();
+		}
+
+		if (Xrm.RESTBuilder.Type === "Update") {
+			$("#Upsert").show();
 		}
 
 		//Clear checked items in related entities until Web API supports this
@@ -4991,6 +5030,7 @@ Xrm.RESTBuilder.Type_Change = function () {
 	$("#CreateRequest").button("option", "disabled", false);
 	$("#FormattedValues").show();
 	$("#Entity").show();
+	$("#Upsert").hide();
 
 	switch (Xrm.RESTBuilder.Type) {
 		case "RetrieveMultiple":
@@ -5049,6 +5089,9 @@ Xrm.RESTBuilder.Type_Change = function () {
 			Xrm.RESTBuilder.AddAttribute_Click();
 			$("#CreateUpdate").show();
 			if (Xrm.RESTBuilder.Endpoint === "WebApi") {
+				if (Xrm.RESTBuilder.Type === "Update") {
+					$("#Upsert").show();
+				}
 				$("#DetectChanges").hide();
 				$("#FormattedValues").show();
 				$("#Count").hide();
@@ -5293,6 +5336,10 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	Xrm.RESTBuilder.DetectChanges_Change();
 	$("#AuthTokenFalse").prop("checked", "true").button("refresh");
 	Xrm.RESTBuilder.AuthToken_Change();
+	$("#PreventCreateFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.PreventCreate_Change();
+	$("#PreventUpdateFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.PreventUpdate_Change();
 	Xrm.RESTBuilder.RawResults = null;
 	$("#Accordion").accordion("option", "active", 0);
 	if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple") {

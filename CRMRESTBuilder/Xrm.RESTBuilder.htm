@@ -272,6 +272,23 @@
 					<button id="SwitchIdKeyUpdate" class="AltKey" action="Update" title="Switch between primary and alternate key"></button>
 				</div>
 				<div class="clear"></div>
+				<div id="Upsert">
+					<div id="PreventCreate">
+						<label class="CrudLabel" title="Prevent create on upsert operation">Prevent Create</label>
+						<input id="PreventCreateTrue" type="radio" value="true" name="PreventCreate" />
+						<label for="PreventCreateTrue" class="radio">Yes</label>
+						<input id="PreventCreateFalse" checked="checked" type="radio" value="false" name="PreventCreate" />
+						<label for="PreventCreateFalse" class="radio">No</label>
+					</div>
+					<div id="PreventUpdate">
+						<label class="CrudLabel" title="Prevent update on upsert operation">Prevent Update</label>
+						<input id="PreventUpdateTrue" type="radio" value="true" name="PreventUpdate" />
+						<label for="PreventUpdateTrue" class="radio">Yes</label>
+						<input id="PreventUpdateFalse" checked="checked" type="radio" value="false" name="PreventUpdate" />
+						<label for="PreventUpdateFalse" class="radio">No</label>
+					</div>
+				</div>
+				<div class="clear"></div>
 				<table id="TableCreateUpdate">
 					<thead>
 						<tr>
