@@ -65,6 +65,7 @@ $(function () {
 	Xrm.RESTBuilder.Block();
 	Xrm.RESTBuilder.GetAllEntityMetadata();
 	Xrm.RESTBuilder.CreateResetButton();
+	Xrm.RESTBuilder.CreateRefreshButton();
 	Xrm.RESTBuilder.CreateSwitchIdKeyButton("Retrieve");
 	Xrm.RESTBuilder.CreateSwitchIdKeyButton("Update");
 	Xrm.RESTBuilder.CreateSwitchIdKeyButton("Delete");
@@ -109,6 +110,7 @@ $(function () {
 	$("#PreventUpdate input[name=PreventUpdate]:radio").change(Xrm.RESTBuilder.PreventUpdate_Change);
 	$("#CreateRequest").click(Xrm.RESTBuilder.CreateRequest_Click);
 	$("#Reset").click(Xrm.RESTBuilder.Reset_Click);
+	$("#Refresh").click(Xrm.RESTBuilder.Refresh_Click);
 	$("#SwitchIdKeyRetrieve").click(Xrm.RESTBuilder.SwitchIdKey_Click);
 	$("#SwitchIdKeyUpdate").click(Xrm.RESTBuilder.SwitchIdKey_Click);
 	$("#SwitchIdKeyDelete").click(Xrm.RESTBuilder.SwitchIdKey_Click);
@@ -168,6 +170,13 @@ $(function () {
 
 Xrm.RESTBuilder.CreateResetButton = function () {
 	$("#Reset").button({
+		icons: { primary: "ui-icon-arrowrefresh-1-w" },
+		text: true
+	});
+};
+
+Xrm.RESTBuilder.CreateRefreshButton = function () {
+	$("#Refresh").button({
 		icons: { primary: "ui-icon-refresh" },
 		text: true
 	});
@@ -5299,6 +5308,10 @@ Xrm.RESTBuilder.CreateRequest_Click = function () {
 		$("#RetrieveUrlResult").val("");
 	}
 };
+
+Xrm.RESTBuilder.Refresh_Click = function () {
+	location.reload();
+}
 
 Xrm.RESTBuilder.Reset_Click = function () {
 	Xrm.RESTBuilder.Type_Change();

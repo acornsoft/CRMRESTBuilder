@@ -43,7 +43,8 @@
 	<div id="Wrapper">
 		<div id="Generate">
 			<div id="Header">
-				<label class="CrudLabel"></label>
+				<!--<label class="CrudLabel"></label>-->
+				<a id="Refresh" href="#">Refresh</a>
 				<a id="CreateRequest" href="#">Create Request</a>
 				<a id="Reset" href="#">Reset</a>
 			</div>
@@ -181,7 +182,7 @@
 						<label class="CrudLabel">Alternate Key</label>
 						<select id="AlternateKeyRetrieveField" class="ui-corner-all"></select>
 					</div>
-					<button id="SwitchIdKeyRetrieve" class="AltKey" action="Retrieve" title="Switch between primary and alternate key"></button>
+					<a id="SwitchIdKeyRetrieve" href="#" class="AltKey" action="Retrieve" title="Switch between primary and alternate key"></a>
 				</div>
 				<div id="RetrieveExtras">
 					<div id="RetrieveTop">
@@ -269,7 +270,7 @@
 						<label class="CrudLabel">Alternate Key</label>
 						<select id="AlternateKeyUpdateField" class="ui-corner-all"></select>
 					</div>
-					<button id="SwitchIdKeyUpdate" class="AltKey" action="Update" title="Switch between primary and alternate key"></button>
+					<a id="SwitchIdKeyUpdate" href="#" class="AltKey" action="Update" title="Switch between primary and alternate key"></a>
 				</div>
 				<div class="clear"></div>
 				<div id="Upsert">
@@ -313,7 +314,7 @@
 						<label class="CrudLabel">Alternate Key</label>
 						<select id="AlternateKeyDeleteField" class="ui-corner-all"></select>
 					</div>
-					<button id="SwitchIdKeyDelete" class="AltKey" action="Delete" title="Switch between primary and alternate key"></button>
+					<a id="SwitchIdKeyDelete" href="#" class="AltKey" action="Delete" title="Switch between primary and alternate key"></a>
 				</div>
 			</div>
 			<div id="AssociateDisassociate" class="Method">

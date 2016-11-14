@@ -19,7 +19,7 @@ select {
 	height: 30px;
 }
 
-#Reset, #CreateRequest, #Back, #Execute {
+#Reset, #CreateRequest, #Back, #Execute, #Refresh {
 	font-size: 95%;
 	height: 28px;
 }
@@ -192,6 +192,11 @@ td {
 	margin-top: 5px;
 }
 
+#Refresh {
+	margin-right: 35px;
+	margin-top: 1px;
+}
+
 #PreventCreate {
 	float: left;
 	margin-right: 12px;
@@ -202,6 +207,10 @@ td {
 }
 
 .ui-tooltip {
+	font-size: 95%;
+}
+
+.ui-button-text {
 	font-size: 95%;
 }
 
