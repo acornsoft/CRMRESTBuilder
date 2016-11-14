@@ -5330,8 +5330,15 @@ Xrm.RESTBuilder.Reset_Click = function () {
 	Xrm.RESTBuilder.Impersonate_Change();
 	$("#ImpersonateId").val("");
 	$("#ImpersonateId").hide();
-	$("#FormattedValuesTrue").prop("checked", "true").button("refresh");
-	Xrm.RESTBuilder.FormattedValues_Change();
+	if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
+		$("#FormattedValuesFalse").prop("checked", "true").button("refresh");
+		Xrm.RESTBuilder.FormattedValues = false;	
+	} else {
+		$("#FormattedValuesTrue").prop("checked", "true").button("refresh");
+		Xrm.RESTBuilder.FormattedValues = true;
+	}
+	$("#ReturnRecordFalse").prop("checked", "true").button("refresh");
+	Xrm.RESTBuilder.ReturnRecord = false;
 	$("#DetectChangesFalse").prop("checked", "true").button("refresh");
 	Xrm.RESTBuilder.DetectChanges_Change();
 	$("#AuthTokenFalse").prop("checked", "true").button("refresh");
