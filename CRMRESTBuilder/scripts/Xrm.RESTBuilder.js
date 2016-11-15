@@ -128,6 +128,8 @@ $(function () {
 	$("#ReturnRecord input[name=ReturnRecord]:radio").change(Xrm.RESTBuilder.ReturnRecord_Change);
 	$("#EntityList").change(Xrm.RESTBuilder.EntityList_Change);
 	$("#AlternateKeyRetrieveField").change(Xrm.RESTBuilder.AlternateKeyField_Change);
+	$("#AlternateKeyUpdateField").change(Xrm.RESTBuilder.AlternateKeyField_Change);
+	$("#AlternateKeyDeleteField").change(Xrm.RESTBuilder.AlternateKeyField_Change);
 	$("#AssociateEntity1").change(Xrm.RESTBuilder.AssociateEntity1_Change);
 	$("#AssociateEntity2").change(Xrm.RESTBuilder.AssociateEntity2_Change);
 	$("#PredefinedQueryType").change(Xrm.RESTBuilder.PredefinedQueryType_Change);
@@ -525,6 +527,7 @@ Xrm.RESTBuilder.GetAttributeMetadata_Response = function (entityMetadata) {
 		if (Xrm.RESTBuilder.Type === "Create" || Xrm.RESTBuilder.Type === "Update") {
 			var ctrl = $("#" + Xrm.RESTBuilder.FindTypeTable()).find("tbody tr:first .Attribute:first");
 			Xrm.RESTBuilder.BindAttributeSelectList(ctrl[0], Xrm.RESTBuilder.CurrentEntityAttributes);
+			Xrm.RESTBuilder.GetAlternateKeys($("#EntityList option:selected").attr("metadataId"));
 			return;
 		}
 		if (Xrm.RESTBuilder.Type === "Retrieve" || Xrm.RESTBuilder.Type === "RetrieveMultiple" || Xrm.RESTBuilder.Type === "PredefinedQuery") {
@@ -544,7 +547,7 @@ Xrm.RESTBuilder.GetAttributeMetadata_Response = function (entityMetadata) {
 Xrm.RESTBuilder.GetAlternateKeys = function (metadataId) {
 	Xrm.RESTBuilder.CurrentEntityAlternateKeys = [];
 	var req = new XMLHttpRequest();
-	req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v" + $("#WebApiVersion option:selected").val() + "/EntityDefinitions(" + metadataId + ")/Keys?$select=KeyAttributes", true);
+	req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v" + $("#WebApiVersion option:selected").val() + "/EntityDefinitions(" + metadataId + ")/Keys?$select=LogicalName,KeyAttributes", true);
 	req.setRequestHeader("OData-MaxVersion", "4.0");
 	req.setRequestHeader("OData-Version", "4.0");
 	req.setRequestHeader("Accept", "application/json");
@@ -557,14 +560,10 @@ Xrm.RESTBuilder.GetAlternateKeys = function (metadataId) {
 				var result = JSON.parse(this.response);
 				var keyAttributes = result.value;
 				for (var i = 0; i < keyAttributes.length; i++) {
-					Xrm.RESTBuilder.CurrentEntityAlternateKeys.push(keyAttributes[i]["KeyAttributes"][0]);
+					Xrm.RESTBuilder.CurrentEntityAlternateKeys.push(keyAttributes[i]);
 				}
 
-				if (Xrm.RESTBuilder.CurrentEntityAlternateKeys.length > 0) {
-					$("#SwitchIdKeyRetrieve").button("enable");
-				} else {
-					$("#SwitchIdKeyRetrieve").button("disable");
-				}
+				Xrm.RESTBuilder.SetAlternateKeyState();
 			}
 		}
 	};
@@ -3696,14 +3695,20 @@ Xrm.RESTBuilder.GenerateIdAlternateKeys = function (action) {
 	if ($("#" + action + "GUID").is(":visible")) {
 		return $("#" + action + "Id").val();
 	} else {
-		var inputField = $("#AlternateKey" + action).find("input:first");
-		var logical = inputField.attr("id").substring(2);
-		var field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === logical; })[0];
-		if (field.AttributeType === "String") {
-			return logical + "='" + inputField.val() + "'";
-		} else {
-			return logical + "=" + inputField.val();
+		var keys = [];
+		var rows = $("#AlternateKey" + action + "Table").find("tbody tr");
+		for (var i = 0; i < rows.length; i++) {
+			var inputField = $(rows[i]).find("input:first");
+			var logical = $(rows[i]).find("td:first").html();
+			var field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === logical; })[0];
+			if (field.AttributeType === "String") {
+				keys.push(logical + "='" + inputField.val() + "'");
+			} else {
+				keys.push(logical + "=" + inputField.val());
+			}
 		}
+
+		return keys.join(",");
 	}
 }
 
@@ -5403,36 +5408,39 @@ Xrm.RESTBuilder.DisplayAlternateKeys = function (action) {
 	$("#AlternateKey" + action + "Field").find("option").remove();
 	var options = [];
 	for (var i = 0; i < Xrm.RESTBuilder.CurrentEntityAlternateKeys.length; i++) {
-		var field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === Xrm.RESTBuilder.CurrentEntityAlternateKeys[i]; })[0];
-		options.push("<option logicalname='" + field.LogicalName + "'>" + field.SchemaName + " (" + Xrm.RESTBuilder.GetLabel(field.DisplayName) + ")</option>");
+		options.push("<option>" + Xrm.RESTBuilder.CurrentEntityAlternateKeys[i].LogicalName + "</option>");
 	}
 
 	$("#AlternateKey" + action + "Field").html(options.join(""));
-	Xrm.RESTBuilder.AlternateKeyField_Change(action);
+	Xrm.RESTBuilder.AlternateKeyField_Change();
 }
 
-Xrm.RESTBuilder.AlternateKeyField_Change = function (action) {
-	$("#AlternateKey" + action + " input").remove();
-	var option = $("#AlternateKey" + action + "Field option:selected")[0];
-	var field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === $(option).attr("logicalname"); })[0];
+Xrm.RESTBuilder.AlternateKeyField_Change = function () {
+	$("#AlternateKey" + Xrm.RESTBuilder.Type + "Table").find("tbody tr").remove();
+	var option = $("#AlternateKey" + Xrm.RESTBuilder.Type + "Field option:selected")[0];
+	var key = $.grep(Xrm.RESTBuilder.CurrentEntityAlternateKeys, function (e) { return e.LogicalName === $(option).val(); })[0];
 
-	var valueField = "";
-	switch (field.AttributeType) {
-		case "Integer":
-			valueField = "<input type='text' id='AK" + field.LogicalName + "' class='Integer ui-corner-all' placeholder='" + field.AttributeType + "' />";
-			break;
-		case "Decimal":
-			valueField = "<input type='text' id='AK" + field.LogicalName + "' class='Decimal ui-corner-all' placeholder='" + field.AttributeType + " (" + field.Precision + " digits)' />";
-			break;
-		case "String":
-			valueField = "<input type='text' id='AK" + field.LogicalName + "' class='String ui-corner-all ui-widget' maxlength='" + field.MaxLength + "' placeholder='" + field.AttributeType + "' />";
-			break;
-	}
+	for (var i = 0; i < key["KeyAttributes"].length; i++) {
+		var field = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === key["KeyAttributes"][i]; })[0];
 
-	$("#AlternateKey" + action).append(valueField);
+		var row = "";
+		switch (field.AttributeType) {
+			case "Integer":
+				row = "<tr><td>" + field.LogicalName + "</td><td><input type='text' id='AK" + field.LogicalName + "' class='Integer ui-corner-all' placeholder='" + field.AttributeType + "' /></td></tr>";
+				break;
+			case "Decimal":
+				row = "<tr><td>" + field.LogicalName + "</td><td><input type='text' id='AK" + field.LogicalName + "' class='Decimal ui-corner-all' placeholder='" + field.AttributeType + " (" + field.Precision + " digits)' /></td></tr>";
+				break;
+			case "String":
+				row = "<tr><td>" + field.LogicalName + "</td><td><input type='text' id='AK" + field.LogicalName + "' class='String ui-corner-all ui-widget' maxlength='" + field.MaxLength + "' placeholder='" + field.AttributeType + "' /></td></tr>";
+				break;
+		}
 
-	if (field.AttributeType === "Decimal" || field.AttributeType === "Integer") {
-		Xrm.RESTBuilder.MakeSpinner(field.MinValue, field.MaxValue, 1, "AK" + field.LogicalName);
+		$("#AlternateKey" + Xrm.RESTBuilder.Type + "Table").find("tbody").append(row);
+
+		if (field.AttributeType === "Decimal" || field.AttributeType === "Integer") {
+			Xrm.RESTBuilder.MakeSpinner(field.MinValue, field.MaxValue, 1, "AK" + field.LogicalName);
+		}
 	}
 }
 
